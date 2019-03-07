@@ -18,13 +18,12 @@
         .removeClass('hidden')
         .attr('href', pdfLink.url);
     }
+    else {
+      $('.btn-schedule-pdf-generate')
+        .removeClass('hidden')
+        .attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + window.location.search);
+    }
   }
-  else {
-    $('.btn-schedule-pdf-generate')
-      .removeClass('hidden')
-      .attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + window.location.search);
-  }
-
 
   /* Check the settings of whether to display Instructor column or not */
   function displayInstructorOrNot() {
