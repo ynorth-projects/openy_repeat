@@ -40,3 +40,11 @@ function openy_repeat_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function openy_repeat_page_attachments(array &$attachments) {
+  $limit = \Drupal::config('openy_repeat.settings')->get('calendar_limit_days');
+  $attachments['#attached']['drupalSettings']['openy_repeat']['calendarLimitDays'] = $limit;
+}
