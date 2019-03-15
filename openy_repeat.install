@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Introduce config.
+ */
+function openy_repeat_update_8001() {
+  $configFactory = \Drupal::configFactory();
+  $config = $configFactory->getEditable('openy_repeat.settings');
+  $config->set('calendar_limit_days', 0);
+  $config->save();
+}
