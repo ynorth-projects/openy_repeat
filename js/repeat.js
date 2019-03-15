@@ -1,4 +1,5 @@
 (function ($) {
+
   if (!$('.schedule-dashboard__wrapper').length) {
     return;
   }
@@ -58,6 +59,19 @@
     }
   }
 
+  function checkShowForwardArrow(date) {
+    var limit = drupalSettings.openy_repeat.calendarLimitDays;
+    if (!limit) {
+      return true;
+    }
+
+    date = moment(date);
+    var now = moment();
+    var diff = date.diff(now, 'days');
+
+    return diff < (limit - 1);
+  }
+
   Vue.config.devtools = true;
 
   var router = new VueRouter({
@@ -70,6 +84,7 @@
     el: '#app',
     router: router,
     data: {
+      showForwardArrow: true,
       table: [],
       date: '',
       room: [],
@@ -325,7 +340,10 @@
       }
     },
     updated: function() {
+      this.showForwardArrow = checkShowForwardArrow(this.date);
+
       calculateColumns();
+
       if (typeof(addtocalendar) !== 'undefined') {
         addtocalendar.load();
       }
