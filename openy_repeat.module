@@ -19,6 +19,7 @@ function openy_repeat_theme() {
         'checked_locations' => [],
         'checked_categories' => [],
         'calendar_limit' => $limit
+        'filters' => [],
       ],
     ],
     'openy_repeat_schedule_locations' => [
