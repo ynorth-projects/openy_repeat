@@ -321,19 +321,26 @@
             categories: this.categories.join(',')
           }});
       },
+
       toggleParentClass: function(event) {
-        if (event.target.parentElement.classList.contains('skip-checked')) {
-          event.target.parentElement.classList.remove('skip-checked');
-          event.target.parentElement.classList.remove('collapse');
-          event.target.parentElement.classList.remove('in');
-          if (!event.target.parentElement.classList.contains('skip-t')) {
+
+          if (event.target.parentElement.classList.contains('skip-checked')) {
+            event.target.parentElement.classList.remove('skip-checked');
             event.target.parentElement.classList.add('skip-t');
+            if (!event.target.parentElement.classList.contains('skip-t')) {
+              event.target.parentElement.classList.add('skip-t');
+            }
           }
-        }
-        else {
-          event.target.parentElement.classList.toggle("skip-t");
-        }
+
+          else {
+            event.target.parentElement.classList.toggle("skip-t");
+            event.target.parentElement.classList.add('skip-checked');
+            event.target.parentElement.classList.remove('skip-t');
+            event.target.parentElement.classList.remove('collapse');
+            event.target.parentElement.classList.remove('in');
+          }
       },
+
       populatePopupL: function(index) {
         this.locationPopup = this.filteredTable[index].location_info;
       },
