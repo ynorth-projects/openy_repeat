@@ -59,7 +59,7 @@
       return true;
     }
 
-    date = moment(date);
+    date = moment(new Date(date).toISOString());
     var now = moment();
     var diff = date.diff(now, 'days');
 
