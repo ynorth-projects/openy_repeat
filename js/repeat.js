@@ -238,7 +238,9 @@
         });
 
         availableClasses = Object.keys(availableClasses);
-        availableClasses.alphanumSort();
+        if (typeof availableClasses.alphanumSort !== 'undefined') {
+          availableClasses.alphanumSort();
+        }
         return availableClasses;
       },
       filteredTable: function() {
