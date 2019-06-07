@@ -86,6 +86,9 @@ class RepeatSchedulesBlock extends BlockBase {
       $checked_locations = explode(',', $locations);
     }
     // Find repeat_schedules paragraph.
+    if (!$node = \Drupal::routeMatch()->getParameter('node')) {
+      return [];
+    }
     $node = \Drupal::routeMatch()->getParameter('node');
     $paragraphs = $node->field_content->referencedEntities();
     foreach ($paragraphs as $p) {
