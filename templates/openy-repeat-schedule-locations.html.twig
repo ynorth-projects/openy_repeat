@@ -22,6 +22,7 @@
     </div>
     {% if locations is not empty %}
     <div class="col col-xs-4 col-sm-4 col-md text-right">
+      <button class="btn skip btn-lg" disabled="disabled">{{ 'Skip'|t }}</button>
       <button class="btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
     </div>
     {% endif %}
@@ -46,10 +47,18 @@
         </div>
       {% endfor %}
     {% endif %}
+  </div>
+</div>
 
+<div class="container-fluid">
+  <div class="locations-bottom row row-eq-height align-items-end">
+    <div class="col col-xs-8 col-sm-8">
+      <h4>{{ 'Do you have any location preferences?'|t }}</h4>
+    </div>
     {% if locations is not empty %}
-      <div class="col col-xs-12 text-right">
-        <button class="btn-mobile btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
+      <div class="col col-xs-4 col-sm-4 col-md text-right">
+        <button class="btn skip btn-lg" disabled="disabled">{{ 'Skip'|t }}</button>
+        <button class="btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
       </div>
     {% endif %}
   </div>
