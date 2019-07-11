@@ -61,3 +61,38 @@ body.modal-open .top-navs .nav-wrapper,
 body.modal-open .top-navs .nav-global{
   z-index: 200 !important;
 }
+
+/* Schedules Sidebar */
+.schedule-dashboard__sidebar .badge {
+  background-color: #0060ad;
+  border-radius: 5px;
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+/* Calendar Schedules Sidebar */
+.schedule-dashboard__sidebar .form-group-date .datepicker-inline {
+  width: 100%;
+}
+
+.form-group-date .datepicker-inline .datepicker-days {
+  display: grid !important;
+}
+
+.schedule-dashboard__sidebar .date {
+  padding: 15px;
+}
+
+.datepicker .table-condensed > tbody > tr > td {
+  background: gainsboro;
+  border: 2px solid #636466;
+  color: #636466;
+}
+
+.datepicker table tr td.today {
+  background-color: #b92f9e;
+  background-image: none;
+  border-radius: 0;
+  color: white;
+  font-weight: bold;
+}

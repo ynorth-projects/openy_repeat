@@ -41,20 +41,16 @@
 
       {# date picker #}
       <div class="form-group-wrapper">
-        <label for="form-group-date">
+        <label for="form-group-date" data-toggle="collapse" role="button" data-target=".form-group-date" class="expanded" aria-controls="form-group-date">
           {{ 'Date'|t }}
-          <button class="show-date-filter" data-toggle="collapse" type="button" data-target=".form-group-date" role="button" aria-label="{{ 'Show date filter'|t }}"><i class="fa fa-calendar date-picker"></i></button>
+          <p class="text-center m-0">Today <span class="date" v-cloak>${ dateFormatted }</span></p>
+          <input type="hidden" id="datepicker2" disabled>
+          <button class="show-date-filter" data-toggle="collapse" type="button" data-target=".form-group-date" role="button" aria-label="{{ 'Show date filter'|t }}">
+            <i class="fa fa-calendar date-picker"></i>
+          </button>
         </label>
-        <div class="form-group-date collapse" aria-expanded="false">
+        <div id="form-group-date" class="form-group-date collapse" aria-expanded="true">
           <div class="date" id="datepicker">
-            {% if calendar_limit > 0 %}
-              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" data-date-end-date="+{{ calendar_limit }}d" />
-            {% else %}
-              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" />
-            {% endif %}
-            <span class="input-group-addon hidden">
-              <span class="fa fa-calendar" aria-hidden="true"></span>
-            </span>
           </div>
         </div>
       </div>
@@ -63,7 +59,7 @@
       {% if locations is not empty %}
         <div class="form-group-wrapper">
           <label for="form-group-location" data-toggle="collapse" data-target=".skip-t" role="button" aria-expanded="false" aria-controls="form-group-location">
-            {{ 'Location'|t }}
+            <p class="m-0">{{ 'Location'|t }}<small class="badge">1</small></p>
             <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
             <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
           </label>
@@ -94,7 +90,7 @@
       {% if categories is not empty and filters.category %}
         <div class="form-group-wrapper">
           <label for="form-group-category" data-toggle="collapse" data-target="#form-group-category" role="button" class="expanded" aria-controls="form-group-category">
-            {{ 'Category'|t }}
+            <p class="m-0">{{ 'Category'|t }}<small class="badge">1</small></p>
             <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
             <i class="fa fa-minus-circle plus" aria-hidden="true"></i>
           </label>

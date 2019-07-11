@@ -185,18 +185,24 @@
     mounted: function() {
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
-      $('#datepicker input').datepicker({
+      $('#datepicker').datepicker({
         format: "MM d, DD",
         multidate: false,
         keyboardNavigation: false,
         forceParse: false,
-        autoclose: true,
-        todayHighlight: true
-      }).on('changeDate', function() {
-        if ($(this).val() != '') {
-          component.date = moment($(this).datepicker('getDate')).format('D MMM YYYY');
+        autoclose: false,
+        todayHighlight: true,
+        templates: {
+          leftArrow: '<i class="fa fa-long-arrow-left"></i>',
+          rightArrow: '<i class="fa fa-long-arrow-right"></i>'
         }
+      }).on('changeDate', function() {
+        $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
+        // if ($(this).val() != '') {
+        //   component.date = moment($(this).datepicker('getDate')).format('D MMM YYYY');
+        // }
       });
+      $('#datepicker2').datepicker();
     },
     computed: {
       dateFormatted: function(){
