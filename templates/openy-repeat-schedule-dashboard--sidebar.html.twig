@@ -51,6 +51,14 @@
         </label>
         <div id="form-group-date" class="form-group-date collapse" aria-expanded="true">
           <div class="date" id="datepicker">
+            {% if calendar_limit > 0 %}
+              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" data-date-end-date="+{{ calendar_limit }}d" />
+            {% else %}
+              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" />
+            {% endif %}
+            <span class="input-group-addon hidden">
+              <span class="fa fa-calendar" aria-hidden="true"></span>
+            </span>
           </div>
         </div>
       </div>
@@ -63,7 +71,8 @@
             <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
             <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
           </label>
-          <div id="form-group-location" class="form-group-location">
+          <div id="form-group-location" class="form-group-location" aria-expanded="true">
+            <div class="checkboxes">
             {% for location in locations %}
               {% set loc_checked = "t collapse" %}
               {% if checked_locations is not empty and location in checked_locations %}
@@ -95,6 +104,7 @@
             <i class="fa fa-minus-circle plus" aria-hidden="true"></i>
           </label>
           <div id="form-group-category" class="form-group-category collapse in" aria-expanded="true">
+            <div class="checkboxes">
             {% for category in categories %}
               {% set cat_checked = "t" %}
               {% if checked_categories is not empty and category in checked_categories %}
@@ -105,6 +115,7 @@
                 <label for="cb-{{ category|lower|replace(' ', '-') }}">{{ category }}</label>
               </div>
             {% endfor %}
+            </div>
           </div>
         </div>
       {% endif %}
@@ -118,11 +129,13 @@
             <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
           </label>
           <div id="form-group-classname" class="form-group-classname collapse in" aria-expanded="true">
-            <div v-for="classFilter in getClassFilter()" class="checkbox-wrapper">
-              <input type="checkbox" v-model="className" v-bind:value="classFilter" v-bind:id="generateId(classFilter)" class="box"/>
-              <label v-bind:for="generateId(classFilter)">
-                ${ classFilter }
-              </label>
+            <div class="checkboxes">
+              <div v-for="classFilter in getClassFilter()" class="checkbox-wrapper">
+                <input type="checkbox" v-model="className" v-bind:value="classFilter" v-bind:id="generateId(classFilter)" class="box"/>
+                <label v-bind:for="generateId(classFilter)">
+                  ${ classFilter }
+                </label>
+              </div>
             </div>
           </div>
         </div>
