@@ -3,7 +3,6 @@
 */
 
 .schedule-locations__wrapper {
-  background-color: #f2f2f2;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
@@ -13,53 +12,6 @@
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
-}
-
-.openy-card__item label {
-  border: 2px solid #0060ad !important;
-  background-color: #fff;
-  color: #0060ad !important;
-  font-weight: bold;
-  padding: 15px 25px;
-  min-height: 54px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.openy-card__item .fa-map-marker {
-  color: #0060ad;
-}
-
-.openy-card__item.selected label,
-.openy-card__item.selected:hover label,
-.openy-card__link:hover {
-  color: white !important;
-  border-color: #0060ad !important;
-  background: #0060ad !important;
-}
-
-.btn.skip {
-  border: 2px solid #0060ad;
-  background-color: #fff;
-  color: #0060ad;
-  text-transform: uppercase;
-  margin-right: 15px;
-}
-
-.locations-header {
-  background-color: #fff;
-  padding-bottom: 2rem;
-}
-
-.actions-buttons-bottom {
-  position: fixed;
-  bottom: 0;
-  background-color: #fff;
-  padding-bottom: 2rem;
-}
-
-.row-eq-height {
-  padding: 15px 30px;
 }
 
 .field-prgf-repeat-lschedules-prf {
