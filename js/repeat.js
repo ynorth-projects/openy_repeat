@@ -349,6 +349,22 @@
       },
       populatePopupC: function(index) {
         this.classPopup = this.filteredTable[index].class_info;
+
+        // For now we will search by clicked GroupEx class ID.
+        // In GroupEx each class has separate ID for different locations.
+        // So, in order to get class within all locations we need to pass
+        // the array of class IDs.
+        // To be decided.
+        var classId = this.filteredTable[index].class;
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
+        url += classId;
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+
+        $.getJSON(url, function(data) {
+          console.log('request...');
+        });
       },
       backOneDay: function() {
         var date = new Date(this.date).toISOString();
