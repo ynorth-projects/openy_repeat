@@ -66,8 +66,15 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__sidebar .badge {
   background-color: #0060ad;
   border-radius: 5px;
-  font-size: 10px;
-  margin-left: 5px;
+  font-size: 12px;
+  margin-left: 9px;
+}
+
+.navbar-controls__title strong {
+  color: #636466;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
 }
 
 /* Calendar Schedules Sidebar */
@@ -84,9 +91,9 @@ body.modal-open .top-navs .nav-global{
 }
 
 .datepicker .table-condensed > tbody > tr > td {
-  background: gainsboro;
+  background: white;
   border: 2px solid #636466;
-  color: #636466;
+  color: #231f20;
 }
 
 .datepicker table tr td.today {
@@ -102,10 +109,26 @@ body.modal-open .top-navs .nav-global{
   background: #b92f9e;
 }
 
-.datepicker .header-today {
+.header-today {
   text-transform: none;
+  font-size: 12px;
+  font-weight: 400;
 }
+
+.header-today .date {
+  padding: 0;
+}
+
 
 .datepicker table tr td.active.active {
   background: #e7e7e7;
+}
+
+.datepicker table tr td.new {
+  background: #636466;
+  color: #636466;
+}
+
+.datepicker th.datepicker-switch {
+  color: #231f20;
 }
