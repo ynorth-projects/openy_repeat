@@ -43,7 +43,7 @@
       <div class="form-group-wrapper">
         <label for="form-group-date" data-toggle="collapse" role="button" data-target=".form-group-date" class="expanded" aria-controls="form-group-date">
           {{ 'Date'|t }}
-          <p class="text-center m-0 header-today">Today <span class="date" v-cloak>(${ dateFormatted })</span></p>
+          <p class="text-center m-0 header-today">Today <span class="date" v-cloak>${ dateFormatted }</span></p>
           <input type="hidden" id="datepicker2" disabled>
           <button class="show-date-filter" data-toggle="collapse" type="button" data-target=".form-group-date" role="button" aria-label="{{ 'Show date filter'|t }}">
             <i class="fa fa-calendar date-picker"></i>
@@ -51,14 +51,6 @@
         </label>
         <div id="form-group-date" class="form-group-date collapse" aria-expanded="true">
           <div class="date" id="datepicker">
-            {% if calendar_limit > 0 %}
-              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" data-date-end-date="+{{ calendar_limit }}d" />
-            {% else %}
-              <input id="form-group-date" type="text" class="form-control" v-model="dateFormatted" />
-            {% endif %}
-            <span class="input-group-addon hidden">
-              <span class="fa fa-calendar" aria-hidden="true"></span>
-            </span>
           </div>
         </div>
       </div>
