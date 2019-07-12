@@ -96,3 +96,16 @@ body.modal-open .top-navs .nav-global{
   color: white;
   font-weight: bold;
 }
+
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today:hover:hover {
+  background: #b92f9e;
+}
+
+.datepicker .header-today {
+  text-transform: none;
+}
+
+.datepicker table tr td.active.active {
+  background: #e7e7e7;
+}
