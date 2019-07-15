@@ -98,6 +98,10 @@
         title: '',
         description: '',
         schedule: []
+      },
+      instructorPopup: {
+        name: '',
+        schedule: []
       }
     },
     created: function() {
@@ -183,6 +187,7 @@
       component.$watch('locations', function(){ component.runAjaxRequest(); });
       component.$watch('categories', function(){ component.runAjaxRequest(); });
       component.$watch('classPopup', function(){ component.runAjaxRequest(); });
+      component.$watch('instructorPopup', function(){ component.runAjaxRequest(); });
     },
     mounted: function() {
       /* It doesn't work if try to add datepicker in created. */
@@ -368,6 +373,21 @@
         $('.schedules-loading').removeClass('hidden');
         $.getJSON(url, function(data) {
           component.classPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
+        });
+      },
+      populatePopupInstructor: function(instructor) {
+        var component = this;
+        component.instructorPopup.name = instructor;
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
+        url += encodeURIComponent(instructor);
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+
+        $('.schedules-loading').removeClass('hidden');
+        $.getJSON(url, function(data) {
+          component.instructorPopup.schedule = data;
           $('.schedules-loading').addClass('hidden');
         });
       },
