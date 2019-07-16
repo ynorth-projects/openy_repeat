@@ -16,6 +16,7 @@
     <h2>
       <button v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button" aria-label="previous date"><i class="fa fa-angle-left"></i></button>
       <span class="date" v-cloak>${ dateFormatted }</span>
+      <span class="date" v-cloak>${ dateFormatted }</span>
       <button v-on:click.stop="forwardOneDay" v-if="showForwardArrow" class="schedule-dashboard__arrow right" role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
     </h2>
   </div>
@@ -271,16 +272,6 @@
 
           <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
 
-            {# location #}
-            <div v-cloak class="location-column">
-              ${ item.location }
-            </div>
-
-            {# class #}
-            <div v-cloak>
-              ${ item.name }
-            </div>
-
             {# time #}
             <div v-cloak>
               <strong class="time">${ item.time_start } - ${ item.time_end }</strong>
@@ -291,15 +282,25 @@
               </p>
             </div>
 
+            {# class #}
+            <div  class="class-name" v-cloak>
+              ${ item.name }
+            </div>
+
+            {# location #}
+            <div v-cloak class="location-column">
+              ${ item.location }
+            </div>
+
             {# category #}
             <div v-cloak class="category-column">
               ${ item.category }
             </div>
 
             {# instructor #}
-            <div v-cloak class="instructor-column">
-              ${ item.instructor }
-            </div>
+            {#<div v-cloak class="instructor-column">#}
+              {#${ item.instructor }#}
+            {#</div>#}
 
             {# add to calendar #}
             <div v-cloak class="calendar-column">
