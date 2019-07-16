@@ -191,11 +191,7 @@
         keyboardNavigation: false,
         forceParse: false,
         autoclose: false,
-        todayHighlight: true,
-        templates: {
-          leftArrow: '<i class="fa fa-long-arrow-left"></i>',
-          rightArrow: '<i class="fa fa-long-arrow-right"></i>'
-        }
+        todayHighlight: true
       }).on('changeDate', function() {
         $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
         // if ($(this).val() != '') {
@@ -203,6 +199,8 @@
         // }
       });
       $('#datepicker2').datepicker();
+      $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
+      $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
     },
     computed: {
       dateFormatted: function(){
