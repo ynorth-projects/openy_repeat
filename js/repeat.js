@@ -96,7 +96,12 @@
       },
       classPopup: {
         title: '',
-        description: ''
+        description: '',
+        schedule: []
+      },
+      instructorPopup: {
+        name: '',
+        schedule: []
       }
     },
     created: function() {
@@ -108,7 +113,7 @@
       });
 
       // If there is a preselected location, we'll hide filters and column.
-      let limitLocations = window.OpenY.field_prgf_repeat_loc || [];
+      var limitLocations = window.OpenY.field_prgf_repeat_loc || [];
       if (limitLocations && limitLocations.length > 0) {
         // If we limit to one location. i.e. Andover from GroupExPro
         if (limitLocations.length == 1) {
@@ -181,6 +186,8 @@
       component.$watch('date', function(){ component.runAjaxRequest(); });
       component.$watch('locations', function(){ component.runAjaxRequest(); });
       component.$watch('categories', function(){ component.runAjaxRequest(); });
+      component.$watch('classPopup', function(){ component.runAjaxRequest(); });
+      component.$watch('instructorPopup', function(){ component.runAjaxRequest(); });
     },
     mounted: function() {
       /* It doesn't work if try to add datepicker in created. */
@@ -352,7 +359,41 @@
         this.locationPopup = this.filteredTable[index].location_info;
       },
       populatePopupC: function(index) {
-        this.classPopup = this.filteredTable[index].class_info;
+        var component = this;
+        component.classPopup = this.filteredTable[index].class_info;
+
+        // For now we will search by clicked GroupEx class ID.
+        // In GroupEx each class has separate ID for different locations.
+        // So, in order to get class within all locations we need to pass
+        // the array of class IDs.
+        // @todo To be decided.
+        var classId = this.filteredTable[index].class;
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
+        url += classId;
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+
+        $('.schedules-loading').removeClass('hidden');
+        $.getJSON(url, function(data) {
+          component.classPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
+        });
+      },
+      populatePopupInstructor: function(instructor) {
+        var component = this;
+        component.instructorPopup.name = instructor;
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
+        url += encodeURIComponent(instructor);
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+
+        $('.schedules-loading').removeClass('hidden');
+        $.getJSON(url, function(data) {
+          component.instructorPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
+        });
       },
       backOneDay: function() {
         var date = new Date(this.date).toISOString();
