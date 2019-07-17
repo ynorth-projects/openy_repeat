@@ -212,7 +212,11 @@
     computed: {
       dateFormatted: function(){
         var date = new Date(this.date).toISOString();
-        return moment(date).format('MMMM D, dddd');
+        return moment(date).format('ddd, MMM D');
+      },
+      dateCalendarFormatted: function(){
+        var date = new Date(this.date).toISOString();
+        return moment(date).format('ddd, MM/D');
       },
       roomFilters: function() {
         var availableRooms = [];

@@ -30,6 +30,17 @@
   }
 }
 
+.schedule-dashboard__content--header .date {
+  margin: auto 0;
+  color: #231f20;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.schedule-dashboard__content--header .day-label h2 {
+  width: 80%;
+}
+
 .btn.btn-schedule-pdf,
 .btn.btn-schedule-pdf-generate {
   border: 1px solid #d4d4d4;
@@ -257,6 +268,10 @@ body.modal-open .top-navs .nav-global{
   overflow: auto;
 }
 
+.schedule-dashboard__modal .modal-content {
+  border: 0 !important;
+}
+
 .schedule-dashboard__modal--body {
   overflow-y: scroll;
   height: 80%;
@@ -275,6 +290,18 @@ body.modal-open .top-navs .nav-global{
 
 .schedule-dashboard__modal--header {
   border-bottom: 1px solid #636466;
+  display: inline-flex;
+  width: 100%;
+}
+
+.schedule-dashboard__modal--header .modal-title {
+  color: #636466;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 48px;
+  padding: 0 15px;
+  width: 100%;
 }
 
 .schedule-dashboard__modal .modal-content {
@@ -288,10 +315,18 @@ body.modal-open .top-navs .nav-global{
   font-weight: 700;
   line-height: 27px;
 }
+.schedule-dashboard__modal--body .header-border {
+  border-bottom: 1px solid #636466;
+}
 
-.schedules-data__row:nth-child(even) {
+.schedules-data__row:nth-child(odd) {
   background-color: #f2f2f2;
 }
+
+.schedules-data__row:nth-child(even) {
+  background-color: white;
+}
+
 .schedules-data__row  .atcb-link {
   color: #92278f;
   font-weight: 400;
@@ -312,3 +347,18 @@ body.modal-open .top-navs .nav-global{
   opacity: 1 !important;
   color: white !important;
 }
+
+.schedule-dashboard__wrapper .modal-cover {
+  background: rgba(0,0,0,0.5);
+}
+.schedules-data__row .addtocalendar {
+  top: 0;
+}
+
+.schedule-dashboard__arrow i.fa  {
+  display: inline-block;
+  border-radius: 60px;
+  padding: 0.3em 0.6em;
+  border: 2px solid #f2f2f2;
+}
+

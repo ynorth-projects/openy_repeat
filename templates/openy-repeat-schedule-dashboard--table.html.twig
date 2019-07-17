@@ -11,21 +11,24 @@
 <div class="row schedule-dashboard__content--header">
 
   {% block date_wrapper %}
-  <div class="col-sm-12 col-md-8 col-lg-7 day-label">
-  {% endblock %}
+  <div class="col-sm-12 col-md-4 col-lg-5 day-label">
+    {% endblock %}
     <h2>
-      <button v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button" aria-label="previous date"><i class="fa fa-angle-left"></i></button>
+      <button v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
+              aria-label="previous date"><i class="fa fa-angle-left"></i></button>
       <span class="date" v-cloak>${ dateFormatted }</span>
-      <span class="date" v-cloak>${ dateFormatted }</span>
-      <button v-on:click.stop="forwardOneDay" v-if="showForwardArrow" class="schedule-dashboard__arrow right" role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
+      <button v-on:click.stop="forwardOneDay" v-if="showForwardArrow" class="schedule-dashboard__arrow right"
+              role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
     </h2>
   </div>
 
   {% block buttons_wrapper %}
-  <div class="hidden-xs hidden-sm col-md-4 col-lg-5">
-  {% endblock %}
-    <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i class="fa fa-print hidden-xs"></i></a>
-    <a class="btn btn-md btn-block btn-schedule-pdf-generate hidden" target="_blank">{{ 'Weekly PDF Schedule'|t }} <i class="fa fa-print hidden-xs"></i></a>
+  <div class="hidden-xs hidden-sm col-md-8 col-lg-7">
+    {% endblock %}
+    <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i
+        class="fa fa-print hidden-xs"></i></a>
+    <a class="btn btn-md btn-block btn-schedule-pdf-generate hidden" target="_blank">{{ 'DownloadWeekly PDF'|t }} <i
+        class="fa fa-print hidden-xs"></i></a>
   </div>
 </div>
 
@@ -37,9 +40,9 @@
       <div class="schedules-data clearfix">
 
         <div class="schedules-data__header">
-          <div class="location-column">{{ 'Location'|t }}</div>
-          <div>{{ 'Class'|t }}</div>
           <div>{{ 'Time'|t }}</div>
+          <div>{{ 'Class'|t }}</div>
+          <div class="location-column">{{ 'Location'|t }}</div>
           <div class="category-column">{{ 'Category'|t }}</div>
           <div class="instructor-column">{{ 'Instructor'|t }}</div>
           <div class="calendar-column"></div>
@@ -47,16 +50,6 @@
         </div>
 
         <div v-for="(item, index) in propData" class="schedules-data__row">
-
-          {# location #}
-          <div v-cloak class="location-column">
-            <strong><a class="schedule-dashboard__modal--location-link" role="button" v-on:click="$parent.populatePopupL(index)" data-toggle="modal" data-target=".schedule-dashboard__modal--location">${ item.location }</a></strong>
-          </div>
-
-          {# class #}
-          <div v-cloak>
-            <strong><a class="schedule-dashboard__modal--class-link" role="button" v-on:click="$parent.populatePopupC(index)" data-toggle="modal" data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
-          </div>
 
           {# time #}
           <div v-cloak>
@@ -68,6 +61,20 @@
             </p>
           </div>
 
+          {# class #}
+          <div v-cloak>
+            <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                       v-on:click="$parent.populatePopupC(index)" data-toggle="modal"
+                       data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+          </div>
+
+          {# location #}
+          <div v-cloak class="location-column">
+            <strong><a class="schedule-dashboard__modal--location-link" role="button"
+                       v-on:click="$parent.populatePopupL(index)" data-toggle="modal"
+                       data-target=".schedule-dashboard__modal--location">${ item.location }</a></strong>
+          </div>
+
           {# category #}
           <div v-cloak class="category-column">
             ${ item.category }
@@ -75,7 +82,9 @@
 
           {# instructor #}
           <div v-cloak class="instructor-column">
-            <strong><a class="schedule-dashboard__modal--instructor-link" role="button" v-on:click="$parent.populatePopupInstructor(item.instructor)" data-toggle="modal" data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a></strong>
+            <strong><a class="schedule-dashboard__modal--instructor-link" role="button"
+                       v-on:click="$parent.populatePopupInstructor(item.instructor)" data-toggle="modal"
+                       data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a></strong>
           </div>
 
           {# add to calendar #}
@@ -94,7 +103,7 @@
           </div>
 
           {# register btn #}
-          <div v-cloak class="register-column" v-if="item.register_url" >
+          <div v-cloak class="register-column" v-if="item.register_url">
             <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
           </div>
         </div>
@@ -115,12 +124,15 @@
   {# Modals should be within Vue app block #}
 
   {# modal > location info  #}
-  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog" aria-labelledby="schedule-dashboard__modal--location-link">
+  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
+       aria-labelledby="schedule-dashboard__modal--location-link">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <div class="schedule-dashboard__modal--header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
+                                                                                         aria-hidden="true"></i>
+          </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
@@ -160,49 +172,34 @@
         </div>
 
         <div class="schedule-dashboard__modal--footer">
-          <a class="btn btn-lg btn-primary" v-bind:href="'{{ url('<front>') }}node/' + locationPopup.nid">{{ 'View branch'|t }}</a>
+          <a class="btn btn-lg btn-primary"
+             v-bind:href="'{{ url('<front>') }}node/' + locationPopup.nid">{{ 'View branch'|t }}</a>
         </div>
       </div>
     </div>
   </div>
 
   {# modal > class info  #}
-  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--class" tabindex="-1" role="dialog" aria-labelledby="schedule-dashboard__modal--class-link">
+  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--class" tabindex="-1" role="dialog"
+       aria-labelledby="schedule-dashboard__modal--class-link">
+    <div class="modal-cover"></div>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <div class="schedule-dashboard__modal--header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <h5 class="modal-title">Activity details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
+                                                                                         aria-hidden="true"></i>
+          </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
-
-          <table class="table">
-            <thead>
-            <tr>
-              <th>
-                <h4><strong>${ classPopup.title }</strong></h4>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>${ classPopup.description }</td>
-            </tr>
-            </tbody>
-          </table>
+          <div class="header-border">
+            <h4><strong>${ classPopup.title }</strong></h4>
+            <p>${ classPopup.description }</p>
+          </div>
 
           <div v-for="(item, index) in classPopup.schedule" class="schedules-data__row">
-
-            {# location #}
-            <div v-cloak class="location-column">
-              ${ item.location }
-            </div>
-
-            {# class #}
-            <div v-cloak>
-              ${ item.name }
-            </div>
 
             {# time #}
             <div v-cloak>
@@ -212,6 +209,11 @@
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
                 <span v-if="item.room">${ item.room }</span>
               </p>
+            </div>
+
+            {# location #}
+            <div v-cloak class="location-column">
+              ${ item.location }
             </div>
 
             {# category #}
@@ -240,7 +242,7 @@
             </div>
 
             {# register btn #}
-            <div v-cloak class="register-column" v-if="item.register_url" >
+            <div v-cloak class="register-column" v-if="item.register_url">
               <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
             </div>
           </div>
@@ -258,18 +260,22 @@
   </div>
 
   {# modal > instructor info  #}
-  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--instructor" tabindex="-1" role="dialog" aria-labelledby="schedule-dashboard__modal--instructor-link">
+  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--instructor" tabindex="-1" role="dialog"
+       aria-labelledby="schedule-dashboard__modal--instructor-link">
+    <div class="modal-cover"></div>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-
         <div class="schedule-dashboard__modal--header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <h5 class="modal-title">Activity details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
+                                                                                         aria-hidden="true"></i>
+          </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
-
-          <h4><strong>${ instructorPopup.name}</strong></h4>
-
+          <div class="header-border">
+            <h4><strong>${ instructorPopup.name}</strong></h4>
+          </div>
           <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
 
             {# time #}
@@ -283,7 +289,7 @@
             </div>
 
             {# class #}
-            <div  class="class-name" v-cloak>
+            <div class="class-name" v-cloak>
               ${ item.name }
             </div>
 
@@ -299,7 +305,7 @@
 
             {# instructor #}
             {#<div v-cloak class="instructor-column">#}
-              {#${ item.instructor }#}
+            {#${ item.instructor }#}
             {#</div>#}
 
             {# add to calendar #}
@@ -318,7 +324,7 @@
             </div>
 
             {# register btn #}
-            <div v-cloak class="register-column" v-if="item.register_url" >
+            <div v-cloak class="register-column" v-if="item.register_url">
               <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
             </div>
           </div>
