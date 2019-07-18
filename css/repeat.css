@@ -332,6 +332,21 @@ body.modal-open .top-navs .nav-global{
   font-weight: 400;
   line-height: 21px;
 }
+.schedules-data__row {
+  color: #231f20;
+}
+
+.schedules-data__row a {
+  color: #0060af;
+}
+
+.schedules-data__row span{
+  font-size: 12px;
+}
+
+.schedules-data__row .time {
+  font-weight: 400;
+}
 
 .schedule-dashboard__modal--body {
   font-size: 14px;
@@ -340,6 +355,11 @@ body.modal-open .top-navs .nav-global{
 .schedules-data__row .class-name {
   color: #0060ad;
   font-weight: 700;
+}
+
+.schedules-data__row .class-name span {
+  color: #231f20;
+  font-weight: 400;
 }
 
 .schedule-dashboard__modal--header .close:hover,
@@ -362,3 +382,16 @@ body.modal-open .top-navs .nav-global{
   border: 2px solid #f2f2f2;
 }
 
+.schedule-dashboard__modal--instructor-link {
+  color: #0060af;
+}
+
+.btn-schedule-pdf-generate {
+  font-family:  Verdana, Arial, Helvetica, sans-serif;;
+  border: 0;
+  background-color: white;
+  color: #0060af;
+  text-transform: none;
+  font-weight: 700;
+  float: right;
+}

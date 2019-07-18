@@ -182,7 +182,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_start_sort = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Hi');
 
       // Convert timezones for start_time and end_time.
-      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:i');
+      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:iA');
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
@@ -293,7 +293,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_start_sort = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Hi');
 
       // Convert timezones for start_time and end_time.
-      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:i');
+      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:iA');
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
@@ -425,7 +425,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_start_sort = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Hi');
 
       // Convert timezones for start_time and end_time.
-      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:i');
+      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:iA');
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.

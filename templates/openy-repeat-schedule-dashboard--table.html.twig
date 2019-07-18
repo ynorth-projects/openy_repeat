@@ -26,9 +26,12 @@
   <div class="hidden-xs hidden-sm col-md-8 col-lg-7">
     {% endblock %}
     <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i
-        class="fa fa-print hidden-xs"></i></a>
-    <a class="btn btn-md btn-block btn-schedule-pdf-generate hidden" target="_blank">{{ 'DownloadWeekly PDF'|t }} <i
-        class="fa fa-print hidden-xs"></i></a>
+        class="fa fa-file hidden-xs"></i></a>
+    <strong>
+      <a class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
+        <i class="fa fa-file hidden-xs"></i>
+      </a>
+    </strong>
   </div>
 </div>
 
@@ -39,25 +42,15 @@
 
       <div class="schedules-data clearfix">
 
-        <div class="schedules-data__header">
-          <div>{{ 'Time'|t }}</div>
-          <div>{{ 'Class'|t }}</div>
-          <div class="location-column">{{ 'Location'|t }}</div>
-          <div class="category-column">{{ 'Category'|t }}</div>
-          <div class="instructor-column">{{ 'Instructor'|t }}</div>
-          <div class="calendar-column"></div>
-          <div class="register-column"></div>
-        </div>
-
         <div v-for="(item, index) in propData" class="schedules-data__row">
 
           {# time #}
           <div v-cloak>
-            <strong class="time">${ item.time_start } - ${ item.time_end }</strong>
+            <strong class="time">${ item.time_start }</strong>
             <p>
               <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
               <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-              <span v-if="item.room">${ item.room }</span>
+              <span class="hidden" v-if="item.room">${ item.room }</span>
             </p>
           </div>
 
@@ -66,6 +59,7 @@
             <strong><a class="schedule-dashboard__modal--class-link" role="button"
                        v-on:click="$parent.populatePopupC(index)" data-toggle="modal"
                        data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+            <p class="mb-0"><span>${ item.category }</span></p>
           </div>
 
           {# location #}
@@ -75,16 +69,11 @@
                        data-target=".schedule-dashboard__modal--location">${ item.location }</a></strong>
           </div>
 
-          {# category #}
-          <div v-cloak class="category-column">
-            ${ item.category }
-          </div>
-
           {# instructor #}
           <div v-cloak class="instructor-column">
-            <strong><a class="schedule-dashboard__modal--instructor-link" role="button"
+            <a class="schedule-dashboard__modal--instructor-link" role="button"
                        v-on:click="$parent.populatePopupInstructor(item.instructor)" data-toggle="modal"
-                       data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a></strong>
+                       data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
           </div>
 
           {# add to calendar #}
@@ -126,25 +115,22 @@
   {# modal > location info  #}
   <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
        aria-labelledby="schedule-dashboard__modal--location-link">
+    <div class="modal-cover"></div>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
 
         <div class="schedule-dashboard__modal--header">
+          <h5 class="modal-title">Activity details</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
                                                                                          aria-hidden="true"></i>
           </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
+          <div class="header-border">
+              <h4><strong>${ locationPopup.title }</strong></h4>
+          </div>
           <table class="table">
-            <thead>
-            <tr>
-              <th colspan="2">
-                <h4><strong>${ locationPopup.title }</strong></h4>
-              </th>
-            </tr>
-            </thead>
-
             <tr>
               <td><label>{{ 'Address'|t }}</label></td>
               <td>${ locationPopup.address }</td>
@@ -203,11 +189,11 @@
 
             {# time #}
             <div v-cloak>
-              <strong class="time">${ item.time_start } - ${ item.time_end }</strong>
+              <strong class="time">${ item.time_start }</strong>
               <p>
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                <span v-if="item.room">${ item.room }</span>
+                <span class="hidden" v-if="item.room">${ item.room }</span>
               </p>
             </div>
 
@@ -217,7 +203,7 @@
             </div>
 
             {# category #}
-            <div v-cloak class="category-column">
+            <div v-cloak class="category-column hidden">
               ${ item.category }
             </div>
 
@@ -280,17 +266,18 @@
 
             {# time #}
             <div v-cloak>
-              <strong class="time">${ item.time_start } - ${ item.time_end }</strong>
+              <strong class="time">${ item.time_start }</strong>
               <p>
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                <span v-if="item.room">${ item.room }</span>
+                <span class="hidden" v-if="item.room">${ item.room }</span>
               </p>
             </div>
 
             {# class #}
             <div class="class-name" v-cloak>
               ${ item.name }
+              <p class="mb-0"><span>${ item.category }</span></p>
             </div>
 
             {# location #}
@@ -299,7 +286,7 @@
             </div>
 
             {# category #}
-            <div v-cloak class="category-column">
+            <div v-cloak class="category-column hidden">
               ${ item.category }
             </div>
 
