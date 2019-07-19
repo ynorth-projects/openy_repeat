@@ -16,6 +16,13 @@ openy_repeat.schedules_by_class:
     date: ''
   requirements:
     _permission: 'access content'
+openy_repeat.schedules_by_session:
+  path: '/schedules/get-event-data-by-session/{session}'
+  defaults:
+    _controller: '\Drupal\openy_repeat\Controller\RepeatController::ajaxSchedulerBySession'
+    session: ''
+  requirements:
+    _permission: 'access content'
 openy_repeat.schedules_by_instructor:
   path: '/schedules/get-event-data-by-instructor/{instructor}/{location}/{date}'
   defaults:
