@@ -22,3 +22,10 @@
   color: #a51b00;
   font-size: 12px;
 }
+
+.d-flex-location {
+  display: inline-flex;
+}
+.location-filters strong {
+  margin-right: 10px;
+}

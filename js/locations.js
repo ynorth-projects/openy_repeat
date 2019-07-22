@@ -16,11 +16,14 @@
 
       // Toggle active class on location item.
       $('.openy-card__item input', context).once('openy-selected-locations').on('change', function() {
+        var locName = this.value;
         if(!$(this).parents('.openy-card__item').hasClass('selected')) {
           $(this).parents('.openy-card__item').addClass('selected');
+          $('#selected-locations').append('<li>' + locName + ', ' + '</li>');
         }
         else {
           $(this).parents('.openy-card__item').removeClass('selected');
+          $('#selected-locations li:contains("'+ locName +'")').remove();
         }
         toggleSubmit(context);
       });
@@ -55,8 +58,12 @@
         .parent()
         .find('.error')
         .remove();
+      $('.location-select', context).addClass("hidden");
+      $('.d-flex-location', context).removeClass("hidden");
     } else {
       $('.js-submit-locations', context).addClass('disabled');
+      $('.location-select').removeClass("hidden");
+      $('.d-flex-location', context).addClass("hidden");
     }
   };
 

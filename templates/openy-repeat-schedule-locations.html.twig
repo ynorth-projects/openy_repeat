@@ -18,7 +18,13 @@
 
   <div class="locations-header row row-eq-height align-items-end">
     <div class="col col-xs-8 col-sm-8">
-      <h4>{{ 'Select one or more locations'|t }}</h4>
+      <div class="location-select"><h4>{{ 'Select one or more locations'|t }}</h4></div>
+      <div class="d-flex-location">
+        <div class="location-filters text-uppercase"><strong>{{ 'Filters: '|t }}</strong></div>
+        <ul id="selected-locations" class="list-inline">
+
+        </ul>
+      </div>
     </div>
     {% if locations is not empty %}
     <div class="col col-xs-4 col-sm-4 col-md text-right">
