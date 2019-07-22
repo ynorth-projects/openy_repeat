@@ -209,7 +209,9 @@
 
             {# instructor #}
             <div v-cloak class="instructor-column">
-              ${ item.instructor }
+              <a class="schedule-dashboard__modal--instructor-link" role="button"
+                 v-on:click="populatePopupInstructor(item.instructor)" data-toggle="modal"
+                 data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
             </div>
 
             {# add to calendar #}
