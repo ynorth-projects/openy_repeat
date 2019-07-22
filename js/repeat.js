@@ -366,7 +366,6 @@
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
 
-
         $.getJSON(bySessionUrl, function(sessionData) {
           $('.schedules-loading').removeClass('hidden');
           var classItem = sessionData[0];
@@ -402,14 +401,6 @@
         $.getJSON(url, function(data) {
           component.instructorPopup.schedule = data;
           $('.schedules-loading').addClass('hidden');
-        });
-      },
-      getClassInfoBySessionId: function(sessionId) {
-        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
-        url += encodeURIComponent(sessionId);
-
-        $.getJSON(url).then(function (data) {
-          console.log('data', data);
         });
       },
       backOneDay: function() {
