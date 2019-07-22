@@ -59,7 +59,7 @@
       {% if locations is not empty %}
         <div class="form-group-wrapper">
           <label for="form-group-location" data-toggle="collapse" data-target=".skip-t" role="button" aria-expanded="false" aria-controls="form-group-location">
-            <p class="m-0">{{ 'Location'|t }}<small class="badge">1</small></p>
+            <p class="m-0">{{ 'Location'|t }}<small v-show="getFiltersCounter('locations') > 0" class="badge">${ getFiltersCounter('locations') }</small></p>
             <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
             <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
           </label>
@@ -91,7 +91,7 @@
       {% if categories is not empty and filters.category %}
         <div class="form-group-wrapper">
           <label for="form-group-category" data-toggle="collapse" data-target="#form-group-category" role="button" class="expanded" aria-controls="form-group-category">
-            <p class="m-0">{{ 'Category'|t }}<small class="badge">1</small></p>
+            <p class="m-0">{{ 'Category'|t }}<small v-show="getFiltersCounter('categories') > 0" class="badge">${ getFiltersCounter('categories') }</small></p></p>
             <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
             <i class="fa fa-minus-circle plus" aria-hidden="true"></i>
           </label>

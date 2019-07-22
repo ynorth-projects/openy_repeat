@@ -354,7 +354,6 @@
           event.target.parentElement.classList.remove('in');
         }
       },
-
       populatePopupLocation: function(index) {
         $('.modal').modal('hide');
         this.locationPopup = this.filteredTable[index].location_info;
@@ -431,6 +430,12 @@
       },
       generateId: function(string) {
         return string.replace(/[\W_]+/g, "-");
+      },
+      getFiltersCounter: function (filter) {
+        if (!this[filter]) {
+          return 0;
+        }
+        return this[filter].length;
       }
     },
     updated: function() {
