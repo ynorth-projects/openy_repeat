@@ -57,7 +57,7 @@
           {# class #}
           <div v-cloak>
             <strong><a class="schedule-dashboard__modal--class-link" role="button"
-                       v-on:click="$parent.populatePopupC(index)" data-toggle="modal"
+                       v-on:click="$parent.populatePopupClass(item.nid)" data-toggle="modal"
                        data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
             <p class="mb-0"><span>${ item.category }</span></p>
           </div>
@@ -65,7 +65,7 @@
           {# location #}
           <div v-cloak class="location-column">
             <strong><a class="schedule-dashboard__modal--location-link" role="button"
-                       v-on:click="$parent.populatePopupL(index)" data-toggle="modal"
+                       v-on:click="$parent.populatePopupLocation(index)" data-toggle="modal"
                        data-target=".schedule-dashboard__modal--location">${ item.location }</a></strong>
           </div>
 
@@ -209,7 +209,9 @@
 
             {# instructor #}
             <div v-cloak class="instructor-column">
-              ${ item.instructor }
+              <a class="schedule-dashboard__modal--instructor-link" role="button"
+                 v-on:click="populatePopupInstructor(item.instructor)" data-toggle="modal"
+                 data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
             </div>
 
             {# add to calendar #}
@@ -275,10 +277,13 @@
             </div>
 
             {# class #}
-            <div class="class-name" v-cloak>
-              ${ item.name }
+            <div v-cloak>
+              <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                         v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
+                         data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
               <p class="mb-0"><span>${ item.category }</span></p>
             </div>
+
 
             {# location #}
             <div v-cloak class="location-column">
@@ -289,11 +294,6 @@
             <div v-cloak class="category-column hidden">
               ${ item.category }
             </div>
-
-            {# instructor #}
-            {#<div v-cloak class="instructor-column">#}
-            {#${ item.instructor }#}
-            {#</div>#}
 
             {# add to calendar #}
             <div v-cloak class="calendar-column">

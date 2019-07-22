@@ -201,9 +201,6 @@
         todayHighlight: true
       }).on('changeDate', function() {
         $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
-        // if ($(this).val() != '') {
-        //   component.date = moment($(this).datepicker('getDate')).format('D MMM YYYY');
-        // }
       });
       $('#datepicker2').datepicker();
       $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
@@ -341,50 +338,56 @@
       },
 
       toggleParentClass: function(event) {
-
-          if (event.target.parentElement.classList.contains('skip-checked')) {
-            event.target.parentElement.classList.remove('skip-checked');
+        if (event.target.parentElement.classList.contains('skip-checked')) {
+          event.target.parentElement.classList.remove('skip-checked');
+          event.target.parentElement.classList.add('skip-t');
+          if (!event.target.parentElement.classList.contains('skip-t')) {
             event.target.parentElement.classList.add('skip-t');
-            if (!event.target.parentElement.classList.contains('skip-t')) {
-              event.target.parentElement.classList.add('skip-t');
-            }
           }
+        }
 
-          else {
-            event.target.parentElement.classList.toggle("skip-t");
-            event.target.parentElement.classList.add('skip-checked');
-            event.target.parentElement.classList.remove('skip-t');
-            event.target.parentElement.classList.remove('collapse');
-            event.target.parentElement.classList.remove('in');
-          }
+        else {
+          event.target.parentElement.classList.toggle("skip-t");
+          event.target.parentElement.classList.add('skip-checked');
+          event.target.parentElement.classList.remove('skip-t');
+          event.target.parentElement.classList.remove('collapse');
+          event.target.parentElement.classList.remove('in');
+        }
       },
-
-      populatePopupL: function(index) {
+      populatePopupLocation: function(index) {
+        $('.modal').modal('hide');
         this.locationPopup = this.filteredTable[index].location_info;
       },
-      populatePopupC: function(index) {
+      populatePopupClass: function(sessionId) {
         var component = this;
-        component.classPopup = this.filteredTable[index].class_info;
+        $('.modal').modal('hide');
 
-        // For now we will search by clicked GroupEx class ID.
-        // In GroupEx each class has separate ID for different locations.
-        // So, in order to get class within all locations we need to pass
-        // the array of class IDs.
-        // @todo To be decided.
-        var classId = this.filteredTable[index].class;
+        var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
+        bySessionUrl += encodeURIComponent(sessionId);
 
-        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
-        url += classId;
-        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
-        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+        $.getJSON(bySessionUrl, function(sessionData) {
+          $('.schedules-loading').removeClass('hidden');
+          var classItem = sessionData[0];
+          component.classPopup = classItem.class_info;
 
-        $('.schedules-loading').removeClass('hidden');
-        $.getJSON(url, function(data) {
-          component.classPopup.schedule = data;
-          $('.schedules-loading').addClass('hidden');
+          // For now we will search by clicked GroupEx class ID.
+          // In GroupEx each class has separate ID for different locations.
+          // So, in order to get class within all locations we need to pass
+          // the array of class IDs.
+          // @todo To be decided.
+          var byClassUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
+          byClassUrl += classItem.class;
+          byClassUrl += component.locations.length > 0 ? '/' + encodeURIComponent(component.locations.join(',')) : '/0';
+          byClassUrl += component.date ? '/' + encodeURIComponent(component.date) : '';
+
+          $.getJSON(byClassUrl, function(classData) {
+            component.classPopup.schedule = classData;
+            $('.schedules-loading').addClass('hidden');
+          });
         });
       },
       populatePopupInstructor: function(instructor) {
+        $('.modal').modal('hide');
         var component = this;
         component.instructorPopup.name = instructor;
 
@@ -427,6 +430,12 @@
       },
       generateId: function(string) {
         return string.replace(/[\W_]+/g, "-");
+      },
+      getFiltersCounter: function (filter) {
+        if (!this[filter]) {
+          return 0;
+        }
+        return this[filter].length;
       }
     },
     updated: function() {
