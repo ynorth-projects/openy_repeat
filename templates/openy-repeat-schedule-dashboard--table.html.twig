@@ -187,6 +187,12 @@
 
           <div v-for="(item, index) in classPopup.schedule" class="schedules-data__row">
 
+            {# date #}
+            <div v-cloak>
+              <strong>${ dateCalendar }</strong>
+              <p><span>${ dateWeekCalendar }</span></p>
+            </div>
+
             {# time #}
             <div v-cloak>
               <strong class="time">${ item.time_start }</strong>
@@ -199,7 +205,7 @@
 
             {# location #}
             <div v-cloak class="location-column">
-              ${ item.location }
+              <strong>${ item.location }</strong>
             </div>
 
             {# category #}
@@ -266,6 +272,20 @@
           </div>
           <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
 
+            {# class #}
+            <div v-cloak>
+              <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                         v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
+                         data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+              <p class="mb-0"><span>${ item.category }</span></p>
+            </div>
+
+            {# date #}
+            <div v-cloak>
+              <strong>${ dateCalendar }</strong>
+              <p><span>${ dateWeekCalendar }</span></p>
+            </div>
+
             {# time #}
             <div v-cloak>
               <strong class="time">${ item.time_start }</strong>
@@ -276,18 +296,9 @@
               </p>
             </div>
 
-            {# class #}
-            <div v-cloak>
-              <strong><a class="schedule-dashboard__modal--class-link" role="button"
-                         v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
-                         data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
-              <p class="mb-0"><span>${ item.category }</span></p>
-            </div>
-
-
             {# location #}
             <div v-cloak class="location-column">
-              ${ item.location }
+              <strong>${ item.location }</strong>
             </div>
 
             {# category #}
