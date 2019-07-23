@@ -215,14 +215,6 @@
         var date = new Date(this.date).toISOString();
         return moment(date).format('ddd, MM/D');
       },
-      dateCalendar: function(){
-        var date = new Date(this.date).toISOString();
-        return moment(date).format('MMM D');
-      },
-      dateWeekCalendar: function(){
-        var date = new Date(this.date).toISOString();
-        return moment(date).format('ddd');
-      },
       roomFilters: function() {
         var availableRooms = [];
         this.table.forEach(function(element){

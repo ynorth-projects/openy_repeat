@@ -188,13 +188,13 @@
           <div v-for="(item, index) in classPopup.schedule" class="schedules-data__row">
 
             {# date #}
-            <div v-cloak>
-              <strong>${ dateCalendar }</strong>
-              <p><span>${ dateWeekCalendar }</span></p>
+            <div class="date-column" v-cloak>
+              <strong>${ item.time_start_calendar }</strong>
+              <p><span>${ item.weekday }</span></p>
             </div>
 
             {# time #}
-            <div v-cloak>
+            <div class="time-column" v-cloak>
               <strong class="time">${ item.time_start }</strong>
               <p>
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
@@ -281,9 +281,9 @@
             </div>
 
             {# date #}
-            <div v-cloak>
-              <strong>${ dateCalendar }</strong>
-              <p><span>${ dateWeekCalendar }</span></p>
+            <div class="date-column" v-cloak>
+              <strong>${ item.time_start_calendar }</strong>
+              <p><span>${ item.weekday }</span></p>
             </div>
 
             {# time #}
