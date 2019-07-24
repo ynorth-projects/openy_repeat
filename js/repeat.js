@@ -220,8 +220,7 @@
         return moment(date).format('ddd, MMM D');
       },
       dateCalendarFormatted: function(){
-        var date = new Date(this.date).toISOString();
-        return moment(date).format('ddd, MM/D');
+        return moment().format('ddd, MM/D');
       },
       roomFilters: function() {
         var availableRooms = [];
@@ -444,6 +443,11 @@
           return 0;
         }
         return this[filter].length;
+      },
+      clearFilters() {
+        this.categories = [];
+        this.locations = [];
+        this.date = moment().format('YYYY-MM-DD');
       }
     },
     updated: function() {
