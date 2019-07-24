@@ -168,8 +168,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'M d');
-      $result[$key]->weekday = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'D');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = drupal_get_user_timezone();
 
@@ -291,8 +290,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'M d');
-      $result[$key]->weekday = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'D');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = drupal_get_user_timezone();
 
@@ -414,8 +412,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'M d');
-      $result[$key]->weekday = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'D');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = drupal_get_user_timezone();
 
@@ -547,8 +544,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'M d');
-      $result[$key]->weekday = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'D');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = drupal_get_user_timezone();
 

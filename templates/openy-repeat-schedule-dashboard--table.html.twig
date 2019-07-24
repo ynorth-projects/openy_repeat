@@ -11,7 +11,7 @@
 <div class="row schedule-dashboard__content--header">
 
   {% block date_wrapper %}
-  <div class="col-sm-12 col-md-4 col-lg-5 day-label">
+  <div class="col-sm-12 col-md-4 col-lg-5 day-label hidden-xs">
     {% endblock %}
     <h2>
       <button v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
@@ -190,7 +190,7 @@
             {# date #}
             <div class="date-column" v-cloak>
               <strong>${ item.time_start_calendar }</strong>
-              <p><span>${ item.weekday }</span></p>
+              <p><span>{{ 'Mon'|t }}</span></p>
             </div>
 
             {# time #}
@@ -283,7 +283,7 @@
             {# date #}
             <div class="date-column" v-cloak>
               <strong>${ item.time_start_calendar }</strong>
-              <p><span>${ item.weekday }</span></p>
+              <p><span>{{ 'Mon'|t }}</span></p>
             </div>
 
             {# time #}

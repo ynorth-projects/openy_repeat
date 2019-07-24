@@ -26,6 +26,10 @@
   .time-column {
     flex: 0 0 20%;
   }
+
+  .schedule-dashboard__modal--body {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 540px) {
