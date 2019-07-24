@@ -192,13 +192,21 @@
     mounted: function() {
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
+      var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
       $('#datepicker').datepicker({
         format: "MM d, DD",
         multidate: false,
         keyboardNavigation: false,
         forceParse: false,
         autoclose: false,
-        todayHighlight: true
+        todayHighlight: true,
+        beforeShowDay: function (date) {
+          if (!limitDays) {
+            return true;
+          }
+          var diff = moment().diff(moment(date), 'days');
+          return diff > -limitDays;
+        }
       }).on('changeDate', function() {
         $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
       });
