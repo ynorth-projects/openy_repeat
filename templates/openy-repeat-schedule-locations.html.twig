@@ -28,7 +28,8 @@
     </div>
     {% if locations is not empty %}
     <div class="col col-xs-4 col-sm-4 col-md text-right">
-      <button class="btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
+      <button class="btn btn-primary btn-lg skip">{{ 'Skip'|t }}</button>
+      <button class="btn btn-primary btn-lg submit-locations js-submit-locations hidden">{{ 'Next'|t }}</button>
     </div>
     {% endif %}
 
@@ -55,7 +56,8 @@
 
     {% if locations is not empty %}
       <div class="col col-xs-12 text-right">
-        <button class="btn-mobile btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
+        <button class="btn btn-primary btn-lg skip">{{ 'Skip'|t }}</button>
+        <button class="btn btn-primary btn-lg submit-locations js-submit-locations hidden">{{ 'Next'|t }}</button>
       </div>
     {% endif %}
   </div>
