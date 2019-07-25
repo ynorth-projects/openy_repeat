@@ -189,8 +189,8 @@
 
             {# date #}
             <div class="date-column" v-cloak>
-              <strong>${ item.time_start_calendar }</strong>
-              <p><span>{{ 'Mon'|t }}</span></p>
+              <strong>${ item.short_date }</strong>
+              <p><span>${ item.day_name }</span></p>
             </div>
 
             {# time #}
@@ -282,8 +282,8 @@
 
             {# date #}
             <div class="date-column" v-cloak>
-              <strong>${ item.time_start_calendar }</strong>
-              <p><span>{{ 'Mon'|t }}</span></p>
+              <strong>${ item.short_date }</strong>
+              <p><span>${ item.day_name }</span></p>
             </div>
 
             {# time #}

@@ -124,6 +124,7 @@ class RepeatController extends ControllerBase {
       'register_url',
       'register_text',
       'duration',
+      'weekday'
     ]);
     $query->addField('re', 'start', 'start_timestamp');
     $query->addField('re', 'end', 'end_timestamp');
@@ -175,6 +176,10 @@ class RepeatController extends ControllerBase {
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
+
+      // Short date & Day.
+      $result[$key]->day_name = $this->getClassDay($item->weekday);
+      $result[$key]->short_date = $this->getClassShortDate($item->weekday);
     }
 
     usort($result, function($item1, $item2){
@@ -238,6 +243,7 @@ class RepeatController extends ControllerBase {
       'register_url',
       'register_text',
       'duration',
+      'weekday'
     ]);
     $query->addField('re', 'start', 'start_timestamp');
     $query->addField('re', 'end', 'end_timestamp');
@@ -297,13 +303,18 @@ class RepeatController extends ControllerBase {
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
+
+      // Short date & Day.
+      $result[$key]->day_name = $this->getClassDay($item->weekday);
+      $result[$key]->short_date = $this->getClassShortDate($item->weekday);
+      $result[$key]->sort_time = $this->getClassSortTime($item->weekday);
     }
 
     usort($result, function($item1, $item2){
-      if ((int) $item1->time_start_sort == (int) $item2->time_start_sort) {
+      if ((int) $item1->sort_time == (int) $item2->sort_time) {
         return 0;
       }
-      return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
+      return (int) $item1->sort_time < (int) $item2->sort_time ? -1 : 1;
     });
 
     $this->moduleHandler()->alter('openy_repeat_results', $result, $request);
@@ -324,6 +335,7 @@ class RepeatController extends ControllerBase {
    *   date.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @throws \Exception
    */
   public function ajaxSchedulerByClass(Request $request, $class, $location, $date) {
     // Get proper date format.
@@ -360,6 +372,7 @@ class RepeatController extends ControllerBase {
       'register_url',
       'register_text',
       'duration',
+      'weekday',
     ]);
     $query->addField('re', 'start', 'start_timestamp');
     $query->addField('re', 'end', 'end_timestamp');
@@ -419,18 +432,83 @@ class RepeatController extends ControllerBase {
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
+
+      // Short date & Day.
+      $result[$key]->day_name = $this->getClassDay($item->weekday);
+      $result[$key]->short_date = $this->getClassShortDate($item->weekday);
+      $result[$key]->sort_time = $this->getClassSortTime($item->weekday);
     }
 
     usort($result, function($item1, $item2){
-      if ((int) $item1->time_start_sort == (int) $item2->time_start_sort) {
+      if ((int) $item1->sort_time == (int) $item2->sort_time) {
         return 0;
       }
-      return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
+      return (int) $item1->sort_time < (int) $item2->sort_time ? -1 : 1;
     });
 
     $this->moduleHandler()->alter('openy_repeat_results', $result, $request);
 
     return new JsonResponse($result);
+  }
+
+  /**
+   * Get weekday by its number.
+   *
+   * @param string $weekday
+   *   Weekday number.
+   *
+   * @return mixed
+   *   Weekday name.
+   */
+  private function getClassDay($weekday) {
+    $map = [
+      1 => 'Monday',
+      2 => 'Tuesday',
+      3 => 'Wednesday',
+      4 => 'Thursday',
+      5 => 'Friday',
+      6 => 'Saturday',
+      7 => 'Sunday'
+    ];
+    return $map[$weekday];
+  }
+
+  /**
+   * Get short date for the class.
+   *
+   * @param string $weekday
+   *   Weekday name.
+   *
+   * @return string
+   *   Short date.
+   *
+   * @throws \Exception
+   */
+  private function getClassShortDate($weekday) {
+    $day = $day = $this->getClassDay($weekday);
+    $date = new \DateTime();
+    $date->setTimezone(drupal_get_user_timezone());
+    $date->modify("this $day");
+    return $date->format('M j');
+  }
+
+  /**
+   * Get sort date for the class.
+   *
+   * @param string $weekday
+   *   Weekday name.
+   *
+   * @return int
+   *   Timestamp.
+   *
+   * @throws \Exception
+   */
+  private function getClassSortTime($weekday) {
+    $day = $day = $this->getClassDay($weekday);
+    $date = new \DateTime();
+    $date->setTimezone(drupal_get_user_timezone());
+    $date->modify("this $day");
+    return $date->format('U');
   }
 
   /**
