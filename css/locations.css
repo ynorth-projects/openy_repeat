@@ -49,6 +49,12 @@
   text-transform: uppercase;
 }
 
+@media (max-width: 767px) {
+  .btn.skip {
+    float: left;
+  }
+}
+
 .btn.skip:hover {
   background: white;
   color: #0060ad;
@@ -58,6 +64,24 @@
   border: 2px solid #b92f9e;
   border-radius: 5px;
   margin-left: 10px;
+}
+
+.js-locations-row {
+  margin: 0;
+}
+
+.schedule-locations__wrapper .locations-header,
+.schedule-locations__wrapper .locations-footer {
+  padding: 15px 0;
+}
+
+.locations-footer {
+  padding: 15px 85px;
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  left: 0;
+  right: 0;
 }
 
 .locations-header {
@@ -90,12 +114,18 @@
   }
 }
 
-.locations-header .location-select h4 {
+.locations-header .location-select h4,
+.locations-footer h4 {
   font-size: 14px;
   font-weight: 400;
   font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
+@media (min-width: 1200px) {
+  .locations-footer {
+    padding: 15px 100px !important;
+  }
+}
 .d-flex-location {
   display: inline-flex;
 }
