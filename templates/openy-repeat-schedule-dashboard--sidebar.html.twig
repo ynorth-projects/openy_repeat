@@ -11,7 +11,10 @@
   <div class="navbar-header">
 
     <div class="navbar-controls">
-      <span class="navbar-controls__title hidden-xs"><strong>{{ 'Filters'|t }}</strong></span>
+      <span class="navbar-controls__title hidden-xs">
+        <strong>{{ 'Filters'|t }}</strong>
+      </span>
+      <a class="clear-filters" v-on:click="clearFilters()">Clear Filters</a>
       <a href="#" class="clear-all hidden">{{ 'Clear all'|t }}</a>
     </div>
 
@@ -35,8 +38,6 @@
     </div>
 
   </div>
-
-  <a v-on:click="clearFilters()">Clear Filters</a>
 
   <div id="schedules-filters" class="navbar-collapse collapse">
     <form class="navbar-form" role="search">

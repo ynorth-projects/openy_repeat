@@ -190,13 +190,13 @@
             {# date #}
             <div class="date-column" v-cloak>
               <strong>${ item.short_date }</strong>
-              <p><span>${ item.day_name }</span></p>
+              <p class="mb-0"><span>${ item.day_name }</span></p>
             </div>
 
             {# time #}
             <div class="time-column" v-cloak>
               <strong class="time">${ item.time_start }</strong>
-              <p>
+              <p class="mb-0">
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
                 <span class="hidden" v-if="item.room">${ item.room }</span>
@@ -273,7 +273,7 @@
           <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
 
             {# class #}
-            <div v-cloak>
+            <div class="class-column" v-cloak>
               <strong><a class="schedule-dashboard__modal--class-link" role="button"
                          v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
                          data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
@@ -283,13 +283,13 @@
             {# date #}
             <div class="date-column" v-cloak>
               <strong>${ item.short_date }</strong>
-              <p><span>${ item.day_name }</span></p>
+              <p class="mb-0"><span>${ item.day_name }</span></p>
             </div>
 
             {# time #}
-            <div v-cloak>
+            <div class="time-column" v-cloak>
               <strong class="time">${ item.time_start }</strong>
-              <p>
+              <p class="mb-0">
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
                 <span class="hidden" v-if="item.room">${ item.room }</span>

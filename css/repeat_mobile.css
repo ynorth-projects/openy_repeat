@@ -30,6 +30,43 @@
   .schedule-dashboard__modal--body {
     font-size: 12px;
   }
+
+
+  .schedule-dashboard__modal--class .date-column,
+  .schedule-dashboard__modal--class .instructor-column {
+    flex: 0 1 50%;
+  }
+
+  .schedule-dashboard__modal--class .time-column {
+    flex: auto;
+  }
+
+  .schedule-dashboard__modal--class .location-column {
+    flex: 1 1 100%;
+  }
+
+  .schedules-data__row>div:nth-child(even) {
+    text-align: left !important;
+  }
+
+  .schedule-dashboard__modal--instructor .class-column,
+  .schedule-dashboard__modal--instructor .location-column,
+  .schedule-dashboard__modal--instructor .calendar-column {
+    flex: 0 1 100%;
+  }
+
+  .schedule-dashboard__modal--instructor .calendar-column .addtocalendar {
+    padding-left: 15px;
+    float: left;
+  }
+
+  .schedules-data__row span{
+    font-size: 10px;
+  }
+
+  .schedule-dashboard__modal--header .modal-title {
+    padding-left: 15px;
+  }
 }
 
 @media (max-width: 540px) {
