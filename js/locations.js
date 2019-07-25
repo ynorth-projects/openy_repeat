@@ -54,16 +54,18 @@
   var toggleSubmit = function(context) {
     if($('.openy-card__item.selected label').length > 0) {
       $('.js-submit-locations', context)
-        .removeClass('disabled')
+        .removeClass('hidden-lg hidden-md disabled')
         .parent()
         .find('.error')
         .remove();
       $('.location-select', context).addClass("hidden");
       $('.d-flex-location', context).removeClass("hidden");
+      $('.locations-footer').removeClass("hidden-lg hidden-md");
     } else {
-      $('.js-submit-locations', context).addClass('disabled');
+      $('.js-submit-locations', context).addClass('hidden-lg hidden-md disabled');
       $('.location-select').removeClass("hidden");
       $('.d-flex-location', context).addClass("hidden");
+      $('.locations-footer').addClass("hidden-lg hidden-md");
     }
   };
 
