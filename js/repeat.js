@@ -219,8 +219,15 @@
         var date = new Date(this.date).toISOString();
         return moment(date).format('ddd, MMM D');
       },
-      dateCalendarFormatted: function(){
-        return moment().format('ddd, MM/D');
+      dateCalendarFormatted: function() {
+        var date = new Date(this.date).toISOString();
+        date = moment(date);
+        var now = moment();
+        var formatted = date.format('ddd, MM/D');
+        if (date.format('MMDDYYYY') === now.format('MMDDYYYY')) {
+          return 'Today (' + formatted + ')';
+        }
+        return formatted;
       },
       roomFilters: function() {
         var availableRooms = [];
