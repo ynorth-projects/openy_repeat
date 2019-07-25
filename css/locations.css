@@ -55,6 +55,12 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  .btn.skip {
+    float: left;
+  }
+}
+
 .btn.skip:hover {
   background: white;
   color: #0060ad;
@@ -64,6 +70,10 @@
   border: 2px solid #b92f9e;
   border-radius: 5px;
   margin-left: 10px;
+}
+
+.btn.submit-locations.disabled {
+  background: #b92f9e;
 }
 
 .js-locations-row {

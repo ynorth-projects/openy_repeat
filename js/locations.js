@@ -30,7 +30,7 @@
 
       // Attach location arguments to url on submit.
       $('.js-submit-locations', context).once('openy-submit-locations').click(function() {
-        if ($(this).hasClass('hidden')) {
+        if ($(this).hasClass('disabled')) {
           if ($(this).parent().find('.error').length === 0) {
             $(this).before('<div class="error">' + Drupal.t('Please choose the location') + '</div>');
           }
@@ -54,16 +54,18 @@
   var toggleSubmit = function(context) {
     if($('.openy-card__item.selected label').length > 0) {
       $('.js-submit-locations', context)
-        .removeClass('hidden')
+        .removeClass('hidden-lg hidden-md disabled')
         .parent()
         .find('.error')
         .remove();
       $('.location-select', context).addClass("hidden");
       $('.d-flex-location', context).removeClass("hidden");
+      $('.locations-footer').removeClass("hidden-lg hidden-md");
     } else {
-      $('.js-submit-locations', context).addClass('hidden');
+      $('.js-submit-locations', context).addClass('hidden-lg hidden-md disabled');
       $('.location-select').removeClass("hidden");
       $('.d-flex-location', context).addClass("hidden");
+      $('.locations-footer').addClass("hidden-lg hidden-md");
     }
   };
 
