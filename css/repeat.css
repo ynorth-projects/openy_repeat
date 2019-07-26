@@ -82,6 +82,35 @@ body.modal-open .top-navs .nav-global{
   padding: 0;
 }
 
+.schedule-dashboard__sidebar .collapse.in,
+.schedule-dashboard__sidebar .collapse.show {
+  padding-bottom: 0;
+}
+
+.schedule-dashboard__sidebar .navbar-controls.navbar-controls-mobile {
+  margin-bottom: 0;
+  padding: 15px 10px;
+}
+
+.schedule-dashboard__sidebar .navbar-controls-mobile .navbar-controls__title strong {
+  font-size: 14px
+}
+
+.schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results {
+  border-left: 1px solid #939495;
+  border-right: 1px solid #939495;
+}
+
+.schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results .badge {
+  background: #fff;
+  color: #0060ad;
+  border: 1px solid #0060ad;
+}
+
+.schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results label {
+  font-size: 14px;
+}
+
 .schedule-dashboard__sidebar .form-group-wrapper > label {
   background-color: #fff;
   border-bottom: 1px solid #939495;
@@ -412,6 +441,9 @@ body.modal-open .top-navs .nav-global{
   float: right;
 }
 
+.schedule-dashboard__content--header .btn-schedule-pdf-generate:after {
+  display: none;
+}
 
 @media (min-width: 768px) and (max-width: 991px) {
   .schedule-dashboard__modal--class .date-column,

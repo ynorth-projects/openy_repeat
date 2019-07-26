@@ -45,7 +45,7 @@
         <div v-for="(item, index) in propData" class="schedules-data__row">
 
           {# time #}
-          <div v-cloak>
+          <div class="time-column" v-cloak>
             <strong class="time">${ item.time_start }</strong>
             <p>
               <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
@@ -55,7 +55,7 @@
           </div>
 
           {# class #}
-          <div v-cloak>
+          <div class="class-column" v-cloak>
             <strong><a class="schedule-dashboard__modal--class-link" role="button"
                        v-on:click="$parent.populatePopupClass(item.nid)" data-toggle="modal"
                        data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>

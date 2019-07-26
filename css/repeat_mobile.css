@@ -67,6 +67,18 @@
   .schedule-dashboard__modal--header .modal-title {
     padding-left: 15px;
   }
+
+  .schedules-data__row .time-column {
+    flex: 0;
+  }
+
+  .schedules-data__row .class-column {
+    flex: auto;
+  }
+
+  .schedules-data__row .location-column {
+    flex: 0 1 100%;
+  }
 }
 
 @media (max-width: 540px) {

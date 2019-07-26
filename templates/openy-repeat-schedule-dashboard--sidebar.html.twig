@@ -10,8 +10,8 @@
 <div class="navbar navbar-default">
   <div class="navbar-header">
 
-    <div class="navbar-controls">
-      <span class="navbar-controls__title hidden-xs">
+    <div class="navbar-controls hidden-xs">
+      <span class="navbar-controls__title">
         <strong>{{ 'Filters'|t }}</strong>
       </span>
       <a class="clear-filters" v-on:click="clearFilters()">Clear Filters</a>
@@ -21,18 +21,19 @@
     <div class="row hidden-sm hidden-md hidden-lg">
 
       {# mobile toggler button #}
-      <div class="col-xs-5">
-        <a data-toggle="collapse" data-target="#schedules-filters" role="button" class="collapsed">
-          <strong>
-            <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
-            <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
-            <span class="plus">{{ 'Show Filters'|t }}</span>
-            <span class="minus">{{ 'Hide Filters'|t }}</span>
-          </strong>
-        </a>
+      <div class="col-xs-12">
+        <div class="form-group-wrapper mobile-refine-results">
+        <label data-toggle="collapse" data-target="#schedules-filters" role="button" class="collapsed">
+            <p class="m-0">{{ 'Refine results'|t }}
+              <small v-show="getFiltersCounter('locations') > 0" class="badge">${ getFiltersCounter('locations') }</small>
+            </p>
+          <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
+          <i class="fa fa-minus-circle plus" aria-hidden="true"></i>
+        </label>
+        </div>
       </div>
 
-      <div class="col-xs-7">
+      <div class="col-xs-7 hidden">
         <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i class="fa fa-print hidden-xs"></i></a>
       </div>
     </div>
@@ -40,6 +41,13 @@
   </div>
 
   <div id="schedules-filters" class="navbar-collapse collapse">
+    <div class="navbar-controls navbar-controls-mobile hidden-sm hidden-md hidden-lg">
+      <span class="navbar-controls__title">
+        <strong>{{ 'Filters'|t }}</strong>
+      </span>
+      <a class="clear-filters" v-on:click="clearFilters()">Clear Filters</a>
+      <a href="#" class="clear-all hidden">{{ 'Clear all'|t }}</a>
+    </div>
     <form class="navbar-form" role="search">
 
       {# date picker #}
