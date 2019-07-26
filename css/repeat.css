@@ -473,4 +473,14 @@ body.modal-open .top-navs .nav-global{
     padding-left: 15px;
     float: left;
   }
+
+  .navbar-collapse.collapse {
+    display: none !important;
+  }
+
+  .schedules-data__header>div,
+  .schedules-data__row>div {
+    flex: 0 1 20%;
+  }
 }
+

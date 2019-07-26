@@ -10,7 +10,7 @@
 <div class="navbar navbar-default">
   <div class="navbar-header">
 
-    <div class="navbar-controls hidden-xs">
+    <div class="navbar-controls hidden-xs hidden-sm">
       <span class="navbar-controls__title">
         <strong>{{ 'Filters'|t }}</strong>
       </span>
@@ -18,12 +18,12 @@
       <a href="#" class="clear-all hidden">{{ 'Clear all'|t }}</a>
     </div>
 
-    <div class="row hidden-sm hidden-md hidden-lg">
+    <div class="row hidden-md hidden-lg">
 
       {# mobile toggler button #}
       <div class="col-xs-12">
         <div class="form-group-wrapper mobile-refine-results">
-        <label data-toggle="collapse" data-target="#schedules-filters" role="button" class="collapsed">
+        <label data-toggle="collapse" data-target="#schedules-filters" role="button" class="collapse">
             <p class="m-0">{{ 'Refine results'|t }}
               <small v-show="getFiltersCounter('locations') > 0" class="badge">${ getFiltersCounter('locations') }</small>
             </p>
@@ -33,15 +33,17 @@
         </div>
       </div>
 
-      <div class="col-xs-7 hidden">
-        <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i class="fa fa-print hidden-xs"></i></a>
+      <div class="col-xs-12">
+        <a class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
+          <i class="fa fa-file hidden-xs"></i>
+        </a>
       </div>
     </div>
 
   </div>
 
   <div id="schedules-filters" class="navbar-collapse collapse">
-    <div class="navbar-controls navbar-controls-mobile hidden-sm hidden-md hidden-lg">
+    <div class="navbar-controls navbar-controls-mobile hidden-md hidden-lg">
       <span class="navbar-controls__title">
         <strong>{{ 'Filters'|t }}</strong>
       </span>
