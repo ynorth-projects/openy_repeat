@@ -28,11 +28,19 @@
         toggleSubmit(context);
       });
 
+      // Toggle to result page.
+      $('.skip').click(function () {
+        // Get url from paragraph's field.
+        var url = $('.field-prgf-repeat-lschedules-prf a').attr('href');
+        location.href = url;
+        return false;
+      });
+
       // Attach location arguments to url on submit.
       $('.js-submit-locations', context).once('openy-submit-locations').click(function() {
         if ($(this).hasClass('disabled')) {
           if ($(this).parent().find('.error').length === 0) {
-            $(this).before('<div class="error">' + Drupal.t('Please choose the location') + '</div>');
+            $(this).after('<div class="error">' + Drupal.t('Please choose the location') + '</div>');
           }
           return false;
         }

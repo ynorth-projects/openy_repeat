@@ -72,7 +72,8 @@
   margin-left: 10px;
 }
 
-.btn.submit-locations.disabled {
+.btn.submit-locations.disabled,
+.btn.submit-locations.disabled:hover {
   background: #b92f9e;
 }
 
@@ -149,4 +150,8 @@
   background: #f2f2f2;
   margin: 10px;
   border: 1px solid #707070;
+}
+
+.d-flex-location {
+  margin-top: 5px;
 }
