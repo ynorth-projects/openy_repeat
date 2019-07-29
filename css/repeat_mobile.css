@@ -72,12 +72,17 @@
     flex: 0;
   }
 
-  .schedules-data__row .class-column {
-    flex: auto;
-  }
-
   .schedules-data__row .location-column {
     flex: 0 1 100%;
+  }
+
+  .schedule-dashboard__wrapper > .container {
+    margin-top: 0
+  }
+
+  .schedule-dashboard__modal--instructor .schedules-data__row>div,
+  .schedule-dashboard__modal--class .schedules-data__row>div {
+    padding: 5px 20px;
   }
 }
 

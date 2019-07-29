@@ -15,7 +15,9 @@
 }
 
 /* dashboard main date heading */
-
+.schedules-data {
+  border-top: 1px solid #636466;
+}
 .schedule-dashboard__content--header h2 {
   font-size: 22px;
   margin-top: 0;
@@ -134,6 +136,7 @@ body.modal-open .top-navs .nav-global{
 
 .schedule-dashboard__sidebar a.clear-filters {
   color: #0060af;
+  cursor: pointer;
   font-size: 12px;
   font-weight: 700;
 }
@@ -233,6 +236,16 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
   width: 100%;
 }
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+  background: #636466;
+  color: #636466;
+}
+
+.datepicker .table-condensed > tbody > tr > td.disabled {
+  background: #636466;
+  color: #636466;
+}
 
 .form-group-date .datepicker-inline .datepicker-days {
   display: grid !important;
@@ -281,11 +294,6 @@ body.modal-open .top-navs .nav-global{
   background: #e7e7e7;
 }
 
-.datepicker table tr td.new {
-  background: #636466;
-  color: #636466;
-}
-
 .datepicker th.datepicker-switch {
   color: #231f20;
 }
@@ -315,10 +323,6 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__modal--body {
   overflow-y: scroll;
   height: 80%;
-}
-
-.schedule-dashboard__modal--body p{
-  margin-bottom: 0;
 }
 
 .schedule-dashboard__modal .modal-dialog {
@@ -364,11 +368,11 @@ body.modal-open .top-navs .nav-global{
   border-bottom: 1px solid #636466;
 }
 
-.schedules-data__row:nth-child(odd) {
+.schedules-data__row:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.schedules-data__row:nth-child(even) {
+.schedules-data__row:nth-child(odd) {
   background-color: white;
 }
 
@@ -446,6 +450,13 @@ body.modal-open .top-navs .nav-global{
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+  .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .schedule-dashboard__wrapper > .container {
+    margin-top: 0
+  }
   .schedule-dashboard__modal--class .date-column,
   .schedule-dashboard__modal--class .instructor-column {
     flex: 0 1 50%;
@@ -469,6 +480,9 @@ body.modal-open .top-navs .nav-global{
     flex: 0 1 100%;
   }
 
+  .schedule-dashboard__modal--instructor .date-column {
+    flex: 0 1 50%;
+  }
   .schedule-dashboard__modal--instructor .calendar-column .addtocalendar {
     padding-left: 15px;
     float: left;
@@ -495,4 +509,14 @@ body.modal-open .top-navs .nav-global{
 
 .mobile-refine-results .btn-schedule-pdf-generate {
   padding: 10px 0;
+}
+
+.schedule-dashboard__modal--instructor p,
+.schedule-dashboard__modal--class p {
+  margin-bottom: 0;
+  padding-top: 0;
+}
+
+.schedule-dashboard__modal--class .m-b {
+  margin-bottom: 20px;
 }
