@@ -96,10 +96,10 @@ body.modal-open .top-navs .nav-global{
   font-size: 14px
 }
 
-.schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results {
-  border-left: 1px solid #939495;
-  border-right: 1px solid #939495;
+.schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results{
+  background: #fff;
 }
+
 
 .schedule-dashboard__sidebar .form-group-wrapper.mobile-refine-results .badge {
   background: #fff;
@@ -474,13 +474,25 @@ body.modal-open .top-navs .nav-global{
     float: left;
   }
 
-  .navbar-collapse.collapse {
-    display: none !important;
-  }
-
   .schedules-data__header>div,
   .schedules-data__row>div {
     flex: 0 1 20%;
   }
 }
 
+.schedules-navbar-form {
+  padding: 0;
+}
+
+#schedules-filters {
+  border: 1px solid #939495;
+}
+
+.label-mobile-results {
+  border-left: 1px solid #939495;
+  border-right: 1px solid #939495;
+}
+
+.mobile-refine-results .btn-schedule-pdf-generate {
+  padding: 10px 0;
+}
