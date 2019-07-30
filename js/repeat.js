@@ -455,6 +455,9 @@
         this.categories = [];
         this.locations = [];
         this.date = moment().format('YYYY-MM-DD');
+      },
+      getResultsCount() {
+        return this.table.length;
       }
     },
     updated: function() {

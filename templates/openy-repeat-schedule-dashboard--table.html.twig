@@ -10,6 +10,10 @@
 {# date arrows & title #}
 <div class="row schedule-dashboard__content--header">
 
+  <div class="schedule-dashboard__results-count">
+    Results <span v-cloak>${ getResultsCount() }</span>
+  </div>
+
   {% block date_wrapper %}
   <div class="col-sm-12 col-md-4 col-lg-5 day-label hidden-xs">
     {% endblock %}
