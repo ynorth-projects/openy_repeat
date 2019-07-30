@@ -88,6 +88,9 @@
   .schedule-dashboard__modal--class .schedules-data__row>div {
     padding: 5px 20px;
   }
+  .schedule-dashboard__top-header {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 540px) {
