@@ -457,7 +457,7 @@
         this.date = moment().format('YYYY-MM-DD');
       },
       getResultsCount() {
-        return this.table.length;
+        return this.filteredTable.length;
       }
     },
     updated: function() {
