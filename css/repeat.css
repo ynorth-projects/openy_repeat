@@ -304,7 +304,7 @@ body.modal-open .top-navs .nav-global{
 
 .modal-content {
   height: 100% !important;
-  overflow:visible;
+  overflow: visible;
   bottom: 5vh;
 }
 
@@ -318,6 +318,7 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__modal--body {
+  overflow-x: hidden;
   overflow-y: scroll;
   height: 80%;
 }
@@ -466,7 +467,7 @@ body.modal-open .top-navs .nav-global{
   .schedule-dashboard__modal--class .location-column {
     flex: 1 1 100%;
   }
-
+  
   .schedules-data__row>div:nth-child(even) {
     text-align: left !important;
   }
@@ -584,6 +585,7 @@ body.modal-open .top-navs .nav-global{
   flex: 0 1 auto;
 }
 
-.schedule-dashboard__wrapper .pdf-link:after {
+.btn-schedule-pdf-generate .pdf-link:after {
   content: none;
 }
+
