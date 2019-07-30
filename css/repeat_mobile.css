@@ -55,6 +55,10 @@
     flex: 0 1 100%;
   }
 
+  .schedule-dashboard__modal--instructor .date-column {
+    flex: 0 1 50%;
+  }
+
   .schedule-dashboard__modal--instructor .calendar-column .addtocalendar {
     padding-left: 15px;
     float: left;
