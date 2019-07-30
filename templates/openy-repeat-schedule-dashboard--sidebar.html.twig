@@ -22,12 +22,6 @@
       {# mobile toggler button #}
       <div class="col-xs-12">
         <div class="form-group-wrapper mobile-refine-results">
-
-          <div class="col-xs-12">
-            <a class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
-              <i class="fa fa-file"></i>
-            </a>
-          </div>
           <label class="label-mobile-results" type="button" data-toggle="collapse" data-target="#schedules-filters" aria-expanded="false" aria-controls="schedules-filters">
             <p class="m-0">{{ 'Refine results'|t }}
               <small v-show="getFiltersCounter('locations') > 0" class="badge">${ getFiltersCounter('locations') }</small>

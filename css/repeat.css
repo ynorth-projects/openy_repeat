@@ -436,7 +436,6 @@ body.modal-open .top-navs .nav-global{
 .btn-schedule-pdf-generate {
   font-family:  Verdana, Arial, Helvetica, sans-serif;;
   border: 0;
-  background-color: white;
   color: #0060af;
   text-transform: none;
   font-weight: 700;
@@ -589,3 +588,13 @@ body.modal-open .top-navs .nav-global{
   content: none;
 }
 
+.schedule-dashboard__top-header {
+  background: #f2f2f2;
+  display: flex;
+  padding: 20px 0;
+  margin: 0 15px 20px;
+}
+
+.schedule-dashboard__results-count {
+  color: #231f20;
+}

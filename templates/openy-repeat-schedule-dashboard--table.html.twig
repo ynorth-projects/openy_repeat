@@ -10,10 +10,6 @@
 {# date arrows & title #}
 <div class="row schedule-dashboard__content--header">
 
-  <div class="schedule-dashboard__results-count">
-    Results <span v-cloak>${ getResultsCount() }</span>
-  </div>
-
   {% block date_wrapper %}
   <div class="col-sm-12 col-md-4 col-lg-5 day-label hidden-xs hidden-sm">
     {% endblock %}
@@ -24,18 +20,6 @@
       <button v-on:click.stop="forwardOneDay" v-if="showForwardArrow" class="schedule-dashboard__arrow right"
               role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
     </h2>
-  </div>
-
-  {% block buttons_wrapper %}
-  <div class="hidden-xs hidden-sm col-md-8 col-lg-7">
-    {% endblock %}
-    <a class="btn btn-md btn-block btn-schedule-pdf hidden">{{ 'View PDF Schedule'|t }} <i
-        class="fa fa-file hidden-xs"></i></a>
-    <strong>
-      <a class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
-        <i class="fa fa-file hidden-xs"></i>
-      </a>
-    </strong>
   </div>
 </div>
 
