@@ -25,7 +25,7 @@
 
 {# schedules table data #}
 <div>
-  <results inline-template :prop-data="filteredTable">
+  <results inline-template :prop-data="pagedTable">
     <div class="vue-template">
 
       <div class="schedules-data clearfix">
@@ -103,6 +103,14 @@
 
         <div class="schedules-loading">
           {% include '@openy_system/openy-system--ajax-spinner.html.twig' %}
+        </div>
+
+        <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager">
+          <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="schedule-dashboard__pager--first">first</a>
+          <a v-if="currentPage > 1"v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">prev</a>
+          <div class="schedule-dashboard__pager--current">Page ${ currentPage } or ${ getTotalPages() }</div>
+          <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="schedule-dashboard__pager--next">next</a>
+          <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="schedule-dashboard__pager--last">last</a>
         </div>
 
       </div>

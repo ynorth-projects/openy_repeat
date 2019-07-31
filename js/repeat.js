@@ -78,6 +78,8 @@
     el: '#app',
     router: router,
     data: {
+      itemsPerPage: 25,
+      currentPage: 1,
       showForwardArrow: true,
       table: [],
       date: '',
@@ -183,9 +185,18 @@
       // We add watchers dynamically otherwise initially there will be
       // up to three requests as we are changing values while initializing
       // from GET query parameters.
-      component.$watch('date', function(){ component.runAjaxRequest(); });
-      component.$watch('locations', function(){ component.runAjaxRequest(); });
-      component.$watch('categories', function(){ component.runAjaxRequest(); });
+      component.$watch('date', function() {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      component.$watch('locations', function() {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      component.$watch('categories', function(){
+        component.runAjaxRequest();
+        component.resetPager();
+      });
       component.$watch('classPopup', function(){ component.runAjaxRequest(); });
       component.$watch('instructorPopup', function(){ component.runAjaxRequest(); });
     },
@@ -309,6 +320,19 @@
         });
 
         return resultTable;
+      },
+      pagedTable: function () {
+        var from = (this.currentPage - 1) * this.itemsPerPage;
+        if (this.currentPage === 1) {
+          from = 0;
+        }
+
+        var to = from + this.itemsPerPage;
+        if (this.currentPage === this.getTotalPages()) {
+          to = this.getResultsCount();
+        }
+
+        return this.filteredTable.slice(from, to);
       }
     },
     methods: {
@@ -470,9 +494,35 @@
         this.categories = [];
         this.locations = [];
         this.date = moment().format('YYYY-MM-DD');
+        this.resetPager();
       },
       getResultsCount() {
         return this.filteredTable.length;
+      },
+      getTotalPages() {
+        var count = 1;
+
+        var itemsTotal = this.getResultsCount();
+        if (itemsTotal > this.itemsPerPage) {
+          count = Math.ceil(itemsTotal / this.itemsPerPage);
+        }
+
+        return count;
+      },
+      loadFirstPage() {
+        this.currentPage = 1;
+      },
+      loadPrevPage() {
+        this.currentPage = this.currentPage - 1;
+      },
+      loadNextPage() {
+        this.currentPage = this.currentPage + 1;
+      },
+      loadLastPage() {
+        this.currentPage = this.getTotalPages();
+      },
+      resetPager() {
+        this.currentPage = 1;
       }
     },
     updated: function() {
