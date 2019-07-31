@@ -111,6 +111,7 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__sidebar .form-group-wrapper > label {
+  line-height: 2;
   background-color: #fff;
   border-bottom: 1px solid #939495;
   border-top: 1px solid #939495;
