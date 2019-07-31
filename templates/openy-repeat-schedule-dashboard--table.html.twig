@@ -105,12 +105,27 @@
           {% include '@openy_system/openy-system--ajax-spinner.html.twig' %}
         </div>
 
-        <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager">
-          <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="schedule-dashboard__pager--first">first</a>
-          <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">prev</a>
-          <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
-          <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="schedule-dashboard__pager--next">next</a>
-          <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="schedule-dashboard__pager--last">last</a>
+        <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager row">
+          <div class="col-md-3 col-xs-3 text-left">
+            <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="schedule-dashboard__pager--first">
+              |<
+            </a>
+            <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">
+              <
+            </a>
+          </div>
+
+          <div class="col-md-6 col-xs-6">
+            <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
+          </div>
+          <div class="col-md-3 col-xs-3 text-right">
+            <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="schedule-dashboard__pager--next">
+              >
+            </a>
+            <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="schedule-dashboard__pager--last">
+              >|
+            </a>
+          </div>
         </div>
 
       </div>
