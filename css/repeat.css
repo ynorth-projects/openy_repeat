@@ -599,3 +599,30 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__results-count {
   color: #231f20;
 }
+
+/*Pager*/
+.schedule-dashboard__pager--current {
+  text-align: center;
+  color: #231f20;
+  font-size: 14px;
+}
+
+.schedule-dashboard__pager {
+  border-top: 1px solid #f2f2f2;
+  padding: 20px;
+}
+
+.schedule-dashboard__pager a {
+  color: #636466;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.schedule-dashboard__pager--next {
+  margin-right: 15px;
+}
+
+.schedule-dashboard__pager--prev {
+  margin-left: 15px;
+}
+
