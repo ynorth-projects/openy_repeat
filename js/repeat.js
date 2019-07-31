@@ -511,18 +511,26 @@
       },
       loadFirstPage() {
         this.currentPage = 1;
+        this.scrollToTop();
       },
       loadPrevPage() {
         this.currentPage = this.currentPage - 1;
+        this.scrollToTop();
       },
       loadNextPage() {
         this.currentPage = this.currentPage + 1;
+        this.scrollToTop();
       },
       loadLastPage() {
         this.currentPage = this.getTotalPages();
+        this.scrollToTop();
       },
       resetPager() {
         this.currentPage = 1;
+        this.scrollToTop();
+      },
+      scrollToTop() {
+        $('html, body').animate( { scrollTop: $('.schedule-dashboard__wrapper').offset().top - 200 }, 500 );
       }
     },
     updated: function() {

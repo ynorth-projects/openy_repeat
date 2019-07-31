@@ -107,8 +107,8 @@
 
         <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager">
           <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="schedule-dashboard__pager--first">first</a>
-          <a v-if="currentPage > 1"v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">prev</a>
-          <div class="schedule-dashboard__pager--current">Page ${ currentPage } or ${ getTotalPages() }</div>
+          <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">prev</a>
+          <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
           <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="schedule-dashboard__pager--next">next</a>
           <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="schedule-dashboard__pager--last">last</a>
         </div>
