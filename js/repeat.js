@@ -375,6 +375,13 @@
       populatePopupClass: function(sessionId) {
         var component = this;
         $('.modal').modal('hide');
+        $('.schedule-dashboard__modal--instructor')
+          .on('shown.bs.modal', function(){
+          $('.nav-global').addClass('hidden-xs');
+        })
+          .on('hidden.bs.modal', function(){
+          $('.nav-global').removeClass('hidden-xs');
+        });
 
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
@@ -402,6 +409,14 @@
       },
       populatePopupInstructor: function(instructor) {
         $('.modal').modal('hide');
+        $('.schedule-dashboard__modal--class')
+          .on('shown.bs.modal', function(){
+          $('.nav-global').addClass('hidden-xs');
+        })
+          .on('hidden.bs.modal', function(){
+          $('.nav-global').removeClass('hidden-xs');
+        });
+
         var component = this;
         component.instructorPopup.name = instructor;
 
