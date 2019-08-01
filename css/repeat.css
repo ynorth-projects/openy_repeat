@@ -626,3 +626,8 @@ body.modal-open .top-navs .nav-global{
   margin-left: 15px;
 }
 
+@media screen and (min-width: 992px){
+  .schedules-filters {
+    display: block !important;
+  }
+}

@@ -1,4 +1,8 @@
 @media (max-width: 767px) {
+  .schedule-dashboard__wrapper {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
   .schedule-dashboard__modal .modal-dialog {
     max-width: 100%;
   }
@@ -27,10 +31,16 @@
     flex: 0 0 20%;
   }
 
+  .schedules-data,
+  .schedule-dashboard__pager,
+  .schedule-dashboard__top-header,
   .schedule-dashboard__modal--body {
     font-size: 12px;
   }
 
+  .schedules-data__row {
+    padding: 5px 0;
+  }
 
   .schedule-dashboard__modal--class .date-column,
   .schedule-dashboard__modal--class .instructor-column {
@@ -72,12 +82,14 @@
     padding-left: 15px;
   }
 
-  .schedules-data__row .time-column {
-    flex: 0;
+  .schedules-data__row .time-column p,
+  .schedules-data__row .class-column p {
+    padding: 0;
+    margin-bottom: 5px;
   }
 
   .schedules-data__row .location-column {
-    flex: 0 1 100%;
+   margin-bottom: 5px;
   }
 
   .schedule-dashboard__wrapper > .container {
@@ -88,12 +100,9 @@
   .schedule-dashboard__modal--class .schedules-data__row>div {
     padding: 5px 20px;
   }
-  .schedule-dashboard__top-header {
-    font-size: 12px;
-  }
 
-  .schedule-dashboard__pager {
-    font-size: 12px;
+  .schedules-data__row>div {
+    padding: 5px 10px;
   }
 }
 
