@@ -4,7 +4,7 @@
     return;
   }
 
-  if (window.OpenY.field_prgf_repeat_schedules_pref) {
+  if (window.OpenY.field_prgf_repeat_schedules_pref && window.OpenY.field_prgf_repeat_schedules_pref.length) {
     var locationPage = window.OpenY.field_prgf_repeat_schedules_pref[0] || '';
     if (locationPage) {
       $('.clear-all').attr('href', locationPage.url).removeClass('hidden');
@@ -12,18 +12,18 @@
   }
 
   // PDF link show/hidden.
-  if (window.OpenY.field_prgf_repeat_schedules_pdf) {
+  if (window.OpenY.field_prgf_repeat_schedules_pdf && window.OpenY.field_prgf_repeat_schedules_pdf.length) {
     var pdfLink = window.OpenY.field_prgf_repeat_schedules_pdf[0] || '';
     if (pdfLink) {
       $('.btn-schedule-pdf')
         .removeClass('hidden')
         .attr('href', pdfLink.url);
     }
-    else {
-      $('.btn-schedule-pdf-generate')
-        .removeClass('hidden')
-        .attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + window.location.search);
-    }
+  }
+  else {
+    $('.btn-schedule-pdf-generate')
+      .removeClass('hidden')
+      .attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + window.location.search);
   }
 
   /* Check the settings of whether to display Instructor column or not */
@@ -78,6 +78,8 @@
     el: '#app',
     router: router,
     data: {
+      itemsPerPage: 25,
+      currentPage: 1,
       showForwardArrow: true,
       table: [],
       date: '',
@@ -96,7 +98,12 @@
       },
       classPopup: {
         title: '',
-        description: ''
+        description: '',
+        schedule: []
+      },
+      instructorPopup: {
+        name: '',
+        schedule: []
       }
     },
     created: function() {
@@ -108,7 +115,7 @@
       });
 
       // If there is a preselected location, we'll hide filters and column.
-      let limitLocations = window.OpenY.field_prgf_repeat_loc || [];
+      var limitLocations = window.OpenY.field_prgf_repeat_loc || [];
       if (limitLocations && limitLocations.length > 0) {
         // If we limit to one location. i.e. Andover from GroupExPro
         if (limitLocations.length == 1) {
@@ -178,30 +185,60 @@
       // We add watchers dynamically otherwise initially there will be
       // up to three requests as we are changing values while initializing
       // from GET query parameters.
-      component.$watch('date', function(){ component.runAjaxRequest(); });
-      component.$watch('locations', function(){ component.runAjaxRequest(); });
-      component.$watch('categories', function(){ component.runAjaxRequest(); });
+      component.$watch('date', function() {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      component.$watch('locations', function() {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      component.$watch('categories', function(){
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      component.$watch('classPopup', function(){ component.runAjaxRequest(); });
+      component.$watch('instructorPopup', function(){ component.runAjaxRequest(); });
     },
     mounted: function() {
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
-      $('#datepicker input').datepicker({
+      var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
+      $('#datepicker').datepicker({
         format: "MM d, DD",
         multidate: false,
         keyboardNavigation: false,
         forceParse: false,
-        autoclose: true,
-        todayHighlight: true
-      }).on('changeDate', function() {
-        if ($(this).val() != '') {
-          component.date = moment($(this).datepicker('getDate')).format('D MMM YYYY');
+        autoclose: false,
+        todayHighlight: true,
+        beforeShowDay: function (date) {
+          if (!limitDays) {
+            return true;
+          }
+          var diff = moment().diff(moment(date), 'days');
+          return diff > -limitDays;
         }
+      }).on('changeDate', function() {
+        $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
       });
+      $('#datepicker2').datepicker();
+      $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
+      $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
     },
     computed: {
       dateFormatted: function(){
         var date = new Date(this.date).toISOString();
-        return moment(date).format('MMMM D, dddd');
+        return moment(date).format('ddd, MMM D');
+      },
+      dateCalendarFormatted: function() {
+        var date = new Date(this.date).toISOString();
+        date = moment(date);
+        var now = moment();
+        var formatted = date.format('ddd, MM/D');
+        if (date.format('MMDDYYYY') === now.format('MMDDYYYY')) {
+          return 'Today (' + formatted + ')';
+        }
+        return formatted;
       },
       roomFilters: function() {
         var availableRooms = [];
@@ -283,6 +320,19 @@
         });
 
         return resultTable;
+      },
+      pagedTable: function () {
+        var from = (this.currentPage - 1) * this.itemsPerPage;
+        if (this.currentPage === 1) {
+          from = 0;
+        }
+
+        var to = from + this.itemsPerPage;
+        if (this.currentPage === this.getTotalPages()) {
+          to = this.getResultsCount();
+        }
+
+        return this.filteredTable.slice(from, to);
       }
     },
     methods: {
@@ -326,29 +376,84 @@
       },
 
       toggleParentClass: function(event) {
-
-          if (event.target.parentElement.classList.contains('skip-checked')) {
-            event.target.parentElement.classList.remove('skip-checked');
+        if (event.target.parentElement.classList.contains('skip-checked')) {
+          event.target.parentElement.classList.remove('skip-checked');
+          event.target.parentElement.classList.add('skip-t');
+          if (!event.target.parentElement.classList.contains('skip-t')) {
             event.target.parentElement.classList.add('skip-t');
-            if (!event.target.parentElement.classList.contains('skip-t')) {
-              event.target.parentElement.classList.add('skip-t');
-            }
           }
+        }
 
-          else {
-            event.target.parentElement.classList.toggle("skip-t");
-            event.target.parentElement.classList.add('skip-checked');
-            event.target.parentElement.classList.remove('skip-t');
-            event.target.parentElement.classList.remove('collapse');
-            event.target.parentElement.classList.remove('in');
-          }
+        else {
+          event.target.parentElement.classList.toggle("skip-t");
+          event.target.parentElement.classList.add('skip-checked');
+          event.target.parentElement.classList.remove('skip-t');
+          event.target.parentElement.classList.remove('collapse');
+          event.target.parentElement.classList.remove('in');
+        }
       },
-
-      populatePopupL: function(index) {
+      populatePopupLocation: function(index) {
+        $('.modal').modal('hide');
         this.locationPopup = this.filteredTable[index].location_info;
       },
-      populatePopupC: function(index) {
-        this.classPopup = this.filteredTable[index].class_info;
+      populatePopupClass: function(sessionId) {
+        var component = this;
+        $('.modal').modal('hide');
+        $('.schedule-dashboard__modal--instructor')
+          .on('shown.bs.modal', function(){
+          $('.nav-global').addClass('hidden-xs');
+        })
+          .on('hidden.bs.modal', function(){
+          $('.nav-global').removeClass('hidden-xs');
+        });
+
+        var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
+        bySessionUrl += encodeURIComponent(sessionId);
+
+        $.getJSON(bySessionUrl, function(sessionData) {
+          $('.schedules-loading').removeClass('hidden');
+          var classItem = sessionData[0];
+          component.classPopup = classItem.class_info;
+
+          // For now we will search by clicked GroupEx class ID.
+          // In GroupEx each class has separate ID for different locations.
+          // So, in order to get class within all locations we need to pass
+          // the array of class IDs.
+          // @todo To be decided.
+          var byClassUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
+          byClassUrl += classItem.class;
+          byClassUrl += component.locations.length > 0 ? '/' + encodeURIComponent(component.locations.join(',')) : '/0';
+          byClassUrl += component.date ? '/' + encodeURIComponent(component.date) : '';
+
+          $.getJSON(byClassUrl, function(classData) {
+            component.classPopup.schedule = classData;
+            $('.schedules-loading').addClass('hidden');
+          });
+        });
+      },
+      populatePopupInstructor: function(instructor) {
+        $('.modal').modal('hide');
+        $('.schedule-dashboard__modal--class')
+          .on('shown.bs.modal', function(){
+          $('.nav-global').addClass('hidden-xs');
+        })
+          .on('hidden.bs.modal', function(){
+          $('.nav-global').removeClass('hidden-xs');
+        });
+
+        var component = this;
+        component.instructorPopup.name = instructor;
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
+        url += encodeURIComponent(instructor);
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.date ? '/' + encodeURIComponent(this.date) : '';
+
+        $('.schedules-loading').removeClass('hidden');
+        $.getJSON(url, function(data) {
+          component.instructorPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
+        });
       },
       backOneDay: function() {
         var date = new Date(this.date).toISOString();
@@ -378,6 +483,54 @@
       },
       generateId: function(string) {
         return string.replace(/[\W_]+/g, "-");
+      },
+      getFiltersCounter: function (filter) {
+        if (!this[filter]) {
+          return 0;
+        }
+        return this[filter].length;
+      },
+      clearFilters() {
+        this.categories = [];
+        this.locations = [];
+        this.date = moment().format('YYYY-MM-DD');
+        this.resetPager();
+      },
+      getResultsCount() {
+        return this.filteredTable.length;
+      },
+      getTotalPages() {
+        var count = 1;
+
+        var itemsTotal = this.getResultsCount();
+        if (itemsTotal > this.itemsPerPage) {
+          count = Math.ceil(itemsTotal / this.itemsPerPage);
+        }
+
+        return count;
+      },
+      loadFirstPage() {
+        this.currentPage = 1;
+        this.scrollToTop();
+      },
+      loadPrevPage() {
+        this.currentPage = this.currentPage - 1;
+        this.scrollToTop();
+      },
+      loadNextPage() {
+        this.currentPage = this.currentPage + 1;
+        this.scrollToTop();
+      },
+      loadLastPage() {
+        this.currentPage = this.getTotalPages();
+        this.scrollToTop();
+      },
+      resetPager() {
+        this.currentPage = 1;
+        this.scrollToTop();
+      },
+      scrollToTop() {
+        $('html, body').animate( { scrollTop: $('.schedule-dashboard__wrapper').offset().top - 200 }, 500 );
       }
     },
     updated: function() {
@@ -388,9 +541,10 @@
       if (typeof(addtocalendar) !== 'undefined') {
         addtocalendar.load();
       }
-      // Additionally collect checked rooms filter options.
-      $('.btn-schedule-pdf-generate').on('click', function () {
+      // Consider moving out of 'updated' handler.
+      $('.btn-schedule-pdf-generate').off('click').on('click', function () {
         var rooms_checked = [],
+            classnames_checked = [],
             limit = [];
         $('.checkbox-room-wrapper input').each(function () {
           if ($(this).is(':checked')) {
@@ -398,6 +552,11 @@
           }
         });
         rooms_checked = rooms_checked.join(',');
+
+        $('.form-group-classname input:checked').each(function () {
+          classnames_checked.push(encodeURIComponent($(this).val()));
+        });
+
         var limitCategories = window.OpenY.field_prgf_repeat_schedule_categ || [];
         if (limitCategories && limitCategories.length > 0) {
           if (limitCategories.length == 1) {
@@ -411,6 +570,9 @@
         }
         limit = limit.join(',');
         var pdf_query = window.location.search + '&rooms=' + rooms_checked + '&limit=' + limit;
+        $(classnames_checked).each(function () {
+          pdf_query += '&cn[]=' + this;
+        });
         $('.btn-schedule-pdf-generate').attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + pdf_query);
       });
     },

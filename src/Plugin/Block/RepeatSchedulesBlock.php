@@ -89,7 +89,6 @@ class RepeatSchedulesBlock extends BlockBase {
     if (!$node = \Drupal::routeMatch()->getParameter('node')) {
       return [];
     }
-    $node = \Drupal::routeMatch()->getParameter('node');
     $paragraphs = $node->field_content->referencedEntities();
     foreach ($paragraphs as $p) {
       if ($p->bundle() == 'repeat_schedules') {

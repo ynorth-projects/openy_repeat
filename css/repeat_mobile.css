@@ -1,0 +1,104 @@
+@media (max-width: 767px) {
+  .schedule-dashboard__modal .modal-dialog {
+    max-width: 100%;
+  }
+  .modal-dialog {
+    top: 15px;
+    height: 100% !important;
+    padding-top: 35px !important;
+  }
+
+  body.modal-open  .nav-global {
+    display: none !important;
+  }
+
+  .schedule-dashboard__modal .modal-dialog {
+    height: 100%;
+  }
+
+  .schedule-dashboard__modal--header {
+    padding: 0;
+  }
+
+  .date-column {
+    flex: 0 0 20%;
+  }
+  .time-column {
+    flex: 0 0 20%;
+  }
+
+  .schedule-dashboard__modal--body {
+    font-size: 12px;
+  }
+
+
+  .schedule-dashboard__modal--class .date-column,
+  .schedule-dashboard__modal--class .instructor-column {
+    flex: 0 1 50%;
+  }
+
+  .schedule-dashboard__modal--class .time-column {
+    flex: auto;
+  }
+
+  .schedule-dashboard__modal--class .location-column {
+    flex: 1 1 100%;
+  }
+
+  .schedules-data__row>div:nth-child(even) {
+    text-align: left !important;
+  }
+
+  .schedule-dashboard__modal--instructor .class-column,
+  .schedule-dashboard__modal--instructor .location-column,
+  .schedule-dashboard__modal--instructor .calendar-column {
+    flex: 0 1 100%;
+  }
+
+  .schedule-dashboard__modal--instructor .date-column {
+    flex: 0 1 50%;
+  }
+
+  .schedule-dashboard__modal--instructor .calendar-column .addtocalendar {
+    padding-left: 15px;
+    float: left;
+  }
+
+  .schedules-data__row span{
+    font-size: 10px;
+  }
+
+  .schedule-dashboard__modal--header .modal-title {
+    padding-left: 15px;
+  }
+
+  .schedules-data__row .time-column {
+    flex: 0;
+  }
+
+  .schedules-data__row .location-column {
+    flex: 0 1 100%;
+  }
+
+  .schedule-dashboard__wrapper > .container {
+    margin-top: 0
+  }
+
+  .schedule-dashboard__modal--instructor .schedules-data__row>div,
+  .schedule-dashboard__modal--class .schedules-data__row>div {
+    padding: 5px 20px;
+  }
+  .schedule-dashboard__top-header {
+    font-size: 12px;
+  }
+
+  .schedule-dashboard__pager {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 540px) {
+  .modal-dialog {
+    padding-right: 15px !important;
+  }
+}
