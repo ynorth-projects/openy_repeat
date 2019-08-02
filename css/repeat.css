@@ -251,7 +251,7 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__sidebar .date {
-  padding: 15px;
+  padding: 15px 10px;
 }
 
 .datepicker .table-condensed > tbody > tr > td {
@@ -358,12 +358,14 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__modal--body h4 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
   padding: 10px 0;
   color: #231f20;
   font-size: 18px;
   font-weight: 700;
   line-height: 27px;
 }
+
 .schedule-dashboard__modal--body .header-border {
   border-bottom: 1px solid #636466;
 }
@@ -486,6 +488,19 @@ body.modal-open .top-navs .nav-global{
     padding-left: 15px;
     float: left;
   }
+
+  .atcb-link {
+    font-size: 12px;
+  }
+
+  .schedule-dashboard__modal--class .addtocalendar {
+    float: left;
+    padding-left: 15px;
+  }
+}
+
+.atcb-link {
+  font-size: 14px;
 }
 
 .schedules-navbar-form {
@@ -515,33 +530,13 @@ body.modal-open .top-navs .nav-global{
   margin-bottom: 20px;
 }
 
-
-.flex-container {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-
-  -ms-box-orient: horizontal;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -moz-flex;
-  display: -webkit-flex;
-  display: flex;
-  float: left;
+.schedule-dashboard__modal--location label,
+.schedule-dashboard__modal--location .schedule-dashboard__modal--body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.flex-start {
-  -webkit-align-items: flex-start;
-  align-items: flex-start;
-}
-
-.flex-end {
-  -webkit-align-items: flex-end;
-  align-items: flex-end;
-}
-.flex-end li {
-  background: gold;
+.schedule-dashboard__modal--header {
+  font-family: "Cachet", Arial, sans-serif;
 }
 
 .center {
@@ -625,6 +620,18 @@ body.modal-open .top-navs .nav-global{
 
 .schedule-dashboard__pager--prev {
   margin-left: 15px;
+}
+
+.schedule-dashboard__pager a.btn {
+  background: none;
+  padding: 0;
+}
+.schedule-dashboard__pager a.btn:hover {
+  color: #636466;
+}
+
+.schedule-dashboard__pager a.btn:active {
+  box-shadow: none;
 }
 
 @media screen and (min-width: 992px){

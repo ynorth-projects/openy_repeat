@@ -38,6 +38,16 @@
     font-size: 12px;
   }
 
+  .schedule-dashboard__modal--class .addtocalendar {
+    float: left;
+    padding-left: 15px;
+  }
+
+  .schedule-dashboard__modal--body h4 {
+    font-size: 14px;
+    padding: 0;
+  }
+
   .schedules-data__row {
     padding: 5px 0;
   }
@@ -103,6 +113,9 @@
 
   .schedules-data__row>div {
     padding: 5px 10px;
+  }
+  .atcb-link {
+    font-size: 12px;
   }
 }
 

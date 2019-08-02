@@ -41,7 +41,7 @@
               </p>
             </div>
           </div>
-          <div class="col-xs-9 col-md-10">
+          <div class="col-xs-9 col-md-10 col-sm-10">
             <div class="row">
               <div class="col-xs-12 col-md-3 col-sm-3">
                 {# class #}
@@ -107,10 +107,16 @@
 
         <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager row">
           <div class="col-md-3 col-xs-3 text-left">
-            <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="schedule-dashboard__pager--first">
+            <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="btn schedule-dashboard__pager--first">
               |<
             </a>
-            <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="schedule-dashboard__pager--prev">
+            <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--first" disabled="disabled">
+              |<
+            </a>
+            <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="btn schedule-dashboard__pager--prev">
+              <
+            </a>
+            <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--prev" disabled="disabled">
               <
             </a>
           </div>
@@ -119,10 +125,16 @@
             <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
           </div>
           <div class="col-md-3 col-xs-3 text-right">
-            <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="schedule-dashboard__pager--next">
+            <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="btn schedule-dashboard__pager--next">
               >
             </a>
-            <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="schedule-dashboard__pager--last">
+            <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--next" disabled="disabled">
+              >
+            </a>
+            <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="btn schedule-dashboard__pager--last">
+              >|
+            </a>
+            <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--last" disabled="disabled">
               >|
             </a>
           </div>
@@ -235,7 +247,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-sm-3 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               {# instructor #}
               <div v-cloak class="instructor-column">
                 <a class="schedule-dashboard__modal--instructor-link" role="button"
@@ -303,7 +315,8 @@
             <h4><strong>${ instructorPopup.name}</strong></h4>
           </div>
           <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
-            <div class="col-md-3 col-sm-12 col-xs-12">
+
+            <div class="hidden-md hidden-lg col-sm-12 col-xs-12">
               {# class #}
               <div class="class-column" v-cloak>
                 <strong><a class="schedule-dashboard__modal--class-link" role="button"
@@ -330,6 +343,16 @@
                   <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
                   <span class="hidden" v-if="item.room">${ item.room }</span>
                 </p>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+              {# class #}
+              <div class="class-column" v-cloak>
+                <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                           v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
+                           data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+                <p><span>${ item.category }</span></p>
               </div>
             </div>
 
