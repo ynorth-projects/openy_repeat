@@ -375,6 +375,13 @@
           }});
       },
 
+      collapseTab: function(event) {
+        var $filtesTabs = $('#schedules-filters');
+        $filtesTabs.on('show.bs.collapse','.collapse', function() {
+          $filtesTabs.find('.collapse.in').collapse('hide');
+        });
+      },
+
       toggleParentClass: function(event) {
         if (event.target.parentElement.classList.contains('skip-checked')) {
           event.target.parentElement.classList.remove('skip-checked');
