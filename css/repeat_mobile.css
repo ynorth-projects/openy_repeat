@@ -117,6 +117,9 @@
   .atcb-link {
     font-size: 12px;
   }
+  .datepicker-days .table-condensed {
+    height: 40vh;
+  }
 }
 
 @media (max-width: 540px) {

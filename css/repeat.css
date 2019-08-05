@@ -266,16 +266,20 @@ body.modal-open .top-navs .nav-global{
   border-radius: 5px;
 }
 
-.datepicker table tr td.today {
-  background-color: #b92f9e;
+.datepicker table tr td.active.active {
+  background-color: #b92f9e !important;
   background-image: none;
   border-radius: 0;
   color: white;
   font-weight: bold;
 }
 
-.datepicker table tr td.today:hover,
-.datepicker table tr td.today:hover:hover {
+.datepicker table tr td.today,
+.datepicker table tr td.today:hover {
+  background: #f2f2f2;
+}
+
+.datepicker table tr td.active.active:hover {
   background: #b92f9e;
 }
 
@@ -455,6 +459,11 @@ body.modal-open .top-navs .nav-global{
     width: 50%;
     margin: 0 auto;
   }
+
+  .datepicker-days .table-condensed {
+    height: 33vh;
+  }
+
   .schedule-dashboard__wrapper > .container {
     margin-top: 0
   }
