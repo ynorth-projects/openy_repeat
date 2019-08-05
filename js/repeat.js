@@ -398,6 +398,9 @@
       },
       populatePopupClass: function(sessionId) {
         var component = this;
+        component.classPopup = {};
+
+        // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--instructor')
           .on('shown.bs.modal', function(){
@@ -410,28 +413,19 @@
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
 
-        $.getJSON(bySessionUrl, function(sessionData) {
+        $.getJSON(bySessionUrl, function(data) {
           $('.schedules-loading').removeClass('hidden');
-          var classItem = sessionData[0];
-          component.classPopup = classItem.class_info;
-
-          // For now we will search by clicked GroupEx class ID.
-          // In GroupEx each class has separate ID for different locations.
-          // So, in order to get class within all locations we need to pass
-          // the array of class IDs.
-          // @todo To be decided.
-          var byClassUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
-          byClassUrl += classItem.class;
-          byClassUrl += component.locations.length > 0 ? '/' + encodeURIComponent(component.locations.join(',')) : '/0';
-          byClassUrl += component.date ? '/' + encodeURIComponent(component.date) : '';
-
-          $.getJSON(byClassUrl, function(classData) {
-            component.classPopup.schedule = classData;
-            $('.schedules-loading').addClass('hidden');
-          });
+          component.classPopup = data[0]['class_info'];
+          component.classPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
         });
       },
       populatePopupInstructor: function(instructor) {
+        var component = this;
+        component.instructorPopup = {};
+        component.instructorPopup.name = instructor;
+
+        // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--class')
           .on('shown.bs.modal', function(){
@@ -440,9 +434,6 @@
           .on('hidden.bs.modal', function(){
           $('.nav-global').removeClass('hidden-xs');
         });
-
-        var component = this;
-        component.instructorPopup.name = instructor;
 
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
         url += encodeURIComponent(instructor);

@@ -102,96 +102,24 @@ class RepeatController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Request.
    * @param string $session
-   *   Session
+   *   Session.
+   * @param string $location
+   *   Location.
+   * @param string $date
+   *   Date.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Response.
    */
-  public function ajaxSchedulerBySession(Request $request, $session) {
-    $query = $this->database->select('node', 'n');
-    $query->rightJoin('repeat_event', 're', 're.session = n.nid');
-    $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
-    $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
-    $query->addField('n', 'nid');
-    $query->addField('nd', 'title', 'location');
-    $query->addField('nds', 'title', 'name');
-    $query->fields('re', [
-      'class',
-      'session',
-      'room',
-      'instructor',
-      'category',
-      'register_url',
-      'register_text',
-      'duration',
-      'weekday'
-    ]);
-    $query->addField('re', 'start', 'start_timestamp');
-    $query->addField('re', 'end', 'end_timestamp');
+  public function ajaxSchedulerBySession(Request $request, $session, $location, $date) {
+    $event = $this->entityTypeManager
+      ->getStorage('repeat')
+      ->loadByProperties(['session' => $session]);
 
-    // Query conditions.
-    $query->distinct();
-    $query->condition('n.type', 'session');
-    $query->condition('n.nid', $session);
-
-    $query->addTag('openy_repeat_get_data');
-
-    $result = $query->execute()->fetchAll();
-
-    $locations_info = $this->getLocationsInfo();
-
-    $classesIds = [];
-    foreach ($result as $key => $item) {
-      $classesIds[$item->class] = $item->class;
-    }
-    $classes_info = $this->getClassesInfo($classesIds);
-
-    $class_name = [];
-    foreach ($result as $key => $item) {
-      $result[$key]->location_info = $locations_info[$item->location];
-
-      if (isset($classes_info[$item->class]['path'])) {
-        $query = UrlHelper::buildQuery([
-          'location' => $locations_info[$item->location]['nid'],
-        ]);
-        if (!in_array($item->name, $class_name)) {
-          $classes_info[$item->class]['path'] .= '?' . $query;
-          $class_name[] = $item->name;
-        }
-      }
-
-      $result[$key]->class_info = $classes_info[$item->class];
-
-      $result[$key]->time_start_sort = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Hi');
-
-      // Convert timezones for start_time and end_time.
-      $result[$key]->time_start = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'g:iA');
-      $result[$key]->time_end = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'g:iA');
-
-      // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
-      $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
-      $result[$key]->timezone = drupal_get_user_timezone();
-
-      // Durations.
-      $result[$key]->duration_minutes = $item->duration % 60;
-      $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
-
-      // Short date & Day.
-      $result[$key]->day_name = $this->getClassDay($item->weekday);
-      $result[$key]->short_date = $this->getClassShortDate($item->weekday);
-    }
-
-    usort($result, function($item1, $item2){
-      if ((int) $item1->time_start_sort == (int) $item2->time_start_sort) {
-        return 0;
-      }
-      return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
-    });
-
-    $this->moduleHandler()->alter('openy_repeat_results', $result, $request);
-
-    return new JsonResponse($result);
+    $event = array_shift($event);
+    $class = $event->class->referencedEntities();
+    $class = array_shift($class);
+    return $this->ajaxSchedulerByClass($request, $class->id(), $location, $date);
   }
 
   /**
