@@ -28,6 +28,9 @@
         toggleSubmit(context);
       });
 
+      // Hide scroll button.
+      $('body').find('.return-to-top').addClass('hidden');
+
       // Toggle to result page.
       $('.skip').click(function () {
         // Get url from paragraph's field.
