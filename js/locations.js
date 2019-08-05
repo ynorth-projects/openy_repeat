@@ -19,7 +19,7 @@
         var locName = this.value;
         if(!$(this).parents('.openy-card__item').hasClass('selected')) {
           $(this).parents('.openy-card__item').addClass('selected');
-          $('#selected-locations').append('<li>' + locName + ', ' + '</li>');
+          $('#selected-locations').append('<li>' + locName + '</li>');
         }
         else {
           $(this).parents('.openy-card__item').removeClass('selected');
@@ -27,6 +27,9 @@
         }
         toggleSubmit(context);
       });
+
+      // Hide scroll button.
+      $('body').find('.return-to-top').addClass('hidden');
 
       // Toggle to result page.
       $('.skip').click(function () {
