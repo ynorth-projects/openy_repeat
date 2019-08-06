@@ -90,6 +90,7 @@
       categoriesExcluded: [],
       categoriesLimit: [],
       className: [],
+      isLoading: true,
       locationPopup: {
         address: '',
         email: '',
@@ -337,6 +338,7 @@
     },
     methods: {
       runAjaxRequest: function() {
+        this.isLoading = true;
         var component = this;
         var date = moment(this.date).format('YYYY-MM-DD');
 
@@ -358,14 +360,13 @@
         }
 
         $('.schedules-empty_results').addClass('hidden');
-        $('.schedules-loading').removeClass('hidden');
 
         $.getJSON(url, function(data) {
           component.table = data;
           if (data.length === 0) {
             $('.schedules-empty_results').removeClass('hidden');
           }
-          $('.schedules-loading').addClass('hidden');
+          component.isLoading = false;
         });
 
         router.push({ query: {
