@@ -440,6 +440,9 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__modal--instructor-link {
   color: #0060af;
 }
+.schedule-dashboard__modal--location .schedule-dashboard__modal--body .table>tbody>tr>td {
+  padding: 8px;
+}
 
 .btn-schedule-pdf-generate {
   font-family:  Verdana, Arial, Helvetica, sans-serif;;
