@@ -101,7 +101,7 @@
           <span>{{ 'Sorry, no results were found with your search criteria. Please try another selection.'|t }}</span>
         </div>
 
-        <div class="schedules-loading">
+        <div v-cloak v-if="isLoading === true" class="schedules-loading">
           {% include '@openy_system/openy-system--ajax-spinner.html.twig' %}
         </div>
 
