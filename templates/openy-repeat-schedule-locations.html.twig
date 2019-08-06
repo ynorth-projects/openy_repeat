@@ -29,7 +29,7 @@
     {% if locations is not empty %}
     <div class="col hidden-xs hidden-sm col-md-4 text-right">
       <button class="btn btn-primary btn-lg skip">{{ 'Skip'|t }}</button>
-      <button class="btn btn-primary btn-lg hidden-lg hidden-md submit-locations js-submit-locations">{{ 'Next'|t }}</button>
+      <button class="btn next-hidden btn-primary btn-lg submit-locations js-submit-locations">{{ 'Next'|t }}</button>
     </div>
     {% endif %}
 
@@ -60,14 +60,14 @@
 
 <div class="container-fluid">
 
-  <div class="locations-footer row row-eq-height align-items-end hidden-lg hidden-md">
+  <div class="locations-footer footer-custom-hidden row row-eq-height align-items-end">
     <div class="col hidden-xs hidden-sm col-md-8">
       <div><h4>{{ 'Do you have any location preferences?'|t }}</h4></div>
     </div>
     {% if locations is not empty %}
       <div class="col col-xs-12 col-sm-12 col-md-4 text-right">
         <button class="btn btn-primary btn-lg skip">{{ 'Skip'|t }}</button>
-        <button class="btn btn-primary btn-lg submit-locations js-submit-locations hidden-lg hidden-md disabled">{{ 'Next'|t }}</button>
+        <button class="btn btn-primary btn-lg submit-locations js-submit-locations disabled">{{ 'Next'|t }}</button>
       </div>
     {% endif %}
 

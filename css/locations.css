@@ -155,3 +155,36 @@
 .d-flex-location {
   margin-top: 5px;
 }
+
+.btn.next-view {
+  opacity: 1;
+  transition: opacity 1s,
+  margin-right 1s;
+}
+.btn.next-hidden {
+  transition: opacity 1s;
+}
+
+@media (min-width: 992px) {
+  .btn.next-hidden {
+    opacity: 0 !important;
+    transition: opacity 1s,
+    margin-right 1s;
+    margin-right: -5em;
+  }
+
+  .locations-footer.footer-custom-hidden {
+    opacity: 0;
+    bottom: -5em;
+    transition: bottom 1s,
+    opacity 1s;
+  }
+}
+
+.locations-footer.footer-custom-show {
+  opacity: 1;
+  bottom: 0;
+  transition:
+    bottom 1s,
+    opacity 1s;
+}

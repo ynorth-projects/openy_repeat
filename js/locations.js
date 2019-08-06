@@ -65,18 +65,25 @@
   var toggleSubmit = function(context) {
     if($('.openy-card__item.selected label').length > 0) {
       $('.js-submit-locations', context)
-        .removeClass('hidden-lg hidden-md disabled')
+        .removeClass('disabled next-hidden')
+        .addClass('next-view')
         .parent()
         .find('.error')
         .remove();
       $('.location-select', context).addClass("hidden");
       $('.d-flex-location', context).removeClass("hidden");
-      $('.locations-footer').removeClass("hidden-lg hidden-md");
+      $('.locations-footer')
+        .removeClass("footer-custom-hidden")
+        .addClass('footer-custom-show');
     } else {
-      $('.js-submit-locations', context).addClass('hidden-lg hidden-md disabled');
+      $('.js-submit-locations', context)
+        .addClass('disabled next-hidden')
+        .removeClass('next-view');
       $('.location-select').removeClass("hidden");
       $('.d-flex-location', context).addClass("hidden");
-      $('.locations-footer').addClass("hidden-lg hidden-md");
+      $('.locations-footer')
+        .addClass("footer-custom-hidden")
+        .removeClass('footer-custom-show');
     }
   };
 
