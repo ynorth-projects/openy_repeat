@@ -234,16 +234,26 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
   width: 100%;
 }
-.datepicker table tr td.old.day,
-.datepicker table tr td.disabled,
-.datepicker table tr td.disabled:hover {
-  background: #636466;
-  color: #636466;
+/*.datepicker table tr td.old.day,*/
+/*.datepicker table tr td.disabled,*/
+/*.datepicker table tr td.disabled:hover {*/
+  /*background: #636466;*/
+  /*
+/*}*/
+
+.datepicker .table-condensed > tbody > tr > td.disabled,
+.datepicker .table-condensed > tbody > tr > td.disabled:hover {
+  background: #f2f2f2;
+  color: #646366;
 }
 
-.datepicker .table-condensed > tbody > tr > td.disabled {
-  background: #636466;
-  color: #636466;
+.datepicker .table-condensed > tbody > tr > td.new,
+.datepicker .table-condensed > tbody > tr > td.new:hover,
+.datepicker .table-condensed > tbody > tr > td.old:hover,
+.datepicker .table-condensed > tbody > tr > td.old {
+  background: #636466 !important;
+  color: #636466 !important;
+  cursor: default;
 }
 
 .form-group-date .datepicker-inline .datepicker-days {
@@ -267,15 +277,19 @@ body.modal-open .top-navs .nav-global{
 }
 
 .datepicker table tr td.active.active {
-  background-color: #b92f9e !important;
-  background-image: none;
+  background: #b92f9e;
   border-radius: 0;
   color: white;
   font-weight: bold;
 }
 
+.datepicker table tr td.active {
+  text-shadow: none;
+}
+
 .datepicker table tr td.today,
-.datepicker table tr td.today:hover {
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today:hover:hover {
   background: #f2f2f2;
 }
 
@@ -291,10 +305,6 @@ body.modal-open .top-navs .nav-global{
 
 .header-today .date {
   padding: 0;
-}
-
-.datepicker table tr td.active.active {
-  background: #e7e7e7;
 }
 
 .datepicker th.datepicker-switch {
