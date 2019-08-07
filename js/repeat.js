@@ -175,6 +175,7 @@
       component.$watch('date', function() {
         component.runAjaxRequest();
         component.resetPager();
+        $('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
       });
       component.$watch('locations', function() {
         component.runAjaxRequest();
