@@ -193,7 +193,7 @@
       var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
       $('#datepicker2').datepicker();
       $('#datepicker').datepicker({
-        format: "MM d, DD",
+        format: "yyyy-mm-dd",
         multidate: false,
         keyboardNavigation: false,
         forceParse: false,
@@ -214,8 +214,14 @@
 
           return diff > -limitDays;
         }
-      }).on('changeDate', function() {
-        $('#datepicker2').datepicker("setDate", component.date = $(this).datepicker('getDate'));
+      }).on('changeDate', function(event) {
+        // In case if use unselect date.
+        var date = new Date().toISOString();
+        if (event.format()) {
+          var parsed = moment(event.format(), 'YYYY-MM-DD');
+          date = parsed.toISOString();
+        }
+        component.date = date;
       });
 
       $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
@@ -223,15 +229,11 @@
     },
     computed: {
       dateFormatted: function(){
-        var date = new Date(this.date).toISOString();
-        return moment(date).format('ddd, MMM D');
+        return moment(this.date).format('ddd, MMM D');
       },
       dateCalendarFormatted: function() {
-        var date = new Date(this.date).toISOString();
-        date = moment(date);
-        var now = moment();
-        var formatted = date.format('ddd, MM/D');
-        if (date.format('MMDDYYYY') === now.format('MMDDYYYY')) {
+        var formatted = moment(this.date).format('ddd, MM/D');
+        if (moment(this.date).format('MMDDYYYY') === moment().format('MMDDYYYY')) {
           return 'Today (' + formatted + ')';
         }
         return formatted;
