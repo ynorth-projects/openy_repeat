@@ -16,9 +16,13 @@
     <h2>
       <button v-if="showBackArrow()" v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
               aria-label="previous date"><i class="fa fa-angle-left"></i></button>
+      <button v-else v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
+              aria-label="previous date" disabled><i class="text-muted fa fa-angle-left"></i></button>
       <span class="date" v-cloak>${ dateFormatted }</span>
       <button v-if="showForwardArrow()" v-on:click.stop="forwardOneDay" class="schedule-dashboard__arrow right"
               role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
+      <button v-else v-on:click.stop="forwardOneDay" class="schedule-dashboard__arrow right"
+              role="button" aria-label="next date" disabled><i class="text-muted fa fa-angle-right"></i></button>
     </h2>
   </div>
 </div>
