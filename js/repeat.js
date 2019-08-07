@@ -53,19 +53,6 @@
     }
   }
 
-  function checkShowForwardArrow(date) {
-    var limit = drupalSettings.openy_repeat.calendarLimitDays;
-    if (!limit) {
-      return true;
-    }
-
-    date = moment(new Date(date).toISOString());
-    var now = moment();
-    var diff = date.diff(now, 'days');
-
-    return diff < (limit - 1);
-  }
-
   Vue.config.devtools = true;
 
   var router = new VueRouter({
@@ -80,7 +67,6 @@
     data: {
       itemsPerPage: 25,
       currentPage: 1,
-      showForwardArrow: true,
       table: [],
       date: '',
       room: [],
@@ -164,7 +150,10 @@
       var dateGet = this.$route.query.date;
       if (dateGet) {
         var date = new Date(dateGet);
-        date.setMinutes(date.getTimezoneOffset());
+
+        // Why we need set minutes here?
+        // date.setMinutes(date.getTimezoneOffset());
+
         this.date = date.toISOString();
       }
       else {
@@ -205,6 +194,7 @@
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
       var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
+      $('#datepicker2').datepicker();
       $('#datepicker').datepicker({
         format: "MM d, DD",
         multidate: false,
@@ -228,9 +218,9 @@
           return diff > -limitDays;
         }
       }).on('changeDate', function() {
-        $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
+        $('#datepicker2').datepicker("setDate", component.date = $(this).datepicker('getDate'));
       });
-      $('#datepicker2').datepicker();
+
       $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
       $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
     },
@@ -538,11 +528,25 @@
       },
       scrollToTop() {
         $('html, body').animate( { scrollTop: $('.schedule-dashboard__wrapper').offset().top - 200 }, 500 );
+      },
+      showBackArrow() {
+        var diff = moment().diff(moment(this.date), 'hours');
+        return diff < 0;
+      },
+      showForwardArrow() {
+        var limit = drupalSettings.openy_repeat.calendarLimitDays;
+        if (!limit) {
+          return true;
+        }
+
+        var date = moment(this.date);
+        var now = moment();
+        var diff = date.diff(now, 'days');
+
+        return diff < (limit - 1);
       }
     },
     updated: function() {
-      this.showForwardArrow = checkShowForwardArrow(this.date);
-
       calculateColumns();
 
       if (typeof(addtocalendar) !== 'undefined') {
