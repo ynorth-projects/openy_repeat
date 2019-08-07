@@ -527,7 +527,7 @@
         this.scrollToTop();
       },
       scrollToTop() {
-        $('html, body').animate( { scrollTop: $('.schedule-dashboard__wrapper').offset().top - 200 }, 500 );
+        $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
       },
       showBackArrow() {
         var diff = moment().diff(moment(this.date), 'hours');
