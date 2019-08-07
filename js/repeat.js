@@ -216,7 +216,15 @@
           if (!limitDays) {
             return true;
           }
+
+          // Get diff between current date and argument date.
           var diff = moment().diff(moment(date), 'days');
+
+          // Disable past dates.
+          if (diff > 0) {
+            return false;
+          }
+
           return diff > -limitDays;
         }
       }).on('changeDate', function() {
