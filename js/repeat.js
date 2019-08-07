@@ -222,7 +222,7 @@
           date = parsed.toISOString();
         }
         component.date = date;
-      });
+      }).datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
 
       $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
       $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
