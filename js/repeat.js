@@ -151,9 +151,6 @@
       if (dateGet) {
         var date = new Date(dateGet);
 
-        // Why we need set minutes here?
-        // date.setMinutes(date.getTimezoneOffset());
-
         this.date = date.toISOString();
       }
       else {
