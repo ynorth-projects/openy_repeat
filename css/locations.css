@@ -47,6 +47,8 @@
   background-color: #fff;
   color: #0060ad;
   text-transform: uppercase;
+  opacity: 1;
+  transition: opacity 1s;
 }
 
 @media (max-width: 767px) {
@@ -165,14 +167,24 @@
   transition: opacity 1s;
 }
 
-@media (min-width: 992px) {
-  .btn.next-hidden {
-    opacity: 0 !important;
-    transition: opacity 1s,
-    margin-right 1s;
-    margin-right: -5em;
-  }
+.btn.next-hidden {
+  opacity: 0 !important;
+  transition: opacity 1s,
+  margin-right 1s;
+  margin-right: -5em;
+}
 
+.btn.skip-hidden {
+  opacity: 0;
+  transition: opacity 1s;
+}
+@media (max-width: 767px) {
+  .btn.next-hidden {
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 992px) {
   .locations-footer.footer-custom-hidden {
     opacity: 0;
     bottom: -5em;
