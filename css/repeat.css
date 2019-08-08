@@ -10,10 +10,6 @@
   border: 0;
 }
 
-.schedule-dashboard__arrow:hover {
-  opacity: .7;
-}
-
 /* dashboard main date heading */
 .schedules-data {
   border-top: 1px solid #636466;
@@ -282,11 +278,10 @@ body.modal-open .top-navs .nav-global{
 .datepicker table tr td.active {
   text-shadow: none;
 }
-
-.datepicker table tr td.today,
+.datepicker table tr td.day:hover,
 .datepicker table tr td.today:hover,
 .datepicker table tr td.today:hover:hover {
-  background: #f2f2f2;
+  background: #ffffff;
 }
 
 .datepicker table tr td.active.active:hover {
