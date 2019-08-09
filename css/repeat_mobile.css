@@ -117,8 +117,37 @@
   .atcb-link {
     font-size: 12px;
   }
-  .datepicker-days .table-condensed {
-    height: 40vh;
+
+  .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
+    width: 273px;
+    margin: 0 auto;
+  }
+
+  .datepicker .table-condensed>tbody>tr>td {
+    padding: 9px;
+  }
+
+  .datepicker .table-condensed > tbody > tr > td {
+    border: 2px solid #636466;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1230px) {
+  .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
+    width: 197px;
+    margin: 0 auto;
+  }
+
+  .datepicker .table-condensed {
+    height: 220px;
+  }
+
+  .datepicker .table-condensed>tbody>tr>td {
+    padding: 0;
+  }
+
+  .datepicker {
+    padding: 0;
   }
 }
 

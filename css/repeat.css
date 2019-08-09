@@ -228,7 +228,7 @@ body.modal-open .top-navs .nav-global{
 
 /* Calendar Schedules Sidebar */
 .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
-  width: 100%;
+  margin: 0 auto;
 }
 .datepicker td, .datepicker th {
   border-radius: 0;
@@ -460,16 +460,12 @@ body.modal-open .top-navs .nav-global{
 
 @media (min-width: 768px) and (max-width: 991px) {
   .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
-    width: 50%;
+    width: 366px;
     margin: 0 auto;
   }
 
   .datepicker .table-condensed > tbody > tr > td {
-    border: 5px solid #636466;
-  }
-
-  .datepicker-days .table-condensed {
-    height: 33vh;
+    padding: 16px;
   }
 
   .schedule-dashboard__wrapper > .container {
