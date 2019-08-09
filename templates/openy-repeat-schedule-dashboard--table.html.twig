@@ -41,7 +41,6 @@
               <p>
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                <span class="hidden" v-if="item.room">${ item.room }</span>
               </p>
             </div>
           </div>
@@ -59,9 +58,12 @@
               <div class="col-xs-12 col-md-3 col-sm-3">
                 {# location #}
                 <div v-cloak class="location-column">
-                  <strong><a class="schedule-dashboard__modal--location-link" role="button"
+                  <strong><a class="hidden-xs schedule-dashboard__modal--location-link" role="button"
                              v-on:click="$parent.populatePopupLocation(index)" data-toggle="modal"
-                             data-target=".schedule-dashboard__modal--location">${ item.location }</a></strong>
+                             data-target=".schedule-dashboard__modal--location">${ item.location }</a>
+                    <p class="hidden-md hidden-sm hidden-lg">${ item.location }</p>
+                  </strong>
+                  <p><span v-if="item.room">${ item.room }</span></p>
                 </div>
 
               </div>
@@ -151,7 +153,7 @@
   {# Modals should be within Vue app block #}
 
   {# modal > location info  #}
-  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
+  <div class="modal fade hidden-xs schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
        aria-labelledby="schedule-dashboard__modal--location-link">
     <div class="modal-cover"></div>
     <div class="modal-dialog" role="document">
@@ -239,7 +241,6 @@
                 <p>
                   <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                   <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                  <span class="hidden" v-if="item.room">${ item.room }</span>
                 </p>
               </div>
             </div>
@@ -248,6 +249,7 @@
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
+                <p><span v-if="item.room">${ item.room }</span></p>
               </div>
             </div>
 
@@ -345,7 +347,6 @@
                 <p>
                   <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                   <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                  <span class="hidden" v-if="item.room">${ item.room }</span>
                 </p>
               </div>
             </div>
@@ -364,6 +365,7 @@
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
+                <p><span v-if="item.room">${ item.room }</span></p>
               </div>
             </div>
 

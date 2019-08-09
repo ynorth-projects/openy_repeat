@@ -93,13 +93,19 @@
   }
 
   .schedules-data__row .time-column p,
-  .schedules-data__row .class-column p {
+  .schedules-data__row .class-column p,
+  .schedules-data__row .location-column p {
     padding: 0;
-    margin-bottom: 5px;
+    margin-bottom: 0;
   }
 
-  .schedules-data__row .location-column {
-   margin-bottom: 5px;
+  .schedules-data__row .location-column,
+  .schedules-data__row .time-column,
+  .schedules-data__row .date-column,
+  .schedules-data__row .class-column,
+  .schedules-data__row .instructor-column,
+  .schedules-data__row .calendar-column {
+    padding: 5px 0;
   }
 
   .schedule-dashboard__wrapper > .container {
@@ -108,7 +114,7 @@
 
   .schedule-dashboard__modal--instructor .schedules-data__row>div,
   .schedule-dashboard__modal--class .schedules-data__row>div {
-    padding: 5px 20px;
+    padding: 0 20px;
   }
 
   .schedules-data__row>div {
