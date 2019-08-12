@@ -65,7 +65,7 @@
   var toggleSubmit = function(context) {
     if($('.openy-card__item.selected label').length > 0) {
       $('.js-submit-locations', context)
-        .removeClass('disabled next-hidden')
+        .removeClass('next-hidden')
         .addClass('next-view')
         .parent()
         .find('.error')
@@ -75,15 +75,17 @@
       $('.locations-footer')
         .removeClass("footer-custom-hidden")
         .addClass('footer-custom-show');
+      $('.skip', context).addClass('skip-hidden');
     } else {
       $('.js-submit-locations', context)
-        .addClass('disabled next-hidden')
+        .addClass('next-hidden')
         .removeClass('next-view');
       $('.location-select').removeClass("hidden");
       $('.d-flex-location', context).addClass("hidden");
       $('.locations-footer')
         .addClass("footer-custom-hidden")
         .removeClass('footer-custom-show');
+      $('.skip', context).removeClass('skip-hidden');
     }
   };
 
