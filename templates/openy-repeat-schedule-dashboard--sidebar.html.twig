@@ -46,14 +46,18 @@
         </div>
         {# date picker #}
         <div class="form-group-wrapper">
-          <label  v-on:click="collapseTab($event)" for="form-group-date" data-toggle="collapse" role="button" data-target=".form-group-date" class="expanded" aria-controls="form-group-date">
+          <label v-on:click="toggleTab('date')" for="form-group-date" role="button">
             <p class="m-0">{{ 'Date'|t }}<span class="header-today date" v-cloak>${ dateCalendarFormatted }</span></p>
             <input type="hidden" id="datepicker2" disabled>
             <button class="show-date-filter" data-toggle="collapse" type="button" data-target=".form-group-date" role="button" aria-label="{{ 'Show date filter'|t }}">
-              <i class="fa fa-calendar date-picker minus" aria-hidden="true"></i>
+
+              <i v-cloak v-if="this.filterTabs.date" class="fa fa-minus-circle minus" aria-hidden="true"></i>
+              <i v-cloak v-if="!this.filterTabs.date" class="fa fa-calendar plus" aria-hidden="true"></i>
+
             </button>
           </label>
-          <div id="form-group-date" class="form-group-date collapse" aria-expanded="true">
+
+          <div id="form-group-date" class="form-group-date" :class="{ 'collapse' : this.filterTabs.date === 0}">
             <div class="date" id="datepicker">
             </div>
           </div>
@@ -62,12 +66,15 @@
         {# location select list #}
         {% if locations is not empty %}
           <div class="form-group-wrapper">
-            <label  v-on:click="collapseTab($event)" for="form-group-location" data-toggle="collapse" data-target=".skip-t" role="button" aria-expanded="false" aria-controls="form-group-location">
+            <label  v-on:click="toggleTab('location')" for="form-group-location" data-target=".skip-t" role="button">
               <p class="m-0">{{ 'Location'|t }}<small v-show="getFiltersCounter('locations') > 0" class="badge">${ getFiltersCounter('locations') }</small></p>
-              <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
-              <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
+
+              <i v-cloak v-if="this.filterTabs.location" class="fa fa-minus-circle minus" aria-hidden="true"></i>
+              <i v-cloak v-if="!this.filterTabs.location" class="fa fa-plus-circle plus" aria-hidden="true"></i>
+
             </label>
-            <div id="form-group-location" class="form-group-location" aria-expanded="true">
+
+            <div id="form-group-location" class="form-group-location">
               <div class="checkboxes">
                 {% for location in locations %}
                   {% set loc_checked = "t collapse" %}
@@ -95,12 +102,14 @@
         {# categories select list #}
         {% if categories is not empty and filters.category %}
           <div class="form-group-wrapper">
-            <label v-on:click="collapseTab($event)" for="form-group-category" data-toggle="collapse" data-target="#form-group-category" role="button" class="expanded" aria-controls="form-group-category">
+            <label v-on:click="toggleTab('category')" for="form-group-category" role="button">
               <p class="m-0">{{ 'Category'|t }}<small v-show="getFiltersCounter('categories') > 0" class="badge">${ getFiltersCounter('categories') }</small></p></p>
-              <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
-              <i class="fa fa-minus-circle plus" aria-hidden="true"></i>
+
+              <i v-cloak v-if="this.filterTabs.category" class="fa fa-minus-circle minus" aria-hidden="true"></i>
+              <i v-cloak v-if="!this.filterTabs.category" class="fa fa-plus-circle plus" aria-hidden="true"></i>
+
             </label>
-            <div id="form-group-category" class="form-group-category collapse in" aria-expanded="true">
+            <div id="form-group-category" class="form-group-category" :class="{ 'collapse' : this.filterTabs.category === 0}">
               <div class="checkboxes">
                 {% for category in categories %}
                   {% set cat_checked = "t" %}

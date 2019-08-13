@@ -91,6 +91,11 @@
       instructorPopup: {
         name: '',
         schedule: []
+      },
+      filterTabs: {
+        date: 0,
+        category: 1,
+        location: 0
       }
     },
     created: function() {
@@ -373,14 +378,28 @@
             categories: this.categories.join(',')
           }});
       },
+      toggleTab: function(filter) {
+        var component = this;
+        var status = component.filterTabs[filter];
 
-      collapseTab: function(event) {
-        var $filtesTabs = $('#schedules-filters');
-        $filtesTabs.on('show.bs.collapse','.collapse', function() {
-          $filtesTabs.find('.collapse.in').collapse('hide');
-        });
+        // In case of collapsing.
+        if (status === 1) {
+          component.filterTabs[filter] = 0;
+        }
+
+        // In case of expanding.
+        if (status === 0) {
+          Object.keys(component.filterTabs).forEach(function (item) {
+            if (item !== filter) {
+              component.filterTabs[item] = 0;
+            }
+            else {
+              component.filterTabs[item] = 1;
+            }
+          });
+
+        }
       },
-
       toggleParentClass: function(event) {
         if (event.target.parentElement.classList.contains('skip-checked')) {
           event.target.parentElement.classList.remove('skip-checked');
