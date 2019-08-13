@@ -397,25 +397,22 @@
               component.filterTabs[item] = 1;
             }
           });
-
         }
       },
-      toggleParentClass: function(event) {
-        if (event.target.parentElement.classList.contains('skip-checked')) {
-          event.target.parentElement.classList.remove('skip-checked');
-          event.target.parentElement.classList.add('skip-t');
-          if (!event.target.parentElement.classList.contains('skip-t')) {
-            event.target.parentElement.classList.add('skip-t');
-          }
+      showLocationFilterItem: function(location) {
+        var component = this;
+
+        // Always show checked component.
+        if (component.locations.indexOf(location) !== -1) {
+          return true;
         }
 
-        else {
-          event.target.parentElement.classList.toggle("skip-t");
-          event.target.parentElement.classList.add('skip-checked');
-          event.target.parentElement.classList.remove('skip-t');
-          event.target.parentElement.classList.remove('collapse');
-          event.target.parentElement.classList.remove('in');
+        // Show all items if tab is expanded.
+        if (this.filterTabs.location === 1) {
+          return true;
         }
+
+        return false;
       },
       populatePopupLocation: function(index) {
         $('.modal').modal('hide');
