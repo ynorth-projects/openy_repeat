@@ -302,6 +302,10 @@ body.modal-open .top-navs .nav-global{
   color: #231f20;
 }
 
+.table-condensed>thead>tr>th.dow {
+  padding-top: 10px;
+}
+
 /*Modal view for instructor*/
 .modal-dialog {
   height: 80% !important;
