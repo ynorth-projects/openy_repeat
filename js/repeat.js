@@ -53,19 +53,6 @@
     }
   }
 
-  function checkShowForwardArrow(date) {
-    var limit = drupalSettings.openy_repeat.calendarLimitDays;
-    if (!limit) {
-      return true;
-    }
-
-    date = moment(new Date(date).toISOString());
-    var now = moment();
-    var diff = date.diff(now, 'days');
-
-    return diff < (limit - 1);
-  }
-
   Vue.config.devtools = true;
 
   var router = new VueRouter({
@@ -80,7 +67,6 @@
     data: {
       itemsPerPage: 25,
       currentPage: 1,
-      showForwardArrow: true,
       table: [],
       date: '',
       room: [],
@@ -90,6 +76,7 @@
       categoriesExcluded: [],
       categoriesLimit: [],
       className: [],
+      isLoading: true,
       locationPopup: {
         address: '',
         email: '',
@@ -104,6 +91,11 @@
       instructorPopup: {
         name: '',
         schedule: []
+      },
+      filterTabs: {
+        date: 0,
+        category: 1,
+        location: 0
       }
     },
     created: function() {
@@ -163,7 +155,7 @@
       var dateGet = this.$route.query.date;
       if (dateGet) {
         var date = new Date(dateGet);
-        date.setMinutes(date.getTimezoneOffset());
+
         this.date = date.toISOString();
       }
       else {
@@ -188,6 +180,7 @@
       component.$watch('date', function() {
         component.runAjaxRequest();
         component.resetPager();
+        $('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
       });
       component.$watch('locations', function() {
         component.runAjaxRequest();
@@ -204,8 +197,9 @@
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
       var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
+      $('#datepicker2').datepicker();
       $('#datepicker').datepicker({
-        format: "MM d, DD",
+        format: "yyyy-mm-dd",
         multidate: false,
         keyboardNavigation: false,
         forceParse: false,
@@ -215,27 +209,37 @@
           if (!limitDays) {
             return true;
           }
+
+          // Get diff between current date and argument date.
           var diff = moment().diff(moment(date), 'days');
+
+          // Disable past dates.
+          if (diff > 0) {
+            return false;
+          }
+
           return diff > -limitDays;
         }
-      }).on('changeDate', function() {
-        $('#datepicker2').datepicker("setDate",component.date = ($(this).datepicker('getDate')));
-      });
-      $('#datepicker2').datepicker();
+      }).on('changeDate', function(event) {
+        // In case if use unselect date.
+        var date = new Date().toISOString();
+        if (event.format()) {
+          var parsed = moment(event.format(), 'YYYY-MM-DD');
+          date = parsed.toISOString();
+        }
+        component.date = date;
+      }).datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
+
       $('#datepicker .next').empty().append('<i class="fa fa-arrow-right"></i>');
       $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
     },
     computed: {
       dateFormatted: function(){
-        var date = new Date(this.date).toISOString();
-        return moment(date).format('ddd, MMM D');
+        return moment(this.date).format('ddd, MMM D');
       },
       dateCalendarFormatted: function() {
-        var date = new Date(this.date).toISOString();
-        date = moment(date);
-        var now = moment();
-        var formatted = date.format('ddd, MM/D');
-        if (date.format('MMDDYYYY') === now.format('MMDDYYYY')) {
+        var formatted = moment(this.date).format('ddd, MM/D');
+        if (moment(this.date).format('MMDDYYYY') === moment().format('MMDDYYYY')) {
           return 'Today (' + formatted + ')';
         }
         return formatted;
@@ -337,6 +341,7 @@
     },
     methods: {
       runAjaxRequest: function() {
+        this.isLoading = true;
         var component = this;
         var date = moment(this.date).format('YYYY-MM-DD');
 
@@ -358,14 +363,13 @@
         }
 
         $('.schedules-empty_results').addClass('hidden');
-        $('.schedules-loading').removeClass('hidden');
 
         $.getJSON(url, function(data) {
           component.table = data;
           if (data.length === 0) {
             $('.schedules-empty_results').removeClass('hidden');
           }
-          $('.schedules-loading').addClass('hidden');
+          component.isLoading = false;
         });
 
         router.push({ query: {
@@ -374,23 +378,41 @@
             categories: this.categories.join(',')
           }});
       },
+      toggleTab: function(filter) {
+        var component = this;
+        var status = component.filterTabs[filter];
 
-      toggleParentClass: function(event) {
-        if (event.target.parentElement.classList.contains('skip-checked')) {
-          event.target.parentElement.classList.remove('skip-checked');
-          event.target.parentElement.classList.add('skip-t');
-          if (!event.target.parentElement.classList.contains('skip-t')) {
-            event.target.parentElement.classList.add('skip-t');
-          }
+        // In case of collapsing.
+        if (status === 1) {
+          component.filterTabs[filter] = 0;
         }
 
-        else {
-          event.target.parentElement.classList.toggle("skip-t");
-          event.target.parentElement.classList.add('skip-checked');
-          event.target.parentElement.classList.remove('skip-t');
-          event.target.parentElement.classList.remove('collapse');
-          event.target.parentElement.classList.remove('in');
+        // In case of expanding.
+        if (status === 0) {
+          Object.keys(component.filterTabs).forEach(function (item) {
+            if (item !== filter) {
+              component.filterTabs[item] = 0;
+            }
+            else {
+              component.filterTabs[item] = 1;
+            }
+          });
         }
+      },
+      showLocationFilterItem: function(location) {
+        var component = this;
+
+        // Always show checked component.
+        if (component.locations.indexOf(location) !== -1) {
+          return true;
+        }
+
+        // Show all items if tab is expanded.
+        if (this.filterTabs.location === 1) {
+          return true;
+        }
+
+        return false;
       },
       populatePopupLocation: function(index) {
         $('.modal').modal('hide');
@@ -398,6 +420,9 @@
       },
       populatePopupClass: function(sessionId) {
         var component = this;
+        component.classPopup = {};
+
+        // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--instructor')
           .on('shown.bs.modal', function(){
@@ -410,28 +435,19 @@
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
 
-        $.getJSON(bySessionUrl, function(sessionData) {
+        $.getJSON(bySessionUrl, function(data) {
           $('.schedules-loading').removeClass('hidden');
-          var classItem = sessionData[0];
-          component.classPopup = classItem.class_info;
-
-          // For now we will search by clicked GroupEx class ID.
-          // In GroupEx each class has separate ID for different locations.
-          // So, in order to get class within all locations we need to pass
-          // the array of class IDs.
-          // @todo To be decided.
-          var byClassUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-class/';
-          byClassUrl += classItem.class;
-          byClassUrl += component.locations.length > 0 ? '/' + encodeURIComponent(component.locations.join(',')) : '/0';
-          byClassUrl += component.date ? '/' + encodeURIComponent(component.date) : '';
-
-          $.getJSON(byClassUrl, function(classData) {
-            component.classPopup.schedule = classData;
-            $('.schedules-loading').addClass('hidden');
-          });
+          component.classPopup = data[0]['class_info'];
+          component.classPopup.schedule = data;
+          $('.schedules-loading').addClass('hidden');
         });
       },
       populatePopupInstructor: function(instructor) {
+        var component = this;
+        component.instructorPopup = {};
+        component.instructorPopup.name = instructor;
+
+        // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--class')
           .on('shown.bs.modal', function(){
@@ -440,9 +456,6 @@
           .on('hidden.bs.modal', function(){
           $('.nav-global').removeClass('hidden-xs');
         });
-
-        var component = this;
-        component.instructorPopup.name = instructor;
 
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
         url += encodeURIComponent(instructor);
@@ -530,12 +543,26 @@
         this.scrollToTop();
       },
       scrollToTop() {
-        $('html, body').animate( { scrollTop: $('.schedule-dashboard__wrapper').offset().top - 200 }, 500 );
+        $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
+      },
+      showBackArrow() {
+        var diff = moment().diff(moment(this.date), 'hours');
+        return diff < 0;
+      },
+      showForwardArrow() {
+        var limit = drupalSettings.openy_repeat.calendarLimitDays;
+        if (!limit) {
+          return true;
+        }
+
+        var date = moment(this.date);
+        var now = moment();
+        var diff = date.diff(now, 'days');
+
+        return diff < (limit - 1);
       }
     },
     updated: function() {
-      this.showForwardArrow = checkShowForwardArrow(this.date);
-
       calculateColumns();
 
       if (typeof(addtocalendar) !== 'undefined') {

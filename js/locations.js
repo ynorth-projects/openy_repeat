@@ -19,7 +19,7 @@
         var locName = this.value;
         if(!$(this).parents('.openy-card__item').hasClass('selected')) {
           $(this).parents('.openy-card__item').addClass('selected');
-          $('#selected-locations').append('<li>' + locName + ', ' + '</li>');
+          $('#selected-locations').append('<li>' + locName + '</li>');
         }
         else {
           $(this).parents('.openy-card__item').removeClass('selected');
@@ -27,6 +27,9 @@
         }
         toggleSubmit(context);
       });
+
+      // Hide scroll button.
+      $('body').find('.return-to-top').addClass('hidden');
 
       // Toggle to result page.
       $('.skip').click(function () {
@@ -62,18 +65,27 @@
   var toggleSubmit = function(context) {
     if($('.openy-card__item.selected label').length > 0) {
       $('.js-submit-locations', context)
-        .removeClass('hidden-lg hidden-md disabled')
+        .removeClass('next-hidden')
+        .addClass('next-view')
         .parent()
         .find('.error')
         .remove();
       $('.location-select', context).addClass("hidden");
       $('.d-flex-location', context).removeClass("hidden");
-      $('.locations-footer').removeClass("hidden-lg hidden-md");
+      $('.locations-footer')
+        .removeClass("footer-custom-hidden")
+        .addClass('footer-custom-show');
+      $('.skip', context).addClass('skip-hidden');
     } else {
-      $('.js-submit-locations', context).addClass('hidden-lg hidden-md disabled');
+      $('.js-submit-locations', context)
+        .addClass('next-hidden')
+        .removeClass('next-view');
       $('.location-select').removeClass("hidden");
       $('.d-flex-location', context).addClass("hidden");
-      $('.locations-footer').addClass("hidden-lg hidden-md");
+      $('.locations-footer')
+        .addClass("footer-custom-hidden")
+        .removeClass('footer-custom-show');
+      $('.skip', context).removeClass('skip-hidden');
     }
   };
 

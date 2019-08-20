@@ -10,10 +10,6 @@
   border: 0;
 }
 
-.schedule-dashboard__arrow:hover {
-  opacity: .7;
-}
-
 /* dashboard main date heading */
 .schedules-data {
   border-top: 1px solid #636466;
@@ -232,17 +228,24 @@ body.modal-open .top-navs .nav-global{
 
 /* Calendar Schedules Sidebar */
 .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
-  width: 100%;
+  margin: 0 auto;
 }
-.datepicker table tr td.disabled,
-.datepicker table tr td.disabled:hover {
-  background: #636466;
-  color: #636466;
+.datepicker td, .datepicker th {
+  border-radius: 0;
+}
+.datepicker .table-condensed > tbody > tr > td.disabled,
+.datepicker .table-condensed > tbody > tr > td.disabled:hover {
+  background: #f2f2f2;
+  color: #646366;
 }
 
-.datepicker .table-condensed > tbody > tr > td.disabled {
-  background: #636466;
-  color: #636466;
+.datepicker .table-condensed > tbody > tr > td.new,
+.datepicker .table-condensed > tbody > tr > td.new:hover,
+.datepicker .table-condensed > tbody > tr > td.old:hover,
+.datepicker .table-condensed > tbody > tr > td.old {
+  background: #636466 !important;
+  color: #636466 !important;
+  cursor: default;
 }
 
 .form-group-date .datepicker-inline .datepicker-days {
@@ -250,7 +253,7 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__sidebar .date {
-  padding: 15px;
+  padding: 15px 10px;
 }
 
 .datepicker .table-condensed > tbody > tr > td {
@@ -265,16 +268,23 @@ body.modal-open .top-navs .nav-global{
   border-radius: 5px;
 }
 
-.datepicker table tr td.today {
-  background-color: #b92f9e;
-  background-image: none;
+.datepicker table tr td.active.active {
+  background: #b92f9e;
   border-radius: 0;
   color: white;
   font-weight: bold;
 }
 
+.datepicker table tr td.active {
+  text-shadow: none;
+}
+.datepicker table tr td.day:hover,
 .datepicker table tr td.today:hover,
 .datepicker table tr td.today:hover:hover {
+  background: #ffffff;
+}
+
+.datepicker table tr td.active.active:hover {
   background: #b92f9e;
 }
 
@@ -288,12 +298,12 @@ body.modal-open .top-navs .nav-global{
   padding: 0;
 }
 
-.datepicker table tr td.active.active {
-  background: #e7e7e7;
-}
-
 .datepicker th.datepicker-switch {
   color: #231f20;
+}
+
+.table-condensed>thead>tr>th.dow {
+  padding-top: 10px;
 }
 
 /*Modal view for instructor*/
@@ -357,12 +367,14 @@ body.modal-open .top-navs .nav-global{
 }
 
 .schedule-dashboard__modal--body h4 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
   padding: 10px 0;
   color: #231f20;
   font-size: 18px;
   font-weight: 700;
   line-height: 27px;
 }
+
 .schedule-dashboard__modal--body .header-border {
   border-bottom: 1px solid #636466;
 }
@@ -433,6 +445,9 @@ body.modal-open .top-navs .nav-global{
 .schedule-dashboard__modal--instructor-link {
   color: #0060af;
 }
+.schedule-dashboard__modal--location .schedule-dashboard__modal--body .table>tbody>tr>td {
+  padding: 8px;
+}
 
 .btn-schedule-pdf-generate {
   font-family:  Verdana, Arial, Helvetica, sans-serif;;
@@ -449,9 +464,14 @@ body.modal-open .top-navs .nav-global{
 
 @media (min-width: 768px) and (max-width: 991px) {
   .schedule-dashboard__sidebar .form-group-date .datepicker-inline {
-    width: 50%;
+    width: 366px;
     margin: 0 auto;
   }
+
+  .datepicker .table-condensed > tbody > tr > td {
+    padding: 16px;
+  }
+
   .schedule-dashboard__wrapper > .container {
     margin-top: 0
   }
@@ -485,6 +505,19 @@ body.modal-open .top-navs .nav-global{
     padding-left: 15px;
     float: left;
   }
+
+  .atcb-link {
+    font-size: 12px;
+  }
+
+  .schedule-dashboard__modal--class .addtocalendar {
+    float: left;
+    padding-left: 15px;
+  }
+}
+
+.atcb-link {
+  font-size: 14px;
 }
 
 .schedules-navbar-form {
@@ -514,33 +547,13 @@ body.modal-open .top-navs .nav-global{
   margin-bottom: 20px;
 }
 
-
-.flex-container {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-
-  -ms-box-orient: horizontal;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -moz-flex;
-  display: -webkit-flex;
-  display: flex;
-  float: left;
+.schedule-dashboard__modal--location label,
+.schedule-dashboard__modal--location .schedule-dashboard__modal--body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.flex-start {
-  -webkit-align-items: flex-start;
-  align-items: flex-start;
-}
-
-.flex-end {
-  -webkit-align-items: flex-end;
-  align-items: flex-end;
-}
-.flex-end li {
-  background: gold;
+.schedule-dashboard__modal--header {
+  font-family: "Cachet", Arial, sans-serif;
 }
 
 .center {
@@ -626,3 +639,26 @@ body.modal-open .top-navs .nav-global{
   margin-left: 15px;
 }
 
+.schedule-dashboard__pager a.btn {
+  background: none;
+  padding: 0;
+}
+.schedule-dashboard__pager a.btn:hover {
+  color: #636466;
+}
+
+.schedule-dashboard__pager a.btn:active {
+  box-shadow: none;
+}
+
+@media screen and (min-width: 992px){
+  .schedules-filters {
+    display: block !important;
+  }
+}
+
+
+.schedule-dashboard__top-header a[href$=pdf]:after,
+.schedule-dashboard__top-header a[href*=".pdf?"]:after {
+  display: none;
+}
