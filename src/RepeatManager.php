@@ -382,7 +382,13 @@ class RepeatManager implements SessionInstanceManagerInterface {
     }
 
     // Do not forget to close last period.
+    $endExclusion = end($exclusions)['from']->format('Y-m-d');
+    $endOrigin = $end->format('Y-m-d');
+
     $period = array_pop($resultingPeriods);
+    if($endExclusion == $endOrigin){
+      $end->modify('-1 day');
+    }
     $period['to'] = $end;
     array_push($resultingPeriods, $period);
 
