@@ -61,6 +61,7 @@
   });
 
   // Retrieve the data via vue.js.
+  Vue.config.devtools = true;
   new Vue({
     el: '#app',
     router: router,
@@ -438,7 +439,7 @@
         $.getJSON(bySessionUrl, function(data) {
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
-          component.classPopup.schedule = data;
+          component.classPopup.schedule = data.filter(function(item){return component.locations.includes(item.location);});
           $('.schedules-loading').addClass('hidden');
         });
       },
@@ -479,7 +480,6 @@
       addToCalendarDate: function(dateTime) {
         var dateTimeArray = dateTime.split(' ');
         var date = new Date(this.date).toISOString();
-
         return moment(date).format('YYYY-MM-D') + ' ' + dateTimeArray[1];
       },
       categoryExcluded: function(category) {
