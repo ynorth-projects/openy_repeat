@@ -479,7 +479,7 @@
       addToCalendarDate: function(dateTime) {
         var dateTimeArray = dateTime.split(' ');
         var date = new Date(this.date).toISOString();
-        
+
         return moment(date).format('YYYY-MM-D') + ' ' + dateTimeArray[1];
       },
       categoryExcluded: function(category) {
