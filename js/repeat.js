@@ -438,7 +438,7 @@
         $.getJSON(bySessionUrl, function(data) {
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
-          component.classPopup.schedule = data;
+          component.classPopup.schedule = data.filter(function(item){return component.locations.includes(item.location);});
           $('.schedules-loading').addClass('hidden');
         });
       },
