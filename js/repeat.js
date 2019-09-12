@@ -185,6 +185,7 @@
       component.$watch('locations', function() {
         component.runAjaxRequest();
         component.resetPager();
+        component.resetRooms();
       });
       component.$watch('categories', function(){
         component.runAjaxRequest();
@@ -541,6 +542,22 @@
       resetPager() {
         this.currentPage = 1;
         this.scrollToTop();
+      },
+      resetRooms() {
+        var component = this;
+        // Empty all rooms if there is no selected location.
+        if (this.locations.length === 0) {
+          this.room = [];
+          return;
+        }
+
+        // Loop over each room and remove if if corresponding location unselected.
+        this.room.forEach(function (item) {
+          var parts = item.split('||');
+          if (component.locations.indexOf(parts[0]) === -1) {
+            delete component.room[item];
+          }
+        });
       },
       scrollToTop() {
         $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
