@@ -504,16 +504,16 @@
         }
         return this[filter].length;
       },
-      clearFilters() {
+      clearFilters: function () {
         this.categories = [];
         this.locations = [];
         this.date = moment().format('YYYY-MM-DD');
         this.resetPager();
       },
-      getResultsCount() {
+      getResultsCount: function () {
         return this.filteredTable.length;
       },
-      getTotalPages() {
+      getTotalPages: function () {
         var count = 1;
 
         var itemsTotal = this.getResultsCount();
@@ -523,27 +523,27 @@
 
         return count;
       },
-      loadFirstPage() {
+      loadFirstPage: function () {
         this.currentPage = 1;
         this.scrollToTop();
       },
-      loadPrevPage() {
+      loadPrevPage: function () {
         this.currentPage = this.currentPage - 1;
         this.scrollToTop();
       },
-      loadNextPage() {
+      loadNextPage: function () {
         this.currentPage = this.currentPage + 1;
         this.scrollToTop();
       },
-      loadLastPage() {
+      loadLastPage: function () {
         this.currentPage = this.getTotalPages();
         this.scrollToTop();
       },
-      resetPager() {
+      resetPager: function () {
         this.currentPage = 1;
         this.scrollToTop();
       },
-      resetRooms() {
+      resetRooms: function () {
         var component = this;
         // Empty all rooms if there is no selected location.
         if (this.locations.length === 0) {
@@ -559,14 +559,14 @@
           }
         });
       },
-      scrollToTop() {
+      scrollToTop: function () {
         $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
       },
-      showBackArrow() {
+      showBackArrow: function () {
         var diff = moment().diff(moment(this.date), 'hours');
         return diff < 0;
       },
-      showForwardArrow() {
+      showForwardArrow: function () {
         var limit = drupalSettings.openy_repeat.calendarLimitDays;
         if (!limit) {
           return true;
