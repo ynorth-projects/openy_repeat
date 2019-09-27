@@ -514,6 +514,14 @@ body.modal-open .top-navs .nav-global{
     float: left;
     padding-left: 15px;
   }
+
+  .day-label .date {
+    font-size: 14px;
+  }
+
+  .day-label .schedule-dashboard__arrow {
+    font-size: 16px;
+  }
 }
 
 .atcb-link {

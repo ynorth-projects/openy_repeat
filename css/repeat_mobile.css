@@ -136,6 +136,14 @@
   .datepicker .table-condensed > tbody > tr > td {
     border: 2px solid #636466;
   }
+
+  .day-label .date {
+    font-size: 14px;
+  }
+
+  .day-label .schedule-dashboard__arrow {
+    font-size: 16px;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1230px) {
