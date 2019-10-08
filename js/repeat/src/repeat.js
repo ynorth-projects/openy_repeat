@@ -559,8 +559,11 @@
           }
         });
       },
+
       scrollToTop: function () {
-        $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
+        if ( screen.width <= 991 ) {
+          $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
+        }
       },
       showBackArrow: function () {
         var diff = moment().diff(moment(this.date), 'hours');
