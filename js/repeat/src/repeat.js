@@ -33,6 +33,7 @@
       $('.instructor-column').remove();
     }
   }
+
   displayInstructorOrNot();
 
   // Set number of column classes.
@@ -56,8 +57,8 @@
   Vue.config.devtools = true;
 
   var router = new VueRouter({
-      mode: 'history',
-      routes: []
+    mode: 'history',
+    routes: []
   });
 
   // Retrieve the data via vue.js.
@@ -98,11 +99,11 @@
         location: 0
       }
     },
-    created: function() {
+    created: function () {
       var component = this;
       // If there are any exclusions available from settings.
       var exclusionSettings = window.OpenY.field_prgf_repeat_schedule_excl || [];
-      exclusionSettings.forEach(function(item){
+      exclusionSettings.forEach(function (item) {
         component.categoriesExcluded.push(item.title);
       });
 
@@ -116,11 +117,11 @@
           $('.location-column').remove();
         }
         else {
-          limitLocations.forEach(function(element){
+          limitLocations.forEach(function (element) {
             component.locationsLimit.push(element.title);
           });
 
-          $('.form-group-location .checkbox-wrapper input').each(function(){
+          $('.form-group-location .checkbox-wrapper input').each(function () {
             var value = $(this).attr('value');
             if (component.locationsLimit.indexOf(value) === -1) {
               $(this).parent().hide();
@@ -139,11 +140,11 @@
           $('.category-column').remove();
         }
         else {
-          limitCategories.forEach(function(element){
+          limitCategories.forEach(function (element) {
             component.categoriesLimit.push(element.title);
           });
 
-          $('.form-group-category .checkbox-wrapper input').each(function(){
+          $('.form-group-category .checkbox-wrapper input').each(function () {
             var value = $(this).attr('value');
             if (component.categoriesLimit.indexOf(value) === -1) {
               $(this).parent().hide();
@@ -177,24 +178,28 @@
       // We add watchers dynamically otherwise initially there will be
       // up to three requests as we are changing values while initializing
       // from GET query parameters.
-      component.$watch('date', function() {
+      component.$watch('date', function () {
         component.runAjaxRequest();
         component.resetPager();
         $('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
       });
-      component.$watch('locations', function() {
+      component.$watch('locations', function () {
         component.runAjaxRequest();
         component.resetPager();
         component.resetRooms();
       });
-      component.$watch('categories', function(){
+      component.$watch('categories', function () {
         component.runAjaxRequest();
         component.resetPager();
       });
-      component.$watch('classPopup', function(){ component.runAjaxRequest(); });
-      component.$watch('instructorPopup', function(){ component.runAjaxRequest(); });
+      component.$watch('classPopup', function () {
+        component.runAjaxRequest();
+      });
+      component.$watch('instructorPopup', function () {
+        component.runAjaxRequest();
+      });
     },
-    mounted: function() {
+    mounted: function () {
       /* It doesn't work if try to add datepicker in created. */
       var component = this;
       var limitDays = drupalSettings.openy_repeat.calendarLimitDays;
@@ -221,7 +226,7 @@
 
           return diff > -limitDays;
         }
-      }).on('changeDate', function(event) {
+      }).on('changeDate', function (event) {
         // In case if use unselect date.
         var date = new Date().toISOString();
         if (event.format()) {
@@ -235,19 +240,19 @@
       $('#datepicker .prev').empty().append('<i class="fa fa-arrow-left"></i>');
     },
     computed: {
-      dateFormatted: function(){
+      dateFormatted: function () {
         return moment(this.date).format('ddd, MMM D');
       },
-      dateCalendarFormatted: function() {
+      dateCalendarFormatted: function () {
         var formatted = moment(this.date).format('ddd, MM/D');
         if (moment(this.date).format('MMDDYYYY') === moment().format('MMDDYYYY')) {
           return 'Today (' + formatted + ')';
         }
         return formatted;
       },
-      roomFilters: function() {
+      roomFilters: function () {
         var availableRooms = [];
-        this.table.forEach(function(element){
+        this.table.forEach(function (element) {
           if (typeof availableRooms[element.location] === 'undefined') {
             availableRooms[element.location] = [];
           }
@@ -257,7 +262,7 @@
         });
 
         var resultRooms = [];
-        this.locations.forEach(function(location){
+        this.locations.forEach(function (location) {
           if (typeof availableRooms[location] != 'undefined') {
             availableRooms[location] = Object.keys(availableRooms[location]);
             if (availableRooms[location].length > 0) {
@@ -268,16 +273,16 @@
 
         return resultRooms;
       },
-      classFilters: function() {
+      classFilters: function () {
         var availableClasses = [];
-        this.table.forEach(function(element) {
+        this.table.forEach(function (element) {
           if (element.class_info.title) {
             availableClasses[element.class_info.title] = element.class_info.title;
           }
         });
 
         // Already selected options.
-        this.className.forEach(function(classname) {
+        this.className.forEach(function (classname) {
           availableClasses[classname] = classname;
         });
 
@@ -287,35 +292,35 @@
         }
         return availableClasses;
       },
-      filteredTable: function() {
-        var filterByRoom = [];
-
-        this.room.forEach(function(roomItem) {
+      filteredTable: function () {
+        let filterByRoom = [];
+        this.room.forEach(function (roomItem) {
           var split = roomItem.split('||');
           var locationName = split[0];
           var roomName = split[1];
           if (typeof filterByRoom[locationName] === 'undefined') {
             filterByRoom[locationName] = [];
           }
-          filterByRoom[locationName].push(roomName);
+            filterByRoom[locationName].push(roomName);
         });
 
-        var locationsToFilter = Object.keys(filterByRoom);
+        let locationsToFilter = Object.keys(filterByRoom);
         var resultTable = [];
-        var self = this;
-        this.table.forEach(function(item){
-          if (locationsToFilter.length > 0) {
+        let self = this;
+        this.table.forEach(function (item) {
+          if (self.locations.length > 0 && item && typeof (self.locations) !== 'undefined') {
             // If we are not filtering rooms of this location -- skip it.
-            if (locationsToFilter.indexOf(item.location) === -1) {
+            if (self.locations.indexOf(item.location) === -1) {
               return;
             }
 
             // Check if class in this room should be kept.
-            if (filterByRoom[item.location].indexOf(item.room) === -1) {
-              return;
+            if (locationsToFilter.length > 0 && typeof (filterByRoom[item.location]) !== 'undefined') {
+              if (filterByRoom[item.location].indexOf(item.room) === -1) {
+                return;
+              }
             }
           }
-
           // Check if class fits classname filter.
           if (self.className.length > 0 && self.className.indexOf(item.class_info.title) === -1) {
             return;
@@ -341,7 +346,7 @@
       }
     },
     methods: {
-      runAjaxRequest: function() {
+      runAjaxRequest: function () {
         this.isLoading = true;
         var component = this;
         var date = moment(this.date).format('YYYY-MM-DD');
@@ -365,7 +370,7 @@
 
         $('.schedules-empty_results').addClass('hidden');
 
-        $.getJSON(url, function(data) {
+        $.getJSON(url, function (data) {
           component.table = data;
           if (data.length === 0) {
             $('.schedules-empty_results').removeClass('hidden');
@@ -373,13 +378,15 @@
           component.isLoading = false;
         });
 
-        router.push({ query: {
+        router.push({
+          query: {
             date: date,
             locations: this.locations.join(','),
             categories: this.categories.join(',')
-          }});
+          }
+        });
       },
-      toggleTab: function(filter) {
+      toggleTab: function (filter) {
         var component = this;
         var status = component.filterTabs[filter];
 
@@ -400,7 +407,7 @@
           });
         }
       },
-      showLocationFilterItem: function(location) {
+      showLocationFilterItem: function (location) {
         var component = this;
 
         // Always show checked component.
@@ -415,35 +422,37 @@
 
         return false;
       },
-      populatePopupLocation: function(index) {
+      populatePopupLocation: function (index) {
         $('.modal').modal('hide');
         this.locationPopup = this.filteredTable[index].location_info;
       },
-      populatePopupClass: function(sessionId) {
+      populatePopupClass: function (sessionId) {
         var component = this;
         component.classPopup = {};
 
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--instructor')
-          .on('shown.bs.modal', function(){
-          $('.nav-global').addClass('hidden-xs');
-        })
-          .on('hidden.bs.modal', function(){
-          $('.nav-global').removeClass('hidden-xs');
-        });
+          .on('shown.bs.modal', function () {
+            $('.nav-global').addClass('hidden-xs');
+          })
+          .on('hidden.bs.modal', function () {
+            $('.nav-global').removeClass('hidden-xs');
+          });
 
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
 
-        $.getJSON(bySessionUrl, function(data) {
+        $.getJSON(bySessionUrl, function (data) {
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
-          component.classPopup.schedule = data.filter(function(item){return component.locations.includes(item.location);});
+          component.classPopup.schedule = data.filter(function (item) {
+            return component.locations.includes(item.location);
+          });
           $('.schedules-loading').addClass('hidden');
         });
       },
-      populatePopupInstructor: function(instructor) {
+      populatePopupInstructor: function (instructor) {
         var component = this;
         component.instructorPopup = {};
         component.instructorPopup.name = instructor;
@@ -451,12 +460,12 @@
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--class')
-          .on('shown.bs.modal', function(){
-          $('.nav-global').addClass('hidden-xs');
-        })
-          .on('hidden.bs.modal', function(){
-          $('.nav-global').removeClass('hidden-xs');
-        });
+          .on('shown.bs.modal', function () {
+            $('.nav-global').addClass('hidden-xs');
+          })
+          .on('hidden.bs.modal', function () {
+            $('.nav-global').removeClass('hidden-xs');
+          });
 
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
         url += encodeURIComponent(instructor);
@@ -464,38 +473,38 @@
         url += this.date ? '/' + encodeURIComponent(this.date) : '';
 
         $('.schedules-loading').removeClass('hidden');
-        $.getJSON(url, function(data) {
+        $.getJSON(url, function (data) {
           component.instructorPopup.schedule = data;
           $('.schedules-loading').addClass('hidden');
         });
       },
-      backOneDay: function() {
+      backOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(-1, 'day');
       },
-      forwardOneDay: function() {
+      forwardOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(1, 'day');
       },
-      addToCalendarDate: function(dateTime) {
+      addToCalendarDate: function (dateTime) {
         var dateTimeArray = dateTime.split(' ');
         var date = new Date(this.date).toISOString();
 
         return moment(date).format('YYYY-MM-D') + ' ' + dateTimeArray[1];
       },
-      categoryExcluded: function(category) {
+      categoryExcluded: function (category) {
         return this.categoriesExcluded.indexOf(category) !== -1;
       },
-      getRoomFilter: function(location) {
+      getRoomFilter: function (location) {
         if (typeof this.roomFilters[location] === 'undefined') {
           return false;
         }
         return this.roomFilters[location];
       },
-      getClassFilter: function() {
+      getClassFilter: function () {
         return this.classFilters;
       },
-      generateId: function(string) {
+      generateId: function (string) {
         return string.replace(/[\W_]+/g, "-");
       },
       getFiltersCounter: function (filter) {
@@ -551,7 +560,8 @@
           return;
         }
 
-        // Loop over each room and remove if if corresponding location unselected.
+        // Loop over each room and remove if if corresponding location
+        // unselected.
         this.room.forEach(function (item) {
           var parts = item.split('||');
           if (component.locations.indexOf(parts[0]) === -1) {
@@ -561,8 +571,8 @@
       },
 
       scrollToTop: function () {
-        if ( screen.width <= 991 ) {
-          $('html, body').animate( { scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500 );
+        if (screen.width <= 991) {
+          $('html, body').animate({scrollTop: $('.schedule-dashboard__content').offset().top - 200}, 500);
         }
       },
       showBackArrow: function () {
@@ -582,17 +592,17 @@
         return diff < (limit - 1);
       }
     },
-    updated: function() {
+    updated: function () {
       calculateColumns();
 
-      if (typeof(addtocalendar) !== 'undefined') {
+      if (typeof (addtocalendar) !== 'undefined') {
         addtocalendar.load();
       }
       // Consider moving out of 'updated' handler.
       $('.btn-schedule-pdf-generate').off('click').on('click', function () {
         var rooms_checked = [],
-            classnames_checked = [],
-            limit = [];
+          classnames_checked = [],
+          limit = [];
         $('.checkbox-room-wrapper input').each(function () {
           if ($(this).is(':checked')) {
             rooms_checked.push(encodeURIComponent($(this).val()));
@@ -610,7 +620,7 @@
             limit.push(limitCategories[0].title);
           }
           else {
-            limitCategories.forEach(function(element){
+            limitCategories.forEach(function (element) {
               limit.push(element.title);
             });
           }
