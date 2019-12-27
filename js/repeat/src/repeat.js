@@ -626,7 +626,7 @@
           }
         }
         limit = limit.join(',');
-        var pdf_query = window.location.search + '&rooms=' + rooms_checked + '&limit=' + limit;
+        var pdf_query = window.location.search + '&rooms=' + rooms_checked;
         $(classnames_checked).each(function () {
           pdf_query += '&cn[]=' + this;
         });
