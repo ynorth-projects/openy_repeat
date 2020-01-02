@@ -617,16 +617,16 @@
         var limitCategories = window.OpenY.field_prgf_repeat_schedule_categ || [];
         if (limitCategories && limitCategories.length > 0) {
           if (limitCategories.length == 1) {
-            limit.push(limitCategories[0].title);
+            limit.push(encodeURIComponent(limitCategories[0].title));
           }
           else {
             limitCategories.forEach(function (element) {
-              limit.push(element.title);
+              limit.push(encodeURIComponent(element.title));
             });
           }
         }
         limit = limit.join(',');
-        var pdf_query = window.location.search + '&rooms=' + rooms_checked;
+        var pdf_query = window.location.search + '&rooms=' + rooms_checked + '&limit=' + limit;
         $(classnames_checked).each(function () {
           pdf_query += '&cn[]=' + this;
         });
