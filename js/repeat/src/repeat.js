@@ -459,9 +459,7 @@
           component.classPopup = data[0]['class_info'];
           component.classPopup.schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
-            console.log(item);
             if (component.locations.length > 0) {
-              console.log(item);
               return component.locations.includes(item.location);
             }
             else {
