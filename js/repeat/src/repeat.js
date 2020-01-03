@@ -459,7 +459,14 @@
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
           component.classPopup.schedule = data.filter(function (item) {
-            return component.locations.includes(item.location);
+            item.cancelled = item.name.indexOf('CANCELLED');
+            if (component.locations.length > 0) {
+              return component.locations.includes(item.location);
+            }
+            else {
+              return true;
+            }
+
           });
           $('.schedules-loading').addClass('hidden');
         });
