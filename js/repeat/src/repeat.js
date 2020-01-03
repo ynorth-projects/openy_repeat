@@ -96,7 +96,8 @@
       filterTabs: {
         date: 0,
         category: 1,
-        location: 0
+        location: 0,
+        className: 0
       }
     },
     created: function () {

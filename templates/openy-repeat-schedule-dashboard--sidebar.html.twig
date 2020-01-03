@@ -121,12 +121,12 @@
         {# class name select list #}
         {% if filters.classname %}
           <div v-if="getClassFilter()" class="form-group-wrapper">
-            <label for="form-group-classname" data-toggle="collapse" data-target="#form-group-classname" role="button" class="expanded" aria-controls="form-group-classname">
-              {{ 'Class name'|t }}
-              <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
-              <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
+            <label v-on:click="toggleTab('className')" for="form-group-classname" role="button">
+              <p class="m-0">{{ 'Class name'|t }}<small v-show="getFiltersCounter('className') > 0" class="badge">${ getFiltersCounter('className') }</small></p></p>
+              <i v-cloak v-if="this.filterTabs.className" class="fa fa-minus-circle minus" aria-hidden="true"></i>
+              <i v-cloak v-if="!this.filterTabs.className" class="fa fa-plus-circle plus" aria-hidden="true"></i>
             </label>
-            <div id="form-group-classname" class="form-group-classname collapse in" aria-expanded="true">
+            <div id="form-group-classname" class="form-group-classname" :class="{ 'collapse' : this.filterTabs.className === 0}" aria-expanded="true">
               <div class="checkboxes">
                 <div v-for="classFilter in getClassFilter()" class="checkbox-wrapper">
                   <input type="checkbox" v-model="className" v-bind:value="classFilter" v-bind:id="generateId(classFilter)" class="box"/>
