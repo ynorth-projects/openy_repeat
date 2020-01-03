@@ -169,6 +169,11 @@
         this.locations = locationsGet.split(',');
       }
 
+      var classNamesGet = this.$route.query.cn;
+      if (classNamesGet) {
+        this.className = classNamesGet.split(',');
+      }
+
       var categoriesGet = this.$route.query.categories;
       if (categoriesGet) {
         this.categories = categoriesGet.split(',');
@@ -190,6 +195,11 @@
         component.resetRooms();
       });
       component.$watch('categories', function () {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+
+      component.$watch('className', function () {
         component.runAjaxRequest();
         component.resetPager();
       });
@@ -383,7 +393,8 @@
           query: {
             date: date,
             locations: this.locations.join(','),
-            categories: this.categories.join(',')
+            categories: this.categories.join(','),
+            cn: this.className.join(',')
           }
         });
       },
@@ -516,6 +527,7 @@
       },
       clearFilters: function () {
         this.categories = [];
+        this.className = [];
         this.locations = [];
         this.date = moment().format('YYYY-MM-DD');
         this.resetPager();
