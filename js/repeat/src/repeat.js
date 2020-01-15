@@ -504,7 +504,6 @@
             }
 
           });
-          console.log(component.instructorPopup.schedule);
           $('.schedules-loading').addClass('hidden');
         });
       },
