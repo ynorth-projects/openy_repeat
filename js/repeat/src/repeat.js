@@ -319,6 +319,7 @@
         var resultTable = [];
         let self = this;
         this.table.forEach(function (item) {
+          item.cancelled = item.name.indexOf('CANCELLED');
           if (self.locations.length > 0 && item && typeof (self.locations) !== 'undefined') {
             // If we are not filtering rooms of this location -- skip it.
             if (self.locations.indexOf(item.location) === -1) {
@@ -441,7 +442,6 @@
       populatePopupClass: function (sessionId) {
         var component = this;
         component.classPopup = {};
-
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
         $('.schedule-dashboard__modal--instructor')
@@ -494,6 +494,17 @@
         $('.schedules-loading').removeClass('hidden');
         $.getJSON(url, function (data) {
           component.instructorPopup.schedule = data;
+          component.instructorPopup.schedule = data.filter(function (item) {
+            item.cancelled = item.name.indexOf('CANCELLED');
+            if (component.locations.length > 0) {
+              return component.locations.includes(item.location);
+            }
+            else {
+              return true;
+            }
+
+          });
+          console.log(component.instructorPopup.schedule);
           $('.schedules-loading').addClass('hidden');
         });
       },

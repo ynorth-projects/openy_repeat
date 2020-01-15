@@ -487,7 +487,7 @@ body.modal-open .top-navs .nav-global{
   .schedule-dashboard__modal--class .location-column {
     flex: 1 1 100%;
   }
-  
+
   .schedules-data__row>div:nth-child(even) {
     text-align: left !important;
   }
@@ -524,8 +524,14 @@ body.modal-open .top-navs .nav-global{
   }
 }
 
-.atcb-link {
+.atcb-link, .atcb-link-cancel  {
   font-size: 14px;
+}
+
+.atcb-link-cancel {
+  color: red;
+  cursor: auto;
+  font-weight: bold;
 }
 
 .schedules-navbar-form {
