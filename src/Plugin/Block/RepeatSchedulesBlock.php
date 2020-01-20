@@ -3,9 +3,12 @@
 namespace Drupal\openy_repeat\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Url;
+use Drupal\openy_repeat\OpenyRepeatRepository;
 
 /**
  * Provides a 'Repeat Schedules' block.
@@ -16,27 +19,55 @@ use Drupal\Core\Url;
  *   category = @Translation("Paragraph Blocks")
  * )
  */
-class RepeatSchedulesBlock extends BlockBase {
+class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Return Location from "Session" node type.
+   * OpenyRepeatRepository.
    *
-   * @return array
+   * @var \Drupal\openy_repeat\OpenyRepeatRepository
    */
-  public function getLocations() {
-    $sql = "SELECT DISTINCT nd.title as location 
-            FROM {node} n
-            INNER JOIN node__field_session_location l ON n.nid = l.entity_id AND l.bundle = 'session'
-            INNER JOIN node_field_data nd ON l.field_session_location_target_id = nd.nid
-            WHERE n.type = 'session'
-            ORDER BY location ASC";
+  protected $repository;
 
-    $connection = \Drupal::database();
-    $query = $connection->query($sql);
+  /**
+   * Constructs a BlockBase object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
+   *   Repository.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, OpenyRepeatRepository $repository) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->setConfiguration($configuration);
+    $this->repository = $repository;
+  }
 
-    $result = $query->fetchCol();
-    natsort($result);
-    return $result;
+  /**
+   * Create.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   ContainerInterface.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return RepeatSchedulesBlock
+   *   RepeatSchedulesBlock.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('openy_repeat.repository')
+    );
   }
 
   /**
@@ -49,12 +80,13 @@ class RepeatSchedulesBlock extends BlockBase {
    */
   public function getCategories(array $nids) {
 
-    $condition = TRUE; // Could feasibly want TRUE under different circumstances
-    if($nids){
-      $condition = "n.nid NOT IN (".implode(',', $nids).")";
+    // Could feasibly want TRUE under different circumstances.
+    $condition = TRUE;
+    if ($nids) {
+      $condition = "n.nid NOT IN (" . implode(',', $nids) . ")";
     }
 
-    $sql = "SELECT title 
+    $sql = "SELECT title
             FROM {node_field_data} n
             WHERE n.type = 'activity'
             AND " . $condition . "
@@ -111,8 +143,8 @@ class RepeatSchedulesBlock extends BlockBase {
           $response->send();
         }
         if ($schedule_excl) {
-          foreach ($schedule_excl as  $item) {
-            $excluded_categories[]  = $item['target_id'];
+          foreach ($schedule_excl as $item) {
+            $excluded_categories[] = $item['target_id'];
           }
         }
       }
@@ -120,7 +152,7 @@ class RepeatSchedulesBlock extends BlockBase {
 
     return [
       '#theme' => 'openy_repeat_schedule_dashboard',
-      '#locations' => $this->getLocations(),
+      '#locations' => $this->repository->getLocations(),
       '#categories' => $this->getCategories($excluded_categories),
       '#checked_locations' => $checked_locations,
       '#checked_categories' => $checked_categories,
@@ -133,10 +165,10 @@ class RepeatSchedulesBlock extends BlockBase {
    * Gets value of paragraph filters field.
    *
    * @param \Drupal\paragraphs\Entity\Paragraph $p
-   *  The paragraph to take data from.
+   *   The paragraph to take data from.
    *
    * @return array
-   *  An associative array of values.
+   *   An associative array of values.
    */
   public static function getFiltersSettings(Paragraph $p) {
     if ($p->field_prgf_repeat_schedule_filt->isEmpty()) {

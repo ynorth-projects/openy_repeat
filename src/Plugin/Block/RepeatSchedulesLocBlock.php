@@ -3,6 +3,9 @@
 namespace Drupal\openy_repeat\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\openy_repeat\OpenyRepeatRepository;
 
 /**
  * Provides a 'Repeat Schedules Locations' block.
@@ -13,24 +16,64 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Paragraph Blocks")
  * )
  */
-class RepeatSchedulesLocBlock extends BlockBase {
+class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * OpenyRepeatRepository.
+   *
+   * @var \Drupal\openy_repeat\OpenyRepeatRepository
+   */
+  protected $repository;
+
+  /**
+   * Constructs a BlockBase object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
+   *   Repository.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, OpenyRepeatRepository $repository) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->setConfiguration($configuration);
+    $this->repository = $repository;
+  }
+
+  /**
+   * Create.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   ContainerInterface.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return RepeatSchedulesLocBlock
+   *   RepeatSchedulesLocBlock.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('openy_repeat.repository')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $sql = "SELECT DISTINCT nd.title as location 
-            FROM {node} n
-            INNER JOIN node__field_session_location l ON n.nid = l.entity_id AND l.bundle = 'session'
-            INNER JOIN node_field_data nd ON l.field_session_location_target_id = nd.nid
-            WHERE n.type = 'session'";
-    $connection = \Drupal::database();
-    $query = $connection->query($sql);
-    $locations = $query->fetchCol();
-
     return [
       '#theme' => 'openy_repeat_schedule_locations',
-      '#locations' => $locations,
+      '#locations' => $this->repository->getLocations(),
     ];
   }
 
