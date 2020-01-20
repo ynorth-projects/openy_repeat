@@ -7,6 +7,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\node\Entity\Node;
+use Drupal\openy_repeat\OpenyRepeatRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -56,6 +57,13 @@ class RepeatController extends ControllerBase {
   protected $dateFormatter;
 
   /**
+   * Open Y Repeat Repository.
+   *
+   * @var OpenyRepeatRepository
+   */
+  protected $repository;
+
+  /**
    * Creates a new RepeatController.
    *
    * @param CacheBackendInterface $cache
@@ -68,13 +76,16 @@ class RepeatController extends ControllerBase {
    *   The EntityTypeManager.
    * @param DateFormatterInterface $date_formatter
    *   The Date formatter.
+   * @param OpenyRepeatRepository $repository
+   *    OpenyRepeatRepository.
    */
-  public function __construct(CacheBackendInterface $cache, Connection $database, QueryFactory $entity_query, EntityTypeManager $entity_type_manager, DateFormatterInterface $date_formatter) {
+  public function __construct(CacheBackendInterface $cache, Connection $database, QueryFactory $entity_query, EntityTypeManager $entity_type_manager, DateFormatterInterface $date_formatter, OpenyRepeatRepository $repository) {
     $this->cache = $cache;
     $this->database = $database;
     $this->entityQuery = $entity_query;
     $this->entityTypeManager = $entity_type_manager;
     $this->dateFormatter = $date_formatter;
+    $this->repository = $repository;
   }
 
   /**
@@ -86,7 +97,8 @@ class RepeatController extends ControllerBase {
       $container->get('database'),
       $container->get('entity.query'),
       $container->get('entity_type.manager'),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('openy_repeat.repository')
     );
   }
 
@@ -578,17 +590,11 @@ class RepeatController extends ControllerBase {
    * Return Location from "Session" node type.
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getLocations() {
-    $sql = "SELECT DISTINCT nd.title as location
-            FROM {node} n
-            INNER JOIN node__field_session_location l ON n.nid = l.entity_id AND l.bundle = 'session'
-            INNER JOIN node_field_data nd ON l.field_session_location_target_id = nd.nid
-            WHERE n.type = 'session'";
-
-    $query = $this->database->query($sql);
-
-    return $query->fetchCol();
+    return $this->repository->getLocations();
   }
 
   /**
