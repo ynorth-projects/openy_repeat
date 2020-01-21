@@ -846,7 +846,7 @@ class RepeatController extends ControllerBase {
             continue;
           }
         }
-        if ($classnames && !in_array($session->name, $classnames)) {
+        if ($classnames && !in_array(trim($session->name), $classnames)) {
           unset($result[$day][$key]);
           continue;
         }
@@ -923,7 +923,7 @@ class RepeatController extends ControllerBase {
             continue;
           }
         }
-        if ($classnames && !in_array($session->name, $classnames)) {
+        if ($classnames && !in_array(trim($session->name), $classnames)) {
           unset($result[$day][$key]);
           continue;
         }
