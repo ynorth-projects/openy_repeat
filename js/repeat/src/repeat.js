@@ -451,7 +451,7 @@
           })
           .on('hidden.bs.modal', function () {
             $('.nav-global').removeClass('hidden-xs');
-            $('body').removeClass('scroll-not');
+            $('body').removeClass('scroll-not').addClass('pr-none');
           });
 
         $('.schedule-dashboard__modal--class')
@@ -459,7 +459,7 @@
             $('body').addClass('scroll-not');
           })
           .on('hidden.bs.modal', function () {
-            $('body').removeClass('scroll-not');
+            $('body').removeClass('scroll-not').addClass('pr-none');
           });
 
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
