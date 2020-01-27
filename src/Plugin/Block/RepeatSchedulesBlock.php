@@ -3,11 +3,14 @@
 namespace Drupal\openy_repeat\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Url;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\openy_repeat\OpenyRepeatRepository;
 
 /**
@@ -22,14 +25,35 @@ use Drupal\openy_repeat\OpenyRepeatRepository;
 class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The database object.
+   *
+   * @var object
+   */
+  protected $database;
+
+  /**
    * OpenyRepeatRepository.
    *
    * @var \Drupal\openy_repeat\OpenyRepeatRepository
    */
   protected $repository;
+  /**
+   * The route match object.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
 
   /**
-   * Constructs a BlockBase object.
+   * The current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $request;
+
+
+  /**
+   * Constructs a new RepeatSchedulesBlock object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -37,37 +61,57 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database service.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
    * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
    *   Repository.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, OpenyRepeatRepository $repository) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, RouteMatchInterface $route_match, RequestStack $request_stack, OpenyRepeatRepository $repository) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->setConfiguration($configuration);
+    $this->database = $database;
+    $this->routeMatch = $route_match;
+    $this->request = $request_stack->getCurrentRequest();
     $this->repository = $repository;
   }
 
+
   /**
-   * Create.
-   *
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *   ContainerInterface.
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   *
-   * @return RepeatSchedulesBlock
-   *   RepeatSchedulesBlock.
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('database'),
+      $container->get('current_route_match'),
+      $container->get('request_stack'),
       $container->get('openy_repeat.repository')
     );
+  }
+
+  /**
+   * Return Location from "Session" node type.
+   *
+   * @return array
+   */
+  public function getLocations() {
+
+    $query = $this->database->select('node' , 'n');
+    $query->join('node__field_session_location', 'l', "n.nid = l.entity_id AND l.bundle = 'session'");
+    $query->join('node_field_data', 'nfd', 'l.field_session_location_target_id = nfd.nid');
+    $query->condition('n.type', 'session');
+    $query->fields('nfd', ['title']);
+    $query->orderBy('nfd.title');
+    $query->addTag('repeat_schedules_block_locations');
+    $result = $query->distinct()->execute()->fetchCol();
+
+    natsort($result);
+    return $result;
   }
 
   /**
@@ -80,22 +124,17 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function getCategories(array $nids) {
 
-    // Could feasibly want TRUE under different circumstances.
-    $condition = TRUE;
+    $query = $this->database->select('node_field_data', 'nfd');
+    $query->fields('nfd', ['title']);
+    $query->condition('type', 'activity');
+    $query->condition('status', 1);
     if ($nids) {
-      $condition = "n.nid NOT IN (" . implode(',', $nids) . ")";
+      $query->condition('nid', $nids, 'NOT IN');
     }
+    $query->orderBy('title');
+    $query->addTag('repeat_schedules_block_categories');
+    $result = $query->execute()->fetchCol();
 
-    $sql = "SELECT title
-            FROM {node_field_data} n
-            WHERE n.type = 'activity'
-            AND " . $condition . "
-            AND n.status = '1'
-            ORDER BY title ASC";
-
-    $connection = \Drupal::database();
-    $query = $connection->query($sql);
-    $result = $query->fetchCol();
     natsort($result);
     return $result;
   }
@@ -104,8 +143,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function build() {
-    $request_stack = \Drupal::service('request_stack');
-    $query = $request_stack->getCurrentRequest()->query;
+    $query = $this->request->query;
     $locations = $query->get('locations');
     $categories = $query->get('categories');
     $excluded_categories = [];
@@ -118,7 +156,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
       $checked_locations = explode(',', $locations);
     }
     // Find repeat_schedules paragraph.
-    if (!$node = \Drupal::routeMatch()->getParameter('node')) {
+    if (!$node = $this->routeMatch->getParameter('node')) {
       return [];
     }
     $paragraphs = $node->field_content->referencedEntities();
@@ -165,10 +203,10 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    * Gets value of paragraph filters field.
    *
    * @param \Drupal\paragraphs\Entity\Paragraph $p
-   *   The paragraph to take data from.
+   *  The paragraph to take data from.
    *
    * @return array
-   *   An associative array of values.
+   *  An associative array of values.
    */
   public static function getFiltersSettings(Paragraph $p) {
     if ($p->field_prgf_repeat_schedule_filt->isEmpty()) {

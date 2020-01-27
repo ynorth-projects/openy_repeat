@@ -104,7 +104,7 @@
       var component = this;
       // If there are any exclusions available from settings.
       var exclusionSettings = window.OpenY.field_prgf_repeat_schedule_excl || [];
-      exclusionSettings.forEach(function (item) {
+      exclusionSettings.forEach((item) => {
         component.categoriesExcluded.push(item.title);
       });
 
@@ -112,13 +112,13 @@
       var limitLocations = window.OpenY.field_prgf_repeat_loc || [];
       if (limitLocations && limitLocations.length > 0) {
         // If we limit to one location. i.e. Andover from GroupExPro
-        if (limitLocations.length == 1) {
+        if (limitLocations.length === 1) {
           component.locations.push(limitLocations[0].title);
           $('.form-group-location').parent().hide();
           $('.location-column').remove();
         }
         else {
-          limitLocations.forEach(function (element) {
+          limitLocations.forEach((element) =>  {
             component.locationsLimit.push(element.title);
           });
 
@@ -135,13 +135,13 @@
       var limitCategories = window.OpenY.field_prgf_repeat_schedule_categ || [];
       if (limitCategories && limitCategories.length > 0) {
         // If we limit to one category. i.e. GroupExercises from GroupExPro
-        if (limitCategories.length == 1) {
+        if (limitCategories.length === 1) {
           component.categories.push(limitCategories[0].title);
           $('.form-group-category').parent().hide();
           $('.category-column').remove();
         }
         else {
-          limitCategories.forEach(function (element) {
+          limitCategories.forEach((element) => {
             component.categoriesLimit.push(element.title);
           });
 
@@ -263,7 +263,7 @@
       },
       roomFilters: function () {
         var availableRooms = [];
-        this.table.forEach(function (element) {
+        this.table.forEach((element) => {
           if (typeof availableRooms[element.location] === 'undefined') {
             availableRooms[element.location] = [];
           }
@@ -273,8 +273,8 @@
         });
 
         var resultRooms = [];
-        this.locations.forEach(function (location) {
-          if (typeof availableRooms[location] != 'undefined') {
+        this.locations.forEach((location) => {
+          if (typeof availableRooms[location] !== 'undefined') {
             availableRooms[location] = Object.keys(availableRooms[location]);
             if (availableRooms[location].length > 0) {
               resultRooms[location] = availableRooms[location].sort();
@@ -630,6 +630,27 @@
         var diff = date.diff(now, 'days');
 
         return diff < (limit - 1);
+      },
+      showAddToCalendar: function (index, selector) {
+        $(selector + " .atcb-link").each(function (i) {
+          if (index == i) {
+            if (!$(this).hasClass('open')) {
+              $(".atcb-link").removeClass('open').parent().find('ul').removeClass('active').css('visibility', 'hidden !important');
+              $(this).addClass('open').parent().find('ul').addClass('active').css('visibility', 'visible !important').find('.atcb-item-link:eq(0)').focus();
+            }
+            else {
+              $(this).removeClass('open').parent().find('ul').removeClass('active').css('visibility', 'hidden !important');
+            }
+          }
+        });
+      },
+      showEndTime: function () {
+        if (window.OpenY.field_prgf_repeat_schedule_end && window.OpenY.field_prgf_repeat_schedule_end.length) {
+          return window.OpenY.field_prgf_repeat_schedule_end[0].value || 0;
+        }
+        else {
+          return 0;
+        }
       }
     },
     updated: function () {

@@ -10,6 +10,10 @@
   border: 0;
 }
 
+.schedule-dashboard__arrow:hover {
+  opacity: .7;
+}
+
 /* dashboard main date heading */
 .schedules-data {
   border-top: 1px solid #636466;
@@ -377,6 +381,13 @@ body.modal-open .top-navs .nav-global{
 
 .schedule-dashboard__modal--body .header-border {
   border-bottom: 1px solid #636466;
+  padding: 0 20px;
+}
+
+@media (min-width: 992px) {
+  .schedule-dashboard__modal--body .header-border {
+    padding: 0 24px;
+  }
 }
 
 .schedules-data__row:nth-child(even) {
@@ -610,6 +621,19 @@ body.modal-open .top-navs .nav-global{
 .schedules-data__header>div,
 .schedules-data__row>div {
   flex: 0 1 auto;
+}
+
+
+.schedules-data__row .register-column a {
+  background: #92278f;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  padding-top: 10px;
+}
+
+.schedules-data__row .register-column a:hover {
+  background: #92278f;
 }
 
 .btn-schedule-pdf-generate .pdf-link:after {
