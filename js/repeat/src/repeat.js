@@ -1,3 +1,6 @@
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
+
 (function ($) {
 
   if (!$('.schedule-dashboard__wrapper').length) {
@@ -397,7 +400,7 @@
             categories: this.categories.join(','),
             cn: this.className.join(',')
           }
-        });
+        }).catch(err => {});
       },
       toggleTab: function (filter) {
         var component = this;
