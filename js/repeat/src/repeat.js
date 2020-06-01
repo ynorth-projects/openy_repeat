@@ -344,6 +344,14 @@ Vue.use(VueRouter);
           resultTable.push(item);
         });
 
+        // Hide cancelled sessions.
+        resultTable = resultTable.filter(function (item) {
+          if (item.name.indexOf('CANCELLED') >= 0) {
+            return false;
+          }
+          return true;
+        })
+
         return resultTable;
       },
       pagedTable: function () {
