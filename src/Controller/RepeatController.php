@@ -860,6 +860,7 @@ class RepeatController extends ControllerBase {
           'room' => $session->room,
           'dates' => $date_keys,
           'url' => $session->register_url,
+          'url_text' => $session->register_text,
         ];
       }
     }

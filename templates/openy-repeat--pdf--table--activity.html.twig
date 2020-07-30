@@ -38,9 +38,11 @@
           <tr>
             <td>
               <strong>{{ item.name }}</strong> <br/> {{ item.room }}
-              {% if item.url %}
+              {% if item.url and item.url_text%}
                 <br/>
-                <a href="{{ item.url }}">Register</a>
+                <a href="{{ item.url }}">
+                  {{item.url_text}}
+                </a>
               {% endif %}
             </td>
             {% for key, item in item.dates %}
