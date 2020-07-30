@@ -858,7 +858,8 @@ class RepeatController extends ControllerBase {
         $formatted_result['content'][$session->location][$session->name . $session->room] = [
           'name' => $session->name,
           'room' => $session->room,
-          'dates' => $date_keys
+          'dates' => $date_keys,
+          'url' => $session->register_url,
         ];
       }
     }
