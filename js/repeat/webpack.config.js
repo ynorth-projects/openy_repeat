@@ -17,6 +17,9 @@ module.exports = {
     path: path.resolve('../'),
     filename: 'repeat.js'
   },
+  externals: {
+    'vue-router': 'VueRouter',
+  },
   module: {
     rules: [
       {
