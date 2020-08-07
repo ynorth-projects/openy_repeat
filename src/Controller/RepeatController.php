@@ -767,6 +767,8 @@ class RepeatController extends ControllerBase {
     $location = !empty($parameters['locations']) ? $parameters['locations'] : '0';
     $date = !empty($parameters['date']) ? $parameters['date'] : '';
     $mode = !empty($parameters['mode']) ? $parameters['mode'] : 'activity';
+    $hideInstructor = !empty($parameters['hide-instructor']) ? $parameters['hide-instructor'] : 0;
+    $hidePrograms = !empty($parameters['hide-programs']) ? $parameters['hide-programs'] : 0;
 
     if (empty($date)) {
       $date = time();
@@ -794,7 +796,7 @@ class RepeatController extends ControllerBase {
     }
     // Group by activity.
     if ($mode == 'activity') {
-      $result = $this->groupByActivity($result, $rooms, $classnames);
+      $result = $this->groupByActivity($result, $rooms, $hideInstructor, $hidePrograms, $classnames);
       $theme = 'openy_repeat__pdf__table__activity';
     }
     // Group by day.
@@ -814,7 +816,7 @@ class RepeatController extends ControllerBase {
   /**
    * Group results by Activity & Location.
    */
-  public function groupByActivity($result, $rooms, $classnames = []) {
+  public function groupByActivity($result, $rooms, $hideInstructor, $hidePrograms, $classnames = []) {
     if (empty($result)) {
       return FALSE;
     }
@@ -831,8 +833,9 @@ class RepeatController extends ControllerBase {
     $last = DrupalDateTime::createFromFormat('Y-m-d', $last)->format('F jS');
     $formatted_result['header'] = [
       'dates' => $first . ' - ' . $last,
+      'hide_instructor' => $hideInstructor,
+      'hide_programs' => $hidePrograms,
     ];
-
     // Create activities array pass weekdays array to each.
     foreach ($result as $day => $data) {
       foreach ($data as $key => $session) {
