@@ -1,5 +1,5 @@
 openy_repeat:
-  version: 0.1
+  version: 0.2
   js:
     js/repeat.js: {}
   css:

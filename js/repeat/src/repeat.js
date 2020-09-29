@@ -96,6 +96,7 @@ Vue.use(VueRouter);
         name: '',
         schedule: []
       },
+      instructorPopup_schedule: [],
       filterTabs: {
         date: 0,
         category: 1,
@@ -210,6 +211,9 @@ Vue.use(VueRouter);
         component.runAjaxRequest();
       });
       component.$watch('instructorPopup', function () {
+        component.runAjaxRequest();
+      });
+      component.$watch("instructorPopup_schedule", function () {
         component.runAjaxRequest();
       });
     },
@@ -514,8 +518,8 @@ Vue.use(VueRouter);
 
         $('.schedules-loading').removeClass('hidden');
         $.getJSON(url, function (data) {
-          component.instructorPopup.schedule = data;
-          component.instructorPopup.schedule = data.filter(function (item) {
+          component.instructorPopup_schedule = data;
+          component.instructorPopup_schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
             if (component.locations.length > 0) {
               return component.locations.includes(item.location);
