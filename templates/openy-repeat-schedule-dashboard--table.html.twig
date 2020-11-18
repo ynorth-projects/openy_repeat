@@ -71,7 +71,7 @@
 
               </div>
 
-              <div class="col-xs-6 col-md-3 col-sm-3">
+              <div class="col-xs-6 col-md-2 col-sm-2">
                 {# instructor #}
                 <div v-cloak class="instructor-column">
                   <a class="schedule-dashboard__modal--instructor-link" role="button"
@@ -80,7 +80,7 @@
                 </div>
               </div>
 
-              <div class="col-xs-6 col-md-3 col-sm-3">
+              <div class="col-xs-6 col-md-2 col-sm-2">
                 {# add to calendar #}
                 <div v-cloak class="calendar-column">
                   <div v-if="item.cancelled >= 0" style="text-align: center;">
@@ -103,7 +103,7 @@
               <div class="col-xs-6 col-md-2 col-sm-2">
                 {# register btn #}
                 <div v-cloak class="register-column" v-if="item.register_url">
-                  <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                  <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">${ item.register_text }</a>
                 </div>
               </div>
             </div>
