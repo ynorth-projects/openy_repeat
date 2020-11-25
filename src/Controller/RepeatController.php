@@ -174,6 +174,8 @@ class RepeatController extends ControllerBase {
     $query->rightJoin('repeat_event', 're', 're.session = n.nid');
     $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
     $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
+    $query->leftJoin('node__field_productid', 'pids', 'n.nid = pids.entity_id');
+    $query->addField('pids', 'field_productid_value', 'productid');
     $query->addField('n', 'nid');
     $query->addField('nd', 'title', 'location');
     $query->addField('nds', 'title', 'name');
@@ -303,6 +305,8 @@ class RepeatController extends ControllerBase {
     $query->rightJoin('repeat_event', 're', 're.session = n.nid');
     $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
     $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
+    $query->leftJoin('node__field_productid', 'pids', 'n.nid = pids.entity_id');
+    $query->addField('pids', 'field_productid_value', 'productid');
     $query->addField('n', 'nid');
     $query->addField('nd', 'title', 'location');
     $query->addField('nds', 'title', 'name');
@@ -477,9 +481,11 @@ class RepeatController extends ControllerBase {
     $query->rightJoin('repeat_event', 're', 're.session = n.nid');
     $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
     $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
+    $query->leftJoin('node__field_productid', 'pids', 'n.nid = pids.entity_id');
     $query->addField('n', 'nid');
     $query->addField('nd', 'title', 'location');
     $query->addField('nds', 'title', 'name');
+    $query->addField('pids', 'field_productid_value', 'productid');
     $query->fields('re', [
       'class',
       'session',

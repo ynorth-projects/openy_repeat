@@ -32,6 +32,11 @@
   }
 }
 
+.register-btn[disabled] {
+   pointer-events: none;
+   cursor: default;
+}
+
 .schedule-dashboard__content--header .date {
   margin: auto 0;
   color: #231f20;

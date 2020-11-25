@@ -72,6 +72,7 @@ Vue.use(VueRouter);
       itemsPerPage: 25,
       currentPage: 1,
       table: [],
+      spots: [],
       date: '',
       room: [],
       locations: [],
@@ -122,7 +123,7 @@ Vue.use(VueRouter);
           $('.location-column').remove();
         }
         else {
-          limitLocations.forEach((element) =>  {
+          limitLocations.forEach((element) => {
             component.locationsLimit.push(element.title);
           });
 
@@ -319,7 +320,7 @@ Vue.use(VueRouter);
           if (typeof filterByRoom[locationName] === 'undefined') {
             filterByRoom[locationName] = [];
           }
-            filterByRoom[locationName].push(roomName);
+          filterByRoom[locationName].push(roomName);
         });
 
         let locationsToFilter = Object.keys(filterByRoom);
@@ -327,6 +328,10 @@ Vue.use(VueRouter);
         let self = this;
         this.table.forEach(function (item) {
           item.cancelled = item.name.indexOf('CANCELLED');
+          item.spottext = null
+          if (item.productid && self.spots[item.productid]) {
+            item.spottext = self.spots[item.productid].toLowerCase()
+          }
           if (self.locations.length > 0 && item && typeof (self.locations) !== 'undefined') {
             // If we are not filtering rooms of this location -- skip it.
             if (self.locations.indexOf(item.location) === -1) {
@@ -344,7 +349,10 @@ Vue.use(VueRouter);
           if (self.className.length > 0 && self.className.indexOf(item.class_info.title) === -1) {
             return;
           }
-
+          item.spottext = null
+          if (item.productid && self.spots[item.productid]) {
+            item.spottext = self.spots[item.productid].toLowerCase()
+          }
           resultTable.push(item);
         });
 
@@ -405,6 +413,10 @@ Vue.use(VueRouter);
           component.isLoading = false;
         });
 
+        $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
+          component.spots = response;
+        });
+
         router.push({
           query: {
             date: date,
@@ -412,7 +424,7 @@ Vue.use(VueRouter);
             categories: this.categories.join(','),
             cn: this.className.join(',')
           }
-        }).catch(err => {});
+        }).catch(err => { });
       },
       toggleTab: function (filter) {
         var component = this;
@@ -456,6 +468,7 @@ Vue.use(VueRouter);
       },
       populatePopupClass: function (sessionId) {
         var component = this;
+        var date = moment(this.date).format('YYYY-MM-DD');
         component.classPopup = {};
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
@@ -483,8 +496,15 @@ Vue.use(VueRouter);
         $.getJSON(bySessionUrl, function (data) {
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
+          $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
+            component.spots = response;
+          });
           component.classPopup.schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
+            item.spottext = null
+            if (item.productid && component.spots[item.productid]) {
+              item.spottext = component.spots[item.productid].toLowerCase()
+            }
             if (component.locations.length > 0) {
               return component.locations.includes(item.location);
             }
@@ -498,6 +518,7 @@ Vue.use(VueRouter);
       },
       populatePopupInstructor: function (instructor) {
         var component = this;
+        var date = moment(this.date).format('YYYY-MM-DD');
         component.instructorPopup = {};
         component.instructorPopup.name = instructor;
 
@@ -519,8 +540,15 @@ Vue.use(VueRouter);
         $('.schedules-loading').removeClass('hidden');
         $.getJSON(url, function (data) {
           component.instructorPopup_schedule = data;
+          $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
+            component.spots = response;
+          });
           component.instructorPopup_schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
+            item.spottext = null
+            if (item.productid && component.spots[item.productid]) {
+              item.spottext = component.spots[item.productid].toLowerCase()
+            }
             if (component.locations.length > 0) {
               return component.locations.includes(item.location);
             }
@@ -535,10 +563,12 @@ Vue.use(VueRouter);
       backOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(-1, 'day');
+        this.spots = {}
       },
       forwardOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(1, 'day');
+        this.spots = {}
       },
       addToCalendarDate: function (dateTime) {
         var dateTimeArray = dateTime.split(' ');
@@ -627,7 +657,7 @@ Vue.use(VueRouter);
 
       scrollToTop: function () {
         if (screen.width <= 991) {
-          $('html, body').animate({scrollTop: $('.schedule-dashboard__content').offset().top - 200}, 500);
+          $('html, body').animate({ scrollTop: $('.schedule-dashboard__content').offset().top - 200 }, 500);
         }
       },
       showBackArrow: function () {
