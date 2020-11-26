@@ -39,8 +39,8 @@
   }
 
   .schedule-dashboard__modal--class .addtocalendar {
-    float: left;
-    padding-left: 15px;
+    float: none;
+    padding-left: 0;
   }
 
   .schedule-dashboard__modal--body h4 {
@@ -80,8 +80,8 @@
   }
 
   .schedule-dashboard__modal--instructor .calendar-column .addtocalendar {
-    padding-left: 15px;
-    float: left;
+    padding-left: 0;
+    float: none;
   }
 
   .schedules-data__row span{
