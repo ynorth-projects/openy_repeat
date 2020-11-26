@@ -275,7 +275,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-sm-12 col-xs-12">
+            <div class="col-md-2 col-sm-12 col-xs-12">
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
@@ -283,7 +283,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-xs-6">
               {# instructor #}
               <div v-cloak class="instructor-column">
                 <a class="schedule-dashboard__modal--instructor-link" role="button"
@@ -319,23 +319,26 @@
             </div>
 
             {# register btn #}
-            <div v-cloak class="register-column" v-if="item.register_url">
-                  <template v-if="item.spottext && item.spottext.search('class full') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
-                      FULL
-                    </a>
-                  </template>
-                  <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      WAITLIST ONLY
-                    </a>
-                  </template>
-                  <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      REGISTER
-                    </a>
-                  </template>
+            <div class="col-md-2 col-sm-6 col-xs-6">
+              <div v-cloak class="register-column" v-if="item.register_url">
+                    <template v-if="item.spottext && item.spottext.search('class full') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
+                        FULL
+                      </a>
+                    </template>
+                    <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        WAITLIST ONLY
+                      </a>
+                    </template>
+                    <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        REGISTER
+                      </a>
+                    </template>
+              </div>
             </div>
+
           </div>
 
           <div class="schedules-loading">
@@ -401,7 +404,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+            <div class="col-lg-2 col-md-3 hidden-sm hidden-xs">
               {# class #}
               <div class="class-column" v-cloak>
                 <strong><a class="schedule-dashboard__modal--class-link" role="button"
@@ -411,7 +414,7 @@
               </div>
             </div>
 
-            <div class="col-md-3 col-sm-12 col-xs-12">
+            <div class="col-md-2 col-sm-12 col-xs-12">
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
@@ -445,22 +448,24 @@
             </div>
 
             {# register btn #}
-            <div v-cloak class="register-column" v-if="item.register_url">
-                  <template v-if="item.spottext && item.spottext.search('class full') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
-                      FULL
-                    </a>
-                  </template>
-                  <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      WAITLIST ONLY
-                    </a>
-                  </template>
-                  <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      REGISTER
-                    </a>
-                  </template>
+            <div class="col-md-2 col-sm-12 col-xs-12">
+              <div v-cloak class="register-column" v-if="item.register_url">
+                    <template v-if="item.spottext && item.spottext.search('class full') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
+                        FULL
+                      </a>
+                    </template>
+                    <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        WAITLIST ONLY
+                      </a>
+                    </template>
+                    <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        REGISTER
+                      </a>
+                    </template>
+              </div>
             </div>
           </div>
 
