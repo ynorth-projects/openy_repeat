@@ -272,7 +272,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
@@ -280,7 +280,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               {# instructor #}
               <div v-cloak class="instructor-column">
                 <a class="schedule-dashboard__modal--instructor-link" role="button"
@@ -316,7 +316,7 @@
             </div>
 
             {# register btn #}
-            <div v-if="item.register_url" class="col-md-2 col-sm-12 col-xs-12">
+            <div v-if="false && item.register_url" class="col-md-2 col-sm-12 col-xs-12">
               <div v-cloak class="register-column" v-if="item.register_url">
                 <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                   REGISTER
@@ -399,7 +399,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               {# location #}
               <div v-cloak class="location-column">
                 <strong>${ item.location }</strong>
@@ -407,7 +407,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-xs-12">
               {# add to calendar #}
               <div v-cloak class="calendar-column">
                 <div v-if="item.cancelled >= 0" style="text-align: center;">
@@ -433,7 +433,7 @@
             </div>
 
             {# register btn #}
-            <div v-if="item.register_url" class="col-md-2 col-sm-12 col-xs-12">
+            <div v-if="false && item.register_url" class="col-md-2 col-sm-12 col-xs-12">
               <div v-cloak class="register-column" v-if="item.register_url">
                 <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                   REGISTER

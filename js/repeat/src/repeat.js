@@ -496,15 +496,8 @@ Vue.use(VueRouter);
         $.getJSON(bySessionUrl, function (data) {
           $('.schedules-loading').removeClass('hidden');
           component.classPopup = data[0]['class_info'];
-          $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
-            component.spots = response;
-          });
           component.classPopup.schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
-            item.spottext = null
-            if (item.productid && component.spots[item.productid]) {
-              item.spottext = component.spots[item.productid].toLowerCase()
-            }
             if (component.locations.length > 0) {
               return component.locations.includes(item.location);
             }
@@ -540,15 +533,8 @@ Vue.use(VueRouter);
         $('.schedules-loading').removeClass('hidden');
         $.getJSON(url, function (data) {
           component.instructorPopup_schedule = data;
-          $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
-            component.spots = response;
-          });
           component.instructorPopup_schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
-            item.spottext = null
-            if (item.productid && component.spots[item.productid]) {
-              item.spottext = component.spots[item.productid].toLowerCase()
-            }
             if (component.locations.length > 0) {
               return component.locations.includes(item.location);
             }

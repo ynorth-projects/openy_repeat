@@ -225,6 +225,8 @@ class RepeatManager implements SessionInstanceManagerInterface {
       $register_text = !empty($reg_link[0]['title']) ? $reg_link[0]['title'] : t('Register');
     }
 
+    $productid = $session->field_productid->value;
+
     // All references are in the chain, return data.
     return [
       'title2' => $session->label(),
@@ -240,6 +242,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
       'max_age' => $session->field_session_max_age->value,
       'instructor' => $instructor,
       'room' => $room,
+      'productid' => $productid,
       'register_url' => !empty($register_url) ? $register_url : NULL,
       'register_text' => !empty($register_text) ? $register_text : NULL,
     ];
