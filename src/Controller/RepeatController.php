@@ -262,7 +262,6 @@ class RepeatController extends ControllerBase {
       'register_text',
       'duration',
       'productid',
-      'availability',
     ]);
     $query->addField('re', 'start', 'start_timestamp');
     $query->addField('re', 'end', 'end_timestamp');
