@@ -353,9 +353,6 @@ class RepeatController extends ControllerBase {
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
-      if (!empty($result[$key]->register_url)) {
-        $result[$key]->register_url .= '/' . $month . '/' . $day . '/' . $year;
-      }
     }
 
     usort($result, function($item1, $item2){
@@ -364,6 +361,8 @@ class RepeatController extends ControllerBase {
       }
       return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
     });
+
+    $this->moduleHandler()->alter('openy_repeat_results', $result, $request);
 
     return $result;
   }
