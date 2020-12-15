@@ -205,31 +205,9 @@ class RepeatController extends ControllerBase {
   }
 
   /**
-   * Get weekday by its number.
-   *
-   * @param string $weekday
-   *   Weekday number.
-   *
-   * @return mixed
-   *   Weekday name.
-   */
-  private function getClassDay($weekday) {
-    $map = [
-      1 => 'Monday',
-      2 => 'Tuesday',
-      3 => 'Wednesday',
-      4 => 'Thursday',
-      5 => 'Friday',
-      6 => 'Saturday',
-      7 => 'Sunday'
-    ];
-    return $map[$weekday];
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function getData($request, $location, $date, $category, $instructor='', $class='') {
+  public function getData($request, $location, $date, $category, $instructor = '', $class = '') {
     if (empty($date)) {
       $date = date('Y-m-d');
     }
@@ -361,7 +339,7 @@ class RepeatController extends ControllerBase {
       return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
     });
 
-    $this->moduleHandler()->alter('openy_repeat_results', $result, $request);
+    $this->moduleHandler()->alter('openy_repeat_results', $result, $request, $date);
 
     return $result;
   }

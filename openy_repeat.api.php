@@ -10,7 +10,7 @@
  *
  * Example: GroupExPro modifies links to register for activity.
  */
-function hook_openy_repeat_results_alter(&$result, $request) {
+function hook_openy_repeat_results_alter(&$result, $request, $date = NULL) {
 
 }
 

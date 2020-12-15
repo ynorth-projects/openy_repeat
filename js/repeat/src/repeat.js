@@ -72,7 +72,6 @@ Vue.use(VueRouter);
       itemsPerPage: 25,
       currentPage: 1,
       table: [],
-      spots: [],
       date: '',
       room: [],
       locations: [],
@@ -328,10 +327,6 @@ Vue.use(VueRouter);
         let self = this;
         this.table.forEach(function (item) {
           item.cancelled = item.name.indexOf('CANCELLED');
-          item.spottext = null
-          if (item.productid && self.spots[item.productid]) {
-            item.spottext = self.spots[item.productid].toLowerCase()
-          }
           if (self.locations.length > 0 && item && typeof (self.locations) !== 'undefined') {
             // If we are not filtering rooms of this location -- skip it.
             if (self.locations.indexOf(item.location) === -1) {
@@ -348,10 +343,6 @@ Vue.use(VueRouter);
           // Check if class fits classname filter.
           if (self.className.length > 0 && self.className.indexOf(item.class_info.title) === -1) {
             return;
-          }
-          item.spottext = null
-          if (item.productid && self.spots[item.productid]) {
-            item.spottext = self.spots[item.productid].toLowerCase()
           }
           resultTable.push(item);
         });
@@ -411,10 +402,6 @@ Vue.use(VueRouter);
             $('.schedules-empty_results').removeClass('hidden');
           }
           component.isLoading = false;
-        });
-
-        $.getJSON('/api/ynorth-gxp-spots-proxy/' + date, function (response) {
-          component.spots = response;
         });
 
         router.push({
@@ -549,12 +536,10 @@ Vue.use(VueRouter);
       backOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(-1, 'day');
-        this.spots = {}
       },
       forwardOneDay: function () {
         var date = new Date(this.date).toISOString();
         this.date = moment(date).add(1, 'day');
-        this.spots = {}
       },
       addToCalendarDate: function (dateTime) {
         var dateTimeArray = dateTime.split(' ');
@@ -725,7 +710,7 @@ Vue.use(VueRouter);
         $('.btn-schedule-pdf-generate').attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + pdf_query);
       });
     },
-    delimiters: ["${","}"]
+    delimiters: ["${", "}"]
   });
 
 })(jQuery);
