@@ -27,7 +27,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * The database object.
    *
-   * @var object
+   * @var \Drupal\Core\Database\Connection
    */
   protected $database;
 
@@ -123,8 +123,10 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    * @return array
    */
   public function getCategories(array $nids) {
-
+    $config = \Drupal::service('config.factory')->get('openy_gxp.settings');
     $query = $this->database->select('node_field_data', 'nfd');
+    $query->leftJoin('node__field_activity_category', 'sc', 'sc.entity_id = nfd.nid');
+    $query->condition('sc.field_activity_category_target_id', $config->get('activity'));
     $query->fields('nfd', ['title']);
     $query->condition('type', 'activity');
     $query->condition('status', 1);
