@@ -141,6 +141,7 @@ Vue.use(VueRouter);
         // If we limit to one category. i.e. GroupExercises from GroupExPro
         if (limitCategories.length === 1) {
           component.categories.push(limitCategories[0].title);
+          component.categoriesLimit.push(limitCategories[0].title);
           $('.form-group-category').parent().hide();
           $('.category-column').remove();
         }
@@ -386,7 +387,7 @@ Vue.use(VueRouter);
         if (this.categoriesExcluded.length > 0) {
           query.push('excl=' + encodeURIComponent(this.categoriesExcluded.join(',')));
         }
-        if (this.categoriesLimit.length > 1) {
+        if (this.categoriesLimit.length >= 1) {
           query.push('limit=' + encodeURIComponent(this.categoriesLimit.join(',')));
         }
 
