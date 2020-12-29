@@ -634,7 +634,8 @@ Vue.use(VueRouter);
       },
       showBackArrow: function () {
         var diff = moment().diff(moment(this.date), 'hours');
-        return diff < 0;
+        var result = this.isLoading ? false : diff < 0;
+        return result;
       },
       showForwardArrow: function () {
         var limit = drupalSettings.openy_repeat.calendarLimitDays;
@@ -645,8 +646,9 @@ Vue.use(VueRouter);
         var date = moment(this.date);
         var now = moment();
         var diff = date.diff(now, 'days');
+        var result = this.isLoading ? false : diff < (limit - 1);
 
-        return diff < (limit - 1);
+        return result;
       },
       showAddToCalendar: function (index, selector) {
         $(selector + " .atcb-link").each(function (i) {
