@@ -161,9 +161,7 @@ Vue.use(VueRouter);
 
       var dateGet = this.$route.query.date;
       if (dateGet) {
-        var date = new Date(dateGet);
-
-        this.date = date.toISOString();
+        this.date = moment(dateGet).toISOString();
       }
       else {
         this.date = moment().toISOString();

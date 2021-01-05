@@ -156,10 +156,10 @@ class RepeatController extends ControllerBase {
   public function ajaxSchedulerByInstructor(Request $request, $instructor, $location, $date) {
     $result = [];
     $date = new \DateTime('now');
-    $date->setTimezone(date_default_timezone_get());
-    $date->setTime(0,0,0);
+    $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+    $date->setTime(0, 0, 0);
     foreach (range(0, self::SCHEDULER_DAYS_LIMIT) as $index) {
-      $date_string = $date->format(\DateTime::ATOM);
+      $date_string = $date->format('Y-m-d');
       $data = $this->getData($request, $location, $date_string, $category = 0, $instructor);
       foreach ($data as $schedule) {
         $schedule->short_date = $date->format('M j');
@@ -189,10 +189,10 @@ class RepeatController extends ControllerBase {
   public function ajaxSchedulerByClass(Request $request, $class, $location, $date) {
     $result = [];
     $date = new \DateTime('now');
-    $date->setTimezone(date_default_timezone_get());
+    $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     $date->setTime(0, 0, 0);
     foreach (range(0, self::SCHEDULER_DAYS_LIMIT) as $index) {
-      $date_string = $date->format(\DateTime::ATOM);
+      $date_string = $date->format('Y-m-d');
       $data = $this->getData($request, $location, $date_string, $category = 0, '', $class);
       foreach ($data as $schedule) {
         $schedule->short_date = $date->format('M j');
@@ -208,20 +208,26 @@ class RepeatController extends ControllerBase {
    * {@inheritdoc}
    */
   public function getData($request, $location, $date, $category, $instructor = '', $class = '') {
-    if (empty($date)) {
-      $date = date('Y-m-d');
+    $initDate = new \DateTime('now');
+    $initDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+    $initDate->setTime(0, 0, 0);
+    if (!empty($date)) {
+      $initDate = \DateTime::createFromFormat('Y-m-d', $date);
+      $initDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+      $initDate->setTime(0, 0, 0);
     }
-    $date = strtotime($date);
 
-    $year = date('Y', $date);
-    $month = date('m', $date);
-    $day = date('d', $date);
-    $week = date('W', $date);
-    $weekday = date('N', $date);
+    $year = $initDate->format('Y');
+    $month = $initDate->format('m');
+    $day = $initDate->format('d');
+    $week = $initDate->format('W');
+    $weekday = $initDate->format('N');
 
-    $timestamp_start = $date;
+    $timestamp_start = $initDate->getTimestamp();
     // Next day.
-    $timestamp_end = $date + 24 * 60 * 60;
+    $nextDay = clone $initDate;
+    $nextDay->modify('+1 day');
+    $timestamp_end = $nextDay->getTimestamp();
 
     $query = $this->database->select('node', 'n');
     $query->rightJoin('repeat_event', 're', 're.session = n.nid');
@@ -339,7 +345,7 @@ class RepeatController extends ControllerBase {
       return (int) $item1->time_start_sort < (int) $item2->time_start_sort ? -1 : 1;
     });
 
-    $this->moduleHandler()->alter('openy_repeat_results', $result, $request, $date);
+    $this->moduleHandler()->alter('openy_repeat_results', $result, $request, $timestamp_start);
 
     return $result;
   }
