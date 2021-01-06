@@ -551,7 +551,7 @@ class RepeatController extends ControllerBase {
     // Create weekly schedule by getting results for every weekday.
     for ($i = 1; $i <= 7; $i++) {
       $date = DrupalDateTime::createFromTimestamp($timestamp_start);
-      $result[$date->format('Y-m-d')] = $this->getData($request, $location, $date->format('F j, l 00:00:00'), $category);
+      $result[$date->format('Y-m-d')] = $this->getData($request, $location, $date->format('Y-m-d'), $category);
       $timestamp_start += 86400;
     }
     if (!empty($rooms)) {
