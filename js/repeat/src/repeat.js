@@ -377,7 +377,14 @@ Vue.use(VueRouter);
         var date = moment(this.date).format('YYYY-MM-DD');
 
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data';
-        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        var locsUrl = '/0'
+        if (this.locations.length > 0) {
+          locsUrl = '/' + encodeURIComponent(this.locations.join(','))
+        }
+        else if (this.locationsLimit.length > 0) {
+          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(','))
+        }
+        url += locsUrl;
         url += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(',')) : '/0';
         url += date ? '/' + encodeURIComponent(date) : '';
 
