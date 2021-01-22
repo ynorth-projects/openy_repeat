@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\openy_repeat\OpenyRepeatRepository;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Provides a 'Repeat Schedules Locations' block.
@@ -26,6 +27,13 @@ class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPlugi
   protected $repository;
 
   /**
+   * The route match object.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
    * Constructs a BlockBase object.
    *
    * @param array $configuration
@@ -36,11 +44,14 @@ class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPlugi
    *   The plugin implementation definition.
    * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
    *   Repository.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, OpenyRepeatRepository $repository) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, OpenyRepeatRepository $repository, RouteMatchInterface $route_match) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->setConfiguration($configuration);
     $this->repository = $repository;
+    $this->routeMatch = $route_match;
   }
 
   /**
@@ -63,7 +74,8 @@ class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPlugi
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('openy_repeat.repository')
+      $container->get('openy_repeat.repository'),
+      $container->get('current_route_match')
     );
   }
 
@@ -71,9 +83,36 @@ class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function build() {
+    if (!$node = $this->routeMatch->getParameter('node')) {
+      return [
+        '#theme' => 'openy_repeat_schedule_locations',
+        '#locations' => $this->repository->getLocations(),
+      ];
+    }
+    $paragraphs = $node->field_content->referencedEntities();
+    $scheduleNode = NULL;
+    $locations = NULL;
+    foreach ($paragraphs as $paragraph) {
+      /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+      if ($paragraph->getType() == 'repeat_schedules_loc') {
+        $scheduleNode = reset($paragraph->field_prgf_repeat_lschedules_prf->referencedEntities());
+      }
+    }
+    $refParagraphs = $scheduleNode->field_content->referencedEntities();
+    foreach ($refParagraphs as $paragraph) {
+      if ($paragraph->getType() == 'repeat_schedules') {
+        $locationsNode = $paragraph->field_prgf_repeat_loc->referencedEntities();
+        foreach ($locationsNode as $location) {
+          $locations[] = $location->title->value;
+        }
+      }
+    }
+    if (!$locations) {
+      $locations = $this->repository->getLocations();
+    }
     return [
       '#theme' => 'openy_repeat_schedule_locations',
-      '#locations' => $this->repository->getLocations(),
+      '#locations' => $locations,
     ];
   }
 
