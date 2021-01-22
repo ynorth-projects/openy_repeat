@@ -98,12 +98,14 @@ class RepeatSchedulesLocBlock extends BlockBase implements ContainerFactoryPlugi
         $scheduleNode = reset($paragraph->field_prgf_repeat_lschedules_prf->referencedEntities());
       }
     }
-    $refParagraphs = $scheduleNode->field_content->referencedEntities();
-    foreach ($refParagraphs as $paragraph) {
-      if ($paragraph->getType() == 'repeat_schedules') {
-        $locationsNode = $paragraph->field_prgf_repeat_loc->referencedEntities();
-        foreach ($locationsNode as $location) {
-          $locations[] = $location->title->value;
+    if ($scheduleNode) {
+      $refParagraphs = $scheduleNode->field_content->referencedEntities();
+      foreach ($refParagraphs as $paragraph) {
+        if ($paragraph->getType() == 'repeat_schedules') {
+          $locationsNode = $paragraph->field_prgf_repeat_loc->referencedEntities();
+          foreach ($locationsNode as $location) {
+            $locations[] = $location->title->value;
+          }
         }
       }
     }
