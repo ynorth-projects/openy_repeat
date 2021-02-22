@@ -1,0 +1,8 @@
+services:
+  openy_repeat_pdf_generator:
+      class: Drupal\openy_repeat\PDFGenerator
+      tags:
+        - { name: pdf_generator }
+  openy_repeat.repository:
+    class: Drupal\openy_repeat\OpenyRepeatRepository
+    arguments: ['@entity_type.manager', '@config.factory', '@cache.default']
