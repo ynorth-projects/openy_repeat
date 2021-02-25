@@ -117,7 +117,7 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
+                  <template v-else-if="item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
@@ -332,7 +332,7 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
+                  <template v-else-if="item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
@@ -465,7 +465,7 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.spottext && item.spottext.search('spot') >= 0">
+                  <template v-else-if="item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
