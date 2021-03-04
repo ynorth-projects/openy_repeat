@@ -292,6 +292,16 @@ class RepeatManager implements SessionInstanceManagerInterface {
           $to_time = strtotime(date('Y-m-d') .' '. $schedule_item['time']['to']);
           $from_time = strtotime(date('Y-m-d') .' '. $schedule_item['time']['from']);
           $duration = round(abs($to_time - $from_time) / 60,2);
+          // Hot fix for Timezone convert. We should not use weekday for repeat when we convert time to utc in database.
+          // We should have field with timezone in node session for create correctly time.
+          // We should remember that convert to utc can change day.
+          if ($from_time > $to_time) {
+            $to_time_delta = new \DateTime();
+            $to_time_delta->setTimestamp($to_time);
+            $to_time_delta->modify('+1 day');
+            $to_time_delta = $to_time_delta->getTimestamp();
+            $duration = round(abs($to_time_delta - $from_time) / 60,2);
+          }
 
           $day = $weekday_mapping[$weekDay];
           // Monthly events don't have exact week day, but the day of month.
