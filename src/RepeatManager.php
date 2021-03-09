@@ -263,6 +263,10 @@ class RepeatManager implements SessionInstanceManagerInterface {
       'saturday' => '6',
       'sunday' => '7',
     ];
+    if (PHP_SAPI === 'cli') {
+      $default_tz = date_default_timezone_get();
+      date_default_timezone_set('America/Chicago');
+    }
 
     foreach ($session_schedule['dates'] as $schedule_item) {
       foreach ($schedule_item['days'] as $weekDay) {
@@ -312,7 +316,9 @@ class RepeatManager implements SessionInstanceManagerInterface {
         }
       }
     }
-
+    if (PHP_SAPI === 'cli') {
+      date_default_timezone_set($default_tz);
+    }
     return $session_instances;
   }
 
@@ -455,8 +461,18 @@ class RepeatManager implements SessionInstanceManagerInterface {
       ];
 
       $_period = $date->field_session_time_date->getValue()[0];
+
+      if (PHP_SAPI === 'cli') {
+        $default_tz = date_default_timezone_get();
+        date_default_timezone_set('America/Chicago');
+      }
+
       $_from = DrupalDateTime::createFromTimestamp(strtotime($_period['value'] . 'Z'));
       $_to = DrupalDateTime::createFromTimestamp(strtotime($_period['end_value'] . 'Z'));
+
+      if (PHP_SAPI === 'cli') {
+        date_default_timezone_set($default_tz);
+      }
 
       $schedule_item['period']['from'] = $_from->format('Y-m-d');
       $schedule_item['period']['to'] = $_to->format('Y-m-d');
