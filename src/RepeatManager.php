@@ -477,8 +477,10 @@ class RepeatManager implements SessionInstanceManagerInterface {
 
     $schedule['exclusions'] = $node->field_session_exclusions->getValue();
     foreach ($schedule['exclusions'] as &$exclusion) {
-      $exclusion['from'] = new \DateTime($exclusion['value'], new \DateTimeZone('America/Chicago'));
-      $exclusion['to'] = new \DateTime($exclusion['end_value'], new \DateTimeZone('America/Chicago'));
+      $exclusion['from'] = new \DateTime($exclusion['value'], new \DateTimeZone('UTC'));
+      $exclusion['from']->setTimezone(new \DateTimeZone('America/Chicago'));
+      $exclusion['to'] = new \DateTime($exclusion['end_value'], new \DateTimeZone('UTC'));
+      $exclusion['to']->setTimezone(new \DateTimeZone('America/Chicago'));
       unset($exclusion['value'], $exclusion['end_value']);
     }
 
