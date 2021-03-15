@@ -81,7 +81,6 @@ class RepeatManager implements SessionInstanceManagerInterface {
     $this->logger = $logger_factory->get(self::CHANNEL);
     $this->storage = $this->entityTypeManager->getStorage(self::STORAGE);
     $this->configFactory = $configFactory;
-    $this->timezone = $this->configFactory->get('system.date')->get('timezone')['default'];
     $this->config = $this->configFactory->get('openy_repeat.settings');
   }
 
