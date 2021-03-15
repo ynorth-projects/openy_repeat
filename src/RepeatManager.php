@@ -254,7 +254,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
    */
   public static function calcSessionInstancesBySchedule(array $session_schedule, $timestamp = NULL) {
     $session_instances = [];
-
+    $timezone = \Drupal::service('config.factory')->get('system.date')->get('timezone')['default'];
     $weekday_mapping = [
       'monday' => '1',
       'tuesday' => '2',
@@ -271,17 +271,17 @@ class RepeatManager implements SessionInstanceManagerInterface {
         // settings. This is why we need to adjust day to proper day of
         // the week. Also similar thing with end date. We should move it back
         // till it reaches specified day of the week.
-        $startDate = new \DateTime($schedule_item['period']['from'], new \DateTimeZone('America/Chicago'));
+        $startDate = new \DateTime($schedule_item['period']['from'], new \DateTimeZone($timezone));
         while (strtolower($startDate->format('l')) !== $weekDay) {
           $startDate->modify('+1 day');
         }
-        $endDate = new \DateTime($schedule_item['period']['to'], new \DateTimeZone('America/Chicago'));
+        $endDate = new \DateTime($schedule_item['period']['to'], new \DateTimeZone($timezone));
         while (strtolower($endDate->format('l')) !== $weekDay) {
           $endDate->modify('-1 day');
         }
 
-        $start = new \DateTime($startDate->format('Y-m-d') . 'T' . $schedule_item['time']['from'], new \DateTimeZone('America/Chicago'));
-        $end = new \DateTime($endDate->format('Y-m-d') . 'T' . $schedule_item['time']['to'], new \DateTimeZone('America/Chicago'));
+        $start = new \DateTime($startDate->format('Y-m-d') . 'T' . $schedule_item['time']['from'], new \DateTimeZone($timezone));
+        $end = new \DateTime($endDate->format('Y-m-d') . 'T' . $schedule_item['time']['to'], new \DateTimeZone($timezone));
         $dates = [[
           'from' => $start,
           'to' => $end,
@@ -290,8 +290,8 @@ class RepeatManager implements SessionInstanceManagerInterface {
         $combined_dates = self::combineDates($dates, $exclusions);
 
         foreach ($combined_dates as $date) {
-          $to_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['to'], new \DateTimeZone('America/Chicago'));
-          $from_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['from'], new \DateTimeZone('America/Chicago'));
+          $to_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['to'], new \DateTimeZone($timezone));
+          $from_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['from'], new \DateTimeZone($timezone));
           $to_time = $to_time->getTimestamp();
           $from_time = $from_time->getTimestamp();
           $duration = round(($to_time - $from_time) / 60, 2);
@@ -427,6 +427,8 @@ class RepeatManager implements SessionInstanceManagerInterface {
       return FALSE;
     }
 
+    $timezone = \Drupal::service('config.factory')->get('system.date')->get('timezone')['default'];
+
     $schedule = [
       'nid' => $node->id(),
       'dates' => [],
@@ -450,11 +452,11 @@ class RepeatManager implements SessionInstanceManagerInterface {
       $_from = DrupalDateTime::createFromTimestamp(strtotime($_period['value'] . 'Z'));
       $_to = DrupalDateTime::createFromTimestamp(strtotime($_period['end_value'] . 'Z'));
 
-      $schedule_item['period']['from'] = $_from->format('Y-m-d', ['timezone' => 'America/Chicago']);
-      $schedule_item['period']['to'] = $_to->format('Y-m-d', ['timezone' => 'America/Chicago']);
+      $schedule_item['period']['from'] = $_from->format('Y-m-d', ['timezone' => $timezone]);
+      $schedule_item['period']['to'] = $_to->format('Y-m-d', ['timezone' => $timezone]);
 
-      $schedule_item['time']['from'] = $_from->format('H:i:s', ['timezone' => 'America/Chicago']);
-      $schedule_item['time']['to'] = $_to->format('H:i:s', ['timezone' => 'America/Chicago']);
+      $schedule_item['time']['from'] = $_from->format('H:i:s', ['timezone' => $timezone]);
+      $schedule_item['time']['to'] = $_to->format('H:i:s', ['timezone' => $timezone]);
 
       if (!isset($schedule['from']) || $schedule_item['period']['from'] < $schedule['from']) {
         $schedule['from'] = $schedule_item['period']['from'];
@@ -478,9 +480,9 @@ class RepeatManager implements SessionInstanceManagerInterface {
     $schedule['exclusions'] = $node->field_session_exclusions->getValue();
     foreach ($schedule['exclusions'] as &$exclusion) {
       $exclusion['from'] = new \DateTime($exclusion['value'], new \DateTimeZone('UTC'));
-      $exclusion['from']->setTimezone(new \DateTimeZone('America/Chicago'));
+      $exclusion['from']->setTimezone(new \DateTimeZone($timezone));
       $exclusion['to'] = new \DateTime($exclusion['end_value'], new \DateTimeZone('UTC'));
-      $exclusion['to']->setTimezone(new \DateTimeZone('America/Chicago'));
+      $exclusion['to']->setTimezone(new \DateTimeZone($timezone));
       unset($exclusion['value'], $exclusion['end_value']);
     }
 
