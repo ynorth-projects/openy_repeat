@@ -327,10 +327,10 @@ class RepeatController extends ControllerBase {
       // Convert timezones for start_time and end_time.
       $time_start = new \DateTime();
       $time_start->setTimestamp($item->start_timestamp);
-      $time_start->setTimezone('America/Chicago');
+      $time_start->setTimezone(date_default_timezone_get());
       $time_end = new \DateTime();
       $time_end->setTimestamp($item->end_timestamp);
-      $time_end->setTimezone('America/Chicago');
+      $time_end->setTimezone(date_default_timezone_get());
       $result[$key]->time_start = $time_start->format('g:iA');
       $result[$key]->time_end = $time_end->format('g:iA');
 
