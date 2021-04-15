@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\Core\Entity\Query\QueryFactory;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * {@inheritdoc}
@@ -38,16 +37,9 @@ class RepeatController extends ControllerBase {
   protected $database;
 
   /**
-   * The entity query factory.
-   *
-   * @var \Drupal\Core\Entity\Query\QueryFactory
-   */
-  protected $entityQuery;
-
-  /**
    * The EntityTypeManager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entity_type_manager;
 
@@ -72,19 +64,16 @@ class RepeatController extends ControllerBase {
    *   Cache default.
    * @param Connection $database
    *   The Database connection.
-   * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query
-   *   Query Factory service.
-   * @param EntityTypeManager $entity_type_manager
+   * @param EntityTypeManagerInterface $entity_type_manager
    *   The EntityTypeManager.
    * @param DateFormatterInterface $date_formatter
    *   The Date formatter.
    * @param OpenyRepeatRepository $repository
    *    OpenyRepeatRepository.
    */
-  public function __construct(CacheBackendInterface $cache, Connection $database, QueryFactory $entity_query, EntityTypeManager $entity_type_manager, DateFormatterInterface $date_formatter, OpenyRepeatRepository $repository) {
+  public function __construct(CacheBackendInterface $cache, Connection $database, EntityTypeManagerInterface $entity_type_manager, DateFormatterInterface $date_formatter, OpenyRepeatRepository $repository) {
     $this->cache = $cache;
     $this->database = $database;
-    $this->entityQuery = $entity_query;
     $this->entityTypeManager = $entity_type_manager;
     $this->dateFormatter = $date_formatter;
     $this->repository = $repository;
@@ -97,7 +86,6 @@ class RepeatController extends ControllerBase {
     return new static(
       $container->get('cache.default'),
       $container->get('database'),
-      $container->get('entity.query'),
       $container->get('entity_type.manager'),
       $container->get('date.formatter'),
       $container->get('openy_repeat.repository')
@@ -275,18 +263,18 @@ class RepeatController extends ControllerBase {
     $query->condition('re.start', $timestamp_end, '<=');
     $query->condition('re.end', $timestamp_start, '>=');
     if (!empty($category)) {
-      $query->condition('re.category', explode(',', $category), 'IN');
+      $query->condition('re.category', explode(';', $category), 'IN');
     }
     if (!empty($location)) {
-      $query->condition('nd.title', explode(',', $location), 'IN');
+      $query->condition('nd.title', explode(';', $location), 'IN');
     }
     $exclusions = $request->get('excl');
     if (!empty($exclusions)) {
-      $query->condition('re.category', explode(',', $exclusions), 'NOT IN');
+      $query->condition('re.category', explode(';', $exclusions), 'NOT IN');
     }
     $limit = $request->get('limit');
     if (!empty($limit)) {
-      $query->condition('re.category', explode(',', $limit), 'IN');
+      $query->condition('re.category', explode(';', $limit), 'IN');
     }
     if (!empty($instructor)) {
       $query->condition('re.instructor', $instructor);
@@ -316,7 +304,7 @@ class RepeatController extends ControllerBase {
         ]);
         if (!in_array($item->name, $class_name)) {
           $classes_info[$item->class]['path'] .= '?' . $query;
-          $class_name[] = $item->name;
+          $class_name[] = html_entity_decode($item->name);
         }
       }
 
@@ -378,8 +366,9 @@ class RepeatController extends ControllerBase {
       $data = $cache->data;
     }
     else {
-      $nids = $this->entityQuery
-        ->get('node')
+      $nids = $this->entityTypeManager
+        ->getStorage('node')
+        ->getQuery()
         ->condition('type', ['branch', 'location'], 'IN')
         ->execute();
       $nids_chunked = array_chunk($nids, 20, TRUE);
@@ -628,7 +617,7 @@ class RepeatController extends ControllerBase {
         }
 
         $formatted_result['content'][$session->location][$session->name . $session->room] = [
-          'name' => $session->name,
+          'name' => html_entity_decode($session->name),
           'room' => $session->room,
           'dates' => $date_keys,
           'url' => $session->register_url,

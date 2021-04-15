@@ -169,17 +169,17 @@ Vue.use(VueRouter);
 
       var locationsGet = this.$route.query.locations;
       if (locationsGet) {
-        this.locations = locationsGet.split(',');
+        this.locations = locationsGet.split(';');
       }
 
       var classNamesGet = this.$route.query.cn;
       if (classNamesGet) {
-        this.className = classNamesGet.split(',');
+        this.className = classNamesGet.split(';');
       }
 
       var categoriesGet = this.$route.query.categories;
       if (categoriesGet) {
-        this.categories = categoriesGet.split(',');
+        this.categories = categoriesGet.split(';');
       }
 
       this.runAjaxRequest();
@@ -379,21 +379,21 @@ Vue.use(VueRouter);
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data';
         var locsUrl = '/0'
         if (this.locations.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locations.join(','))
+          locsUrl = '/' + encodeURIComponent(this.locations.join(';'))
         }
         else if (this.locationsLimit.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(','))
+          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(';'))
         }
         url += locsUrl;
-        url += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(',')) : '/0';
+        url += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(';')) : '/0';
         url += date ? '/' + encodeURIComponent(date) : '';
 
         var query = [];
         if (this.categoriesExcluded.length > 0) {
-          query.push('excl=' + encodeURIComponent(this.categoriesExcluded.join(',')));
+          query.push('excl=' + encodeURIComponent(this.categoriesExcluded.join(';')));
         }
         if (this.categoriesLimit.length >= 1) {
-          query.push('limit=' + encodeURIComponent(this.categoriesLimit.join(',')));
+          query.push('limit=' + encodeURIComponent(this.categoriesLimit.join(';')));
         }
 
         if (query.length > 0) {
@@ -413,9 +413,9 @@ Vue.use(VueRouter);
         router.push({
           query: {
             date: date,
-            locations: this.locations.join(','),
-            categories: this.categories.join(','),
-            cn: this.className.join(',')
+            locations: this.locations.join(';'),
+            categories: this.categories.join(';'),
+            cn: this.className.join(';')
           }
         }).catch(err => { });
       },
@@ -520,7 +520,7 @@ Vue.use(VueRouter);
 
         var url = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-instructor/';
         url += encodeURIComponent(instructor);
-        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(',')) : '/0';
+        url += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(';')) : '/0';
         url += this.date ? '/' + encodeURIComponent(this.date) : '';
 
         $('.schedules-loading').removeClass('hidden');
@@ -577,7 +577,13 @@ Vue.use(VueRouter);
       clearFilters: function () {
         this.categories = [];
         this.className = [];
-        this.locations = [];
+
+        // We should not reset location pre-selected in the paragraph.
+        var limitLocations = window.OpenY.field_prgf_repeat_loc || [];
+        if (!limitLocations.length) {
+          this.locations = [];
+        }
+
         this.date = moment().format('YYYY-MM-DD');
         this.resetPager();
       },
@@ -693,7 +699,7 @@ Vue.use(VueRouter);
             rooms_checked.push(encodeURIComponent($(this).val()));
           }
         });
-        rooms_checked = rooms_checked.join(',');
+        rooms_checked = rooms_checked.join(';');
 
         $('.form-group-classname input:checked').each(function () {
           classnames_checked.push(encodeURIComponent($(this).val()));
@@ -710,7 +716,7 @@ Vue.use(VueRouter);
             });
           }
         }
-        limit = limit.join(',');
+        limit = limit.join(';');
         var pdf_query = window.location.search + '&rooms=' + rooms_checked + '&limit=' + limit;
         $(classnames_checked).each(function () {
           pdf_query += '&cn[]=' + this;
