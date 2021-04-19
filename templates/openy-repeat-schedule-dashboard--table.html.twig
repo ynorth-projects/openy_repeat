@@ -82,7 +82,7 @@
 
               <div class="col-xs-6 col-md-3 col-sm-3">
                 {# add to calendar #}
-                <div v-cloak class="calendar-column">
+                <div v-cloak v-on:click="showAddToCalendar(index, '.schedules-data')" class="calendar-column">
                   <div v-if="item.cancelled >= 0" style="text-align: center;">
                     <div class="atcb-link-cancel">CANCELLED</div>
                   </div>
@@ -291,7 +291,7 @@
 
             <div class="col-md-2 col-sm-6 col-xs-6">
               {# add to calendar #}
-              <div v-cloak class="calendar-column">
+              <div v-cloak v-on:click="showAddToCalendar(index, '.schedule-dashboard__modal--body')" class="calendar-column">
                 <div v-if="item.cancelled >= 0" style="text-align: center;">
                   <div class="atcb-link-cancel">CANCELLED</div>
                 </div>
@@ -425,7 +425,7 @@
 
             <div class="col-md-2 col-sm-12 col-xs-12">
               {# add to calendar #}
-              <div v-cloak class="calendar-column">
+              <div v-cloak v-on:click="showAddToCalendar(index, '.schedule-dashboard__modal--body')" class="calendar-column">
                 <div v-if="item.cancelled >= 0" style="text-align: center;">
                   <div class="atcb-link-cancel">CANCELLED</div>
                 </div>
