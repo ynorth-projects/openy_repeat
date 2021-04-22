@@ -217,8 +217,8 @@ class RepeatController extends ControllerBase {
     $nextDay->modify('+1 day');
     $timestamp_end = $nextDay->getTimestamp();
 
-    $query = $this->database->select('node', 'n');
-    $query->rightJoin('repeat_event', 're', 're.session = n.nid');
+    $query = $this->database->select('repeat_event', 're');
+    $query->leftJoin('node', 'n', 're.session = n.nid');
     $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
     $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
     $query->addField('n', 'nid');
