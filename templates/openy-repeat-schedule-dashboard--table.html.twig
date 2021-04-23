@@ -117,10 +117,15 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.productid.length > 0">
+                  <template v-else-if="item.productid && item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
+                  </template>
+                  <template v-else>
+                    <div v-cloak class="register-column" v-if="item.register_url">
+                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                    </div>
                   </template>
                 </div>
             </div>
@@ -332,10 +337,15 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.productid.length > 0">
+                  <template v-else-if="item.productid && item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
+                  </template>
+                  <template v-else>
+                    <div v-cloak class="register-column" v-if="item.register_url">
+                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                    </div>
                   </template>
                 </div>
             </div>
@@ -465,10 +475,15 @@
                       WAITLIST ONLY
                     </a>
                   </template>
-                  <template v-else-if="item.productid.length > 0">
+                  <template v-else-if="item.productid && item.productid.length > 0">
                     <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
                       REGISTER
                     </a>
+                  </template>
+                  <template v-else>
+                    <div v-cloak class="register-column" v-if="item.register_url">
+                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                    </div>
                   </template>
                 </div>
             </div>
