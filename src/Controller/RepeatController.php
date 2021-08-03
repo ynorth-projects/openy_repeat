@@ -266,7 +266,7 @@ class RepeatController extends ControllerBase {
       $query->condition('re.category', explode(';', $category), 'IN');
     }
     if (!empty($location)) {
-      $query->condition('nd.title', explode(';', $location), 'IN');
+      $query->condition('nd.title', explode(';', rawurldecode($location)), 'IN');
     }
     $exclusions = $request->get('excl');
     if (!empty($exclusions)) {
@@ -330,6 +330,9 @@ class RepeatController extends ControllerBase {
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
+
+      // Allow html special chars in Location title.
+      $result[$key]->location = rawurlencode($result[$key]->location);
     }
 
     usort($result, function($item1, $item2){
@@ -394,7 +397,7 @@ class RepeatController extends ControllerBase {
             }
             $data[$node->title->value] = [
               'nid' => $node->nid->value,
-              'title' => $node->title->value,
+              'title' => rawurlencode($node->title->value),
               'email' => $node->field_location_email->value,
               'phone' => $node->field_location_phone->value,
               'address' => $address,
