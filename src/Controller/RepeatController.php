@@ -266,7 +266,7 @@ class RepeatController extends ControllerBase {
       $query->condition('re.category', explode(';', $category), 'IN');
     }
     if (!empty($location)) {
-      $query->condition('nd.title', explode(';', $location), 'IN');
+      $query->condition('nd.title', explode(';', rawurldecode($location)), 'IN');
     }
     $exclusions = $request->get('excl');
     if (!empty($exclusions)) {
