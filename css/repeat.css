@@ -619,7 +619,8 @@ body.modal-open .top-navs .nav-global {
     padding: 8px;
 }
 
-.btn-schedule-pdf-generate {
+.btn-schedule-pdf-generate,
+.btn-schedule-bookings {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     border: 0;
     color: #0060af;
@@ -627,6 +628,28 @@ body.modal-open .top-navs .nav-global {
     font-weight: 700;
     float: right;
 }
+
+.btn-schedule-bookings {
+    padding-top: 5px;
+}
+
+.btn-schedule-group {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+@media (min-width: 768px) {
+    .btn-schedule-group {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .btn-schedule-bookings {
+        padding-right: 20px;
+        padding-top: 0;
+    }
+}
+
 
 .schedule-dashboard__content--header .btn-schedule-pdf-generate:after {
     display: none;
