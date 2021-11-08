@@ -212,7 +212,7 @@
               <td><label>{{ 'Email'|t }}</label></td>
               <td><a v-bind:href="'mailto:' + locationPopup.email">${ locationPopup.email }</a></td>
             </tr>
-            <tr>
+            <tr v-if="locationPopup.days && locationPopup.days.length > 0">
               <td><label>{{ 'Branch hours'|t }}</label></td>
               <td>
                 <table class="table">

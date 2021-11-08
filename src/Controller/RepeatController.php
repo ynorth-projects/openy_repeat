@@ -356,7 +356,7 @@ class RepeatController extends ControllerBase {
   }
 
   /**
-   * Get detailed info about Location (aka branch).
+   * Get detailed info about Location (aka branch), camps, facilities.
    */
   public function getLocationsInfo() {
     $data = [];
@@ -369,7 +369,7 @@ class RepeatController extends ControllerBase {
       $nids = $this->entityTypeManager
         ->getStorage('node')
         ->getQuery()
-        ->condition('type', ['branch', 'location'], 'IN')
+        ->condition('type', ['branch', 'location', 'camp', 'facility'], 'IN')
         ->execute();
       $nids_chunked = array_chunk($nids, 20, TRUE);
       foreach ($nids_chunked as $chunk) {
@@ -377,7 +377,8 @@ class RepeatController extends ControllerBase {
         if (!empty($branches)) {
           /** @var Node $node */
           foreach ($branches as $node) {
-            $days = $node->get('field_branch_hours')->getValue();
+            $days = $node->hasField('field_branch_hours') ?
+              $node->get('field_branch_hours')->getValue() : [];
             $address = $node->get('field_location_address')->getValue();
             if (!empty($address[0])) {
               $address = array_filter($address[0]);
