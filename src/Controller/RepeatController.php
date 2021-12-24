@@ -630,7 +630,10 @@ class RepeatController extends ControllerBase {
     foreach ($result as $day => $data) {
       foreach ($data as $session) {
         $words = explode(' ' , $session->instructor);
-        $short_name = $words[0] . ' ' . substr($words[1], 0 ,1);
+        $short_name = $words[0];
+        if (isset($words[1])) {
+          $short_name .= ' ' . substr($words[1], 0 ,1);
+        }
         $short_name = !empty($words[1]) ? $short_name . '.' : $short_name;
         $formatted_result['content'][$session->location][$session->name . $session->room]['dates'][$day][] = [
           'time' => $session->time_start . '-' . $session->time_end,
@@ -642,7 +645,6 @@ class RepeatController extends ControllerBase {
 
     return $formatted_result;
   }
-
 
   /**
    * @param $result
