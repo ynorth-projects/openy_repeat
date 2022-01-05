@@ -492,7 +492,7 @@ class RepeatController extends ControllerBase {
     $settings = [
       'body' => [
         '#content' => [
-          'logo_url' => drupal_get_path('module', 'openy_repeat') . '/img/ymca_logo_black.png',
+          'logo_url' => \Drupal::service('extension.list.module')->getPath('openy_repeat') . '/img/ymca_logo_black.png',
           'result' => $content['content']['content'],
           'header' => $content['content']['header'],
         ],
