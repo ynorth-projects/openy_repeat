@@ -124,7 +124,8 @@
                   </template>
                   <template v-else>
                     <div v-cloak class="register-column" v-if="item.register_url">
-                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn btn-primary disabled register-btn">${ item.register_text }</a>
+                      <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
                     </div>
                   </template>
                 </div>
@@ -344,7 +345,8 @@
                   </template>
                   <template v-else>
                     <div v-cloak class="register-column" v-if="item.register_url">
-                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn btn-primary disabled register-btn">${ item.register_text }</a>
+                      <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
                     </div>
                   </template>
                 </div>
@@ -482,7 +484,8 @@
                   </template>
                   <template v-else>
                     <div v-cloak class="register-column" v-if="item.register_url">
-                      <a v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn btn-primary disabled register-btn">${ item.register_text }</a>
+                      <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
                     </div>
                   </template>
                 </div>
