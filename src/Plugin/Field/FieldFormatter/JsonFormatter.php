@@ -41,7 +41,7 @@ class JsonFormatter extends FormatterBase {
 
     $export = [];
     foreach ($items as $item) {
-      if ($item instanceof EntityReferenceItem) {
+      if ($item instanceof EntityReferenceItem && $item->entity) {
         $export[] = [
           'id' => $item->entity->id(),
           'title' => $item->entity->label(),
