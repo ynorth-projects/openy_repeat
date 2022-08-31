@@ -551,7 +551,7 @@ class RepeatController extends ControllerBase {
       $timestamp_start += 86400;
     }
     if (!empty($rooms)) {
-      $rooms = explode(',', $rooms);
+      $rooms = explode(';', $rooms);
     }
     // Group by activity.
     if ($mode == 'activity') {
