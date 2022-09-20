@@ -32,6 +32,9 @@ class PDFGenerator {
     $download_title = array_key_first($settings["body"]["#content"]["result"]) . ' ';
     $download_title .= $settings["body"]["#content"]["header"]["dates"] ?? '';
     $download_title = trim($download_title);
+    if (!$download_title) {
+      $download_title = 'schedules';
+    }
     $mpdf->Output($download_title . '.pdf', 'I');
     exit();
   }
