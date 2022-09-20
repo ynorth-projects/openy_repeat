@@ -580,6 +580,9 @@ class RepeatController extends ControllerBase {
       return FALSE;
     }
     $date_keys = $formatted_result = [];
+    if (!is_array($classnames) && $classnames) {
+      $classnames = [$classnames];
+    }
 
     // Create weekdays array.
     foreach ($result as $day => $data) {
