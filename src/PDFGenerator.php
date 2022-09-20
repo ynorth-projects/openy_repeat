@@ -29,7 +29,13 @@ class PDFGenerator {
     $mpdf->SetHTMLFooter(render($settings['footer']));
     $mpdf->WriteHTML($stylesheet, 1);
     $mpdf->WriteHTML($html, 2);
-    $mpdf->Output('schedules.pdf', 'I');
+    $download_title = array_key_first($settings["body"]["#content"]["result"]) . ' ';
+    $download_title .= $settings["body"]["#content"]["header"]["dates"] ?? '';
+    $download_title = trim($download_title);
+    if (!$download_title) {
+      $download_title = 'schedules';
+    }
+    $mpdf->Output($download_title . '.pdf', 'I');
     exit();
   }
 
