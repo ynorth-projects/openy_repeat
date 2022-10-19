@@ -5,7 +5,8 @@
   "main": "repeat.js",
   "scripts": {
     "build": "webpack --config webpack.config.js --mode=production",
-    "dev": "webpack --config webpack.config.js --mode=development"
+    "dev": "webpack --config webpack.config.js --mode=development",
+    "watch": "webpack --config webpack.config.js --mode=development --watch"
   },
   "author": "",
   "license": "ISC",
