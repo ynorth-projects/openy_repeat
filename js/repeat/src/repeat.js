@@ -82,6 +82,7 @@ Vue.use(VueRouter);
       categoriesLimit: [],
       className: [],
       isLoading: true,
+      weekHasResults: false,
       locationPopup: {
         address: '',
         email: '',
@@ -184,14 +185,16 @@ Vue.use(VueRouter);
       }
 
       this.runAjaxRequest();
-
+      this.runAjaxWeekResultsRequest();
       // We add watchers dynamically otherwise initially there will be
       // up to three requests as we are changing values while initializing
       // from GET query parameters.
-      component.$watch('date', function () {
-        component.runAjaxRequest();
-        component.resetPager();
-        $('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
+
+      this.$watch('date', () => {
+        //$('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
+        this.runAjaxRequest();
+        this.runAjaxWeekResultsRequest();
+        this.resetPager();
       });
 
       this.$watch('locations', function () {
@@ -370,22 +373,20 @@ Vue.use(VueRouter);
       }
     },
     methods: {
-      runAjaxRequest: function () {
-        this.isLoading = true;
-        var component = this;
+      prepareRequest: function () {
+        var requestString = '';
         var date = moment(this.date).format('YYYY-MM-DD');
 
-        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data';
-        var locsUrl = '/0'
+        var locsUrl = '/0';
         if (this.locations.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locations.join(';'))
+          locsUrl = '/' + encodeURIComponent(this.locations.join(';'));
         }
         else if (this.locationsLimit.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(';'))
+          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(';'));
         }
-        url += locsUrl;
-        url += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(';')) : '/0';
-        url += date ? '/' + encodeURIComponent(date) : '';
+        requestString += locsUrl;
+        requestString += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(';')) : '/0';
+        requestString += date ? '/' + encodeURIComponent(date) : '';
 
         var query = [];
         if (this.categoriesExcluded.length > 0) {
@@ -396,8 +397,17 @@ Vue.use(VueRouter);
         }
 
         if (query.length > 0) {
-          url += '?' + query.join('&');
+          requestString += '?' + query.join('&');
         }
+
+        return requestString;
+      },
+      runAjaxRequest: function () {
+        this.isLoading = true;
+        var component = this;
+        var date = moment(this.date).format('YYYY-MM-DD');
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data' + this.prepareRequest();
 
         $('.schedules-empty_results').addClass('hidden');
 
@@ -416,7 +426,15 @@ Vue.use(VueRouter);
             categories: this.categories.join(';'),
             cn: this.className.join(';')
           }
-        }).catch(err => { });
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      runAjaxWeekResultsRequest: function (){
+        var url = drupalSettings.path.baseUrl + 'schedules/get-week-has-events' + this.prepareRequest();
+        $.getJSON(url, (data) => {
+          this.weekHasResults = data;
+        });
       },
       toggleTab: function (filter) {
         var component = this;
@@ -582,6 +600,9 @@ Vue.use(VueRouter);
       },
       getResultsCount: function () {
         return this.filteredTable.length;
+      },
+      getWeekHasResults: function () {
+        return this.weekHasResults;
       },
       getTotalPages: function () {
         var count = 1;

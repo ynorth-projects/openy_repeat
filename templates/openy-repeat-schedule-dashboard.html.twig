@@ -25,7 +25,7 @@
           <div class="btn-schedule-group">
             <a href="https://groupexpro.com/gxp/reservations/schedule/profile/3?location=&type=new" class="btn-schedule-bookings" target="_blank">{{ 'My Bookings'|t }}
             </a>
-            <a class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
+            <a v-if="this.weekHasResults" class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
               <i class="fa fa-file"></i>
             </a>
           </div>
