@@ -191,7 +191,6 @@ Vue.use(VueRouter);
       // from GET query parameters.
 
       this.$watch('date', () => {
-        //$('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
         this.runAjaxRequest();
         this.runAjaxWeekResultsRequest();
         this.resetPager();
@@ -249,7 +248,7 @@ Vue.use(VueRouter);
           return diff > -limitDays;
         }
       }).on('changeDate', function (event) {
-        // In case if we use unselect date.
+        // In case we use unselect date.
         var date = new Date().toISOString();
         if (event.format()) {
           var parsed = moment(event.format(), 'YYYY-MM-DD');
