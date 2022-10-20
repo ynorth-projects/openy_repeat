@@ -1,4 +1,4 @@
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 (function ($) {
@@ -32,7 +32,7 @@ Vue.use(VueRouter);
   /* Check the settings of whether to display Instructor column or not */
   function displayInstructorOrNot() {
     var instructorDisplay = window.OpenY.field_prgf_repeat_schedule_instr[0].value;
-    if (parseInt(instructorDisplay) != 1) {
+    if (parseInt(instructorDisplay) !== 1) {
       $('.instructor-column').remove();
     }
   }
@@ -42,13 +42,14 @@ Vue.use(VueRouter);
   // Set number of column classes.
   function calculateColumns() {
     if ($('.schedules-data__header').length > 0) {
-      var colCount = $('.schedules-data__header > div').length;
+      var cols = $('.schedules-data__header > div');
+      var colCount = cols.length;
       if ($('.schedules-data__row .register-btn').length === 0) {
         colCount = colCount - 1;
-        $('.schedules-data__header > div').last().hide();
+        cols.last().hide();
       }
       else {
-        $('.schedules-data__header > div').last().show();
+        cols.last().show();
       }
       $('.schedules-data')
         .removeClass('schedules-data__cols-5')
@@ -81,6 +82,7 @@ Vue.use(VueRouter);
       categoriesLimit: [],
       className: [],
       isLoading: true,
+      weekHasResults: false,
       locationPopup: {
         address: '',
         email: '',
@@ -183,36 +185,38 @@ Vue.use(VueRouter);
       }
 
       this.runAjaxRequest();
-
+      this.runAjaxWeekResultsRequest();
       // We add watchers dynamically otherwise initially there will be
       // up to three requests as we are changing values while initializing
       // from GET query parameters.
-      component.$watch('date', function () {
-        component.runAjaxRequest();
-        component.resetPager();
-        $('#datepicker').datepicker("setDate", moment(component.date).format('YYYY-MM-DD'));
+
+      this.$watch('date', () => {
+        this.runAjaxRequest();
+        this.runAjaxWeekResultsRequest();
+        this.resetPager();
       });
-      component.$watch('locations', function () {
+
+      this.$watch('locations', function () {
         component.runAjaxRequest();
         component.resetPager();
         component.resetRooms();
       });
-      component.$watch('categories', function () {
+      this.$watch('categories', function () {
         component.runAjaxRequest();
         component.resetPager();
       });
 
-      component.$watch('className', function () {
+      this.$watch('className', function () {
         component.runAjaxRequest();
         component.resetPager();
       });
-      component.$watch('classPopup', function () {
+      this.$watch('classPopup', function () {
         component.runAjaxRequest();
       });
-      component.$watch('instructorPopup', function () {
+      this.$watch('instructorPopup', function () {
         component.runAjaxRequest();
       });
-      component.$watch("instructorPopup_schedule", function () {
+      this.$watch("instructorPopup_schedule", function () {
         component.runAjaxRequest();
       });
     },
@@ -244,7 +248,7 @@ Vue.use(VueRouter);
           return diff > -limitDays;
         }
       }).on('changeDate', function (event) {
-        // In case if use unselect date.
+        // In case we use unselect date.
         var date = new Date().toISOString();
         if (event.format()) {
           var parsed = moment(event.format(), 'YYYY-MM-DD');
@@ -348,11 +352,8 @@ Vue.use(VueRouter);
 
         // Hide cancelled sessions.
         resultTable = resultTable.filter(function (item) {
-          if (item.name.indexOf('CANCELLED') >= 0) {
-            return false;
-          }
-          return true;
-        })
+          return item.name.indexOf('CANCELLED') < 0;
+        });
 
         return resultTable;
       },
@@ -371,22 +372,20 @@ Vue.use(VueRouter);
       }
     },
     methods: {
-      runAjaxRequest: function () {
-        this.isLoading = true;
-        var component = this;
+      prepareRequest: function () {
+        var requestString = '';
         var date = moment(this.date).format('YYYY-MM-DD');
 
-        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data';
-        var locsUrl = '/0'
+        var locsUrl = '/0';
         if (this.locations.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locations.join(';'))
+          locsUrl = '/' + encodeURIComponent(this.locations.join(';'));
         }
         else if (this.locationsLimit.length > 0) {
-          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(';'))
+          locsUrl = '/' + encodeURIComponent(this.locationsLimit.join(';'));
         }
-        url += locsUrl;
-        url += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(';')) : '/0';
-        url += date ? '/' + encodeURIComponent(date) : '';
+        requestString += locsUrl;
+        requestString += this.categories.length > 0 ? '/' + encodeURIComponent(this.categories.join(';')) : '/0';
+        requestString += date ? '/' + encodeURIComponent(date) : '';
 
         var query = [];
         if (this.categoriesExcluded.length > 0) {
@@ -397,8 +396,17 @@ Vue.use(VueRouter);
         }
 
         if (query.length > 0) {
-          url += '?' + query.join('&');
+          requestString += '?' + query.join('&');
         }
+
+        return requestString;
+      },
+      runAjaxRequest: function () {
+        this.isLoading = true;
+        var component = this;
+        var date = moment(this.date).format('YYYY-MM-DD');
+
+        var url = drupalSettings.path.baseUrl + 'schedules/get-event-data' + this.prepareRequest();
 
         $('.schedules-empty_results').addClass('hidden');
 
@@ -417,7 +425,15 @@ Vue.use(VueRouter);
             categories: this.categories.join(';'),
             cn: this.className.join(';')
           }
-        }).catch(err => { });
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      runAjaxWeekResultsRequest: function (){
+        var url = drupalSettings.path.baseUrl + 'schedules/get-week-has-events' + this.prepareRequest();
+        $.getJSON(url, (data) => {
+          this.weekHasResults = data;
+        });
       },
       toggleTab: function (filter) {
         var component = this;
@@ -449,11 +465,7 @@ Vue.use(VueRouter);
         }
 
         // Show all items if tab is expanded.
-        if (this.filterTabs.location === 1) {
-          return true;
-        }
-
-        return false;
+        return this.filterTabs.location === 1;
       },
       populatePopupLocation: function (index) {
         $('.modal').modal('hide');
@@ -461,7 +473,6 @@ Vue.use(VueRouter);
       },
       populatePopupClass: function (sessionId) {
         var component = this;
-        var date = moment(this.date).format('YYYY-MM-DD');
         component.classPopup = {};
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
@@ -487,8 +498,9 @@ Vue.use(VueRouter);
         bySessionUrl += encodeURIComponent(sessionId);
 
         $.getJSON(bySessionUrl, function (data) {
-          $('.schedules-loading').removeClass('hidden');
-          component.classPopup = data[0]['class_info'];
+          var loader = $('.schedules-loading');
+          loader.removeClass('hidden');
+          component.classPopup = data[0].class_info;
           component.classPopup.schedule = data.filter(function (item) {
             item.cancelled = item.name.indexOf('CANCELLED');
             if (component.locations.length > 0) {
@@ -497,14 +509,12 @@ Vue.use(VueRouter);
             else {
               return true;
             }
-
           });
-          $('.schedules-loading').addClass('hidden');
+          loader.addClass('hidden');
         });
       },
       populatePopupInstructor: function (instructor) {
         var component = this;
-        var date = moment(this.date).format('YYYY-MM-DD');
         component.instructorPopup = {};
         component.instructorPopup.name = instructor;
 
@@ -590,6 +600,9 @@ Vue.use(VueRouter);
       getResultsCount: function () {
         return this.filteredTable.length;
       },
+      getWeekHasResults: function () {
+        return this.weekHasResults;
+      },
       getTotalPages: function () {
         var count = 1;
 
@@ -628,7 +641,7 @@ Vue.use(VueRouter);
           return;
         }
 
-        // Loop over each room and remove if if corresponding location
+        // Loop over each room and remove if corresponding location is
         // unselected.
         this.room.forEach(function (item) {
           var parts = item.split('||');
@@ -645,8 +658,7 @@ Vue.use(VueRouter);
       },
       showBackArrow: function () {
         var diff = moment().diff(moment(this.date), 'hours');
-        var result = this.isLoading ? false : diff < 0;
-        return result;
+        return this.isLoading ? false : diff < 0;
       },
       showForwardArrow: function () {
         var limit = drupalSettings.openy_repeat.calendarLimitDays;
@@ -657,13 +669,11 @@ Vue.use(VueRouter);
         var date = moment(this.date);
         var now = moment();
         var diff = date.diff(now, 'days');
-        var result = this.isLoading ? false : diff < (limit - 1);
-
-        return result;
+        return this.isLoading ? false : diff < (limit - 1);
       },
       showAddToCalendar: function (index, selector) {
         $(selector + " .atcb-link").each(function (i) {
-          if (index == i) {
+          if (index === i) {
             if (!$(this).hasClass('open')) {
               $(".atcb-link").removeClass('open').parent().find('ul').removeClass('active').css('visibility', 'hidden !important');
               $(this).addClass('open').parent().find('ul').addClass('active').css('visibility', 'visible !important').find('.atcb-item-link:eq(0)').focus();
@@ -707,7 +717,7 @@ Vue.use(VueRouter);
 
         var limitCategories = window.OpenY.field_prgf_repeat_schedule_categ || [];
         if (limitCategories && limitCategories.length > 0) {
-          if (limitCategories.length == 1) {
+          if (limitCategories.length === 1) {
             limit.push(encodeURIComponent(limitCategories[0].title));
           }
           else {

@@ -34,6 +34,15 @@ openy_repeat.schedules_by_instructor:
     date: ''
   requirements:
     _permission: 'access content'
+openy_repeat.schedules_has_week_results:
+  path: '/schedules/get-week-has-events/{location}/{category}/{date}'
+  defaults:
+    _controller: '\Drupal\openy_repeat\Controller\RepeatController::ajaxSchedulerHasWeekResults'
+    location: ''
+    category: ''
+    date: '0'
+  requirements:
+    _permission: 'access content'
 openy_repeat.pdf:
   path: /schedules/get-pdf
   defaults:

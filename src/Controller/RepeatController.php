@@ -193,7 +193,27 @@ class RepeatController extends ControllerBase {
   }
 
   /**
-   * {@inheritdoc}
+   * @param Request $request
+   *
+   * @return JsonResponse
+   */
+  public function ajaxSchedulerHasWeekResults(Request $request) {
+    $result = count($this->getPdfWeekResults($request)) > 0;
+
+    return new JsonResponse($result);
+  }
+
+  /**
+   * Gets events data for given location, date, category, instructor or class.
+   *
+   * @param Request $request
+   * @param string $location
+   * @param string $date
+   * @param string $category
+   * @param string $instructor
+   * @param string $class
+   *
+   * @return array
    */
   public function getData($request, $location, $date, $category, $instructor = '', $class = '') {
     $initDate = new \DateTime('now');
@@ -518,38 +538,14 @@ class RepeatController extends ControllerBase {
    * @return array
    */
   public function getPdfContent($request) {
-    // Get all parameters from query.
-    $parameters = $request->query->all();
-    $category = !empty($parameters['categories']) ? $parameters['categories'] : '0';
     $rooms = !empty($parameters['rooms']) ? $parameters['rooms'] : '';
     $classnames = !empty($parameters['cn']) ? $parameters['cn'] : [];
-    $location = !empty($parameters['locations']) ? $parameters['locations'] : '0';
-    $date = !empty($parameters['date']) ? $parameters['date'] : '';
     $mode = !empty($parameters['mode']) ? $parameters['mode'] : 'activity';
     $hideInstructor = !empty($parameters['hide-instructor']) ? $parameters['hide-instructor'] : 0;
     $hidePrograms = !empty($parameters['hide-programs']) ? $parameters['hide-programs'] : 0;
 
-    if (empty($date)) {
-      $date = time();
-    }
-    else {
-      $date = strtotime($date);
-    }
+    $result = $this->getPdfWeekResults($request);
 
-    // Calculate first day of a week.
-    $monday_timestamp = strtotime("last Monday", $date);
-    if (date('D', $date) === 'Mon') {
-      $monday_timestamp = $date;
-    }
-    $timestamp_start = $monday_timestamp;
-
-    $result = [];
-    // Create weekly schedule by getting results for every weekday.
-    for ($i = 1; $i <= 7; $i++) {
-      $date = DrupalDateTime::createFromTimestamp($timestamp_start);
-      $result[$date->format('Y-m-d')] = $this->getData($request, $location, $date->format('Y-m-d'), $category);
-      $timestamp_start += 86400;
-    }
     if (!empty($rooms)) {
       $rooms = explode(';', $rooms);
     }
@@ -711,6 +707,46 @@ class RepeatController extends ControllerBase {
       }
     }
     return $formatted_result;
+  }
+
+  /**
+   * Helper function to return
+   *
+   * @param $request
+   *
+   * @return array
+   */
+  protected function getPdfWeekResults($request){
+    // Get all parameters from query.
+    $parameters = $request->query->all();
+    $category = !empty($parameters['categories']) ? $parameters['categories'] : '0';
+
+    $location = !empty($parameters['locations']) ? $parameters['locations'] : '0';
+    $date = !empty($parameters['date']) ? $parameters['date'] : '';
+
+    if (empty($date)) {
+      $date = time();
+    }
+    else {
+      $date = strtotime($date);
+    }
+
+    // Calculate first day of a week.
+    $monday_timestamp = strtotime("last Monday", $date);
+    if (date('D', $date) === 'Mon') {
+      $monday_timestamp = $date;
+    }
+    $timestamp_start = $monday_timestamp;
+
+    $result = [];
+    // Create weekly schedule by getting results for every weekday.
+    for ($i = 1; $i <= 7; $i++) {
+      $date = DrupalDateTime::createFromTimestamp($timestamp_start);
+      $result[$date->format('Y-m-d')] = $this->getData($request, $location, $date->format('Y-m-d'), $category);
+      $timestamp_start += 86400;
+    }
+
+    return $result;
   }
 
 }
