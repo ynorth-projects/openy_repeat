@@ -197,8 +197,9 @@ class RepeatController extends ControllerBase {
    *
    * @return JsonResponse
    */
-  public function ajaxSchedulerHasWeekResults(Request $request) {
-    $result = count($this->getPdfWeekResults($request)) > 0;
+  public function ajaxSchedulerHasWeekResults(Request $request, $location, $date, $category) {
+
+    $result = count(array_filter($this->getPdfWeekResults($request, $location, $date, $category))) > 0;
 
     return new JsonResponse($result);
   }
@@ -545,7 +546,6 @@ class RepeatController extends ControllerBase {
     $hidePrograms = !empty($parameters['hide-programs']) ? $parameters['hide-programs'] : 0;
 
     $result = $this->getPdfWeekResults($request);
-
     if (!empty($rooms)) {
       $rooms = explode(';', $rooms);
     }
@@ -716,13 +716,13 @@ class RepeatController extends ControllerBase {
    *
    * @return array
    */
-  protected function getPdfWeekResults($request){
+  protected function getPdfWeekResults(Request $request, $location = '0', $date = '', $category = '0'){
     // Get all parameters from query.
     $parameters = $request->query->all();
-    $category = !empty($parameters['categories']) ? $parameters['categories'] : '0';
+    $category = !empty($parameters['categories']) ? $parameters['categories'] : $category;
 
-    $location = !empty($parameters['locations']) ? $parameters['locations'] : '0';
-    $date = !empty($parameters['date']) ? $parameters['date'] : '';
+    $location = !empty($parameters['locations']) ? $parameters['locations'] : $location;
+    $date = !empty($parameters['date']) ? $parameters['date'] : $date;
 
     if (empty($date)) {
       $date = time();

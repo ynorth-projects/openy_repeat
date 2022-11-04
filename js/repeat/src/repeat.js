@@ -600,9 +600,6 @@ Vue.use(VueRouter);
       getResultsCount: function () {
         return this.filteredTable.length;
       },
-      getWeekHasResults: function () {
-        return this.weekHasResults;
-      },
       getTotalPages: function () {
         var count = 1;
 
