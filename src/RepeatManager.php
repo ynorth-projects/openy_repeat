@@ -128,6 +128,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
       ->getStorage('repeat')
       ->getQuery()
       ->condition('session', $node->id())
+      ->accessCheck(FALSE)
       ->execute();
 
     return $this->storage->loadMultiple($ids);
