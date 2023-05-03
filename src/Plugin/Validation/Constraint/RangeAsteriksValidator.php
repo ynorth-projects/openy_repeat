@@ -9,6 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * Validates the UniqueInteger constraint.
  */
 class RangeAsteriksValidator extends ConstraintValidator {
+
   /**
    * {@inheritdoc}
    */
@@ -20,9 +21,10 @@ class RangeAsteriksValidator extends ConstraintValidator {
         $this->context->addViolation($constraint->notRangeAsteriks, [
           '%value' => $item->value,
           '%min' => $constraint->min,
-          '%max' => $constraint->max
+          '%max' => $constraint->max,
         ]);
       }
     }
   }
+
 }

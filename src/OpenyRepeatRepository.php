@@ -58,6 +58,9 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
   }
 
+  /**
+   *
+   */
   public function getActivitiesIds() {
     $gxpActivity = $this->configFactory->get('openy_gxp.settings')->get('activity');
     $activitiesIds = $this->nodeStorage->getQuery()->condition('type', 'activity');
@@ -95,6 +98,9 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     return $classesIds;
   }
 
+  /**
+   *
+   */
   public function getSessionsIds() {
     $classesIds = $this->getClassesIds();
     $sessionsIds = [];
@@ -118,7 +124,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     foreach ($chunks as $chunk) {
       $sessions = $this->nodeStorage->loadMultiple($chunk);
       foreach ($sessions as $session) {
-        /* @var $session \Drupal\node\Entity\Node */
+        /** @var \Drupal\node\Entity\Node $session */
         $locationId = $session->get('field_session_location')->getString();
         $locationsIds[$locationId] = $locationId;
       }
@@ -145,7 +151,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     foreach ($chunks as $chunk) {
       $locationsNodes = $this->nodeStorage->loadMultiple($chunk);
       foreach ($locationsNodes as $locationNode) {
-        /* @var $locationNode \Drupal\node\Entity\Node */
+        /** @var \Drupal\node\Entity\Node $locationNode */
         $locationsTitles[] = $locationNode->get('title')->getString();
         $locationType = $locationNode->get('type')->getString();
         $locationsTypes[$locationType] = $locationType;

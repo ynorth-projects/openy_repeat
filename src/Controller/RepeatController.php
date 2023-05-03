@@ -6,7 +6,6 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\node\Entity\Node;
 use Drupal\openy_repeat\OpenyRepeatRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,23 +52,23 @@ class RepeatController extends ControllerBase {
   /**
    * Open Y Repeat Repository.
    *
-   * @var OpenyRepeatRepository
+   * @var \Drupal\openy_repeat\OpenyRepeatRepository
    */
   protected $repository;
 
   /**
    * Creates a new RepeatController.
    *
-   * @param CacheBackendInterface $cache
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   Cache default.
-   * @param Connection $database
+   * @param \Drupal\Core\Database\Connection $database
    *   The Database connection.
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The EntityTypeManager.
-   * @param DateFormatterInterface $date_formatter
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The Date formatter.
-   * @param OpenyRepeatRepository $repository
-   *    OpenyRepeatRepository.
+   * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
+   *   OpenyRepeatRepository.
    */
   public function __construct(CacheBackendInterface $cache, Connection $database, EntityTypeManagerInterface $entity_type_manager, DateFormatterInterface $date_formatter, OpenyRepeatRepository $repository) {
     $this->cache = $cache;
@@ -129,6 +128,7 @@ class RepeatController extends ControllerBase {
 
   /**
    * Get schedules by instructor.
+   *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Request.
    * @param string $instructor
@@ -172,6 +172,7 @@ class RepeatController extends ControllerBase {
    *   date.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *
    * @throws \Exception
    */
   public function ajaxSchedulerByClass(Request $request, $class, $location, $date) {
@@ -193,9 +194,9 @@ class RepeatController extends ControllerBase {
   }
 
   /**
-   * @param Request $request
+   * @param \Symfony\Component\HttpFoundation\Request $request
    *
-   * @return JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
   public function ajaxSchedulerHasWeekResults(Request $request, $location, $date, $category) {
 
@@ -207,7 +208,7 @@ class RepeatController extends ControllerBase {
   /**
    * Gets events data for given location, date, category, instructor or class.
    *
-   * @param Request $request
+   * @param \Symfony\Component\HttpFoundation\Request $request
    * @param string $location
    * @param string $date
    * @param string $category
@@ -331,7 +332,7 @@ class RepeatController extends ControllerBase {
 
       $result[$key]->class_info = $classes_info[$item->class];
 
-      $result[$key]->time_start_sort = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Hi');
+      $result[$key]->time_start_sort = $this->dateFormatter->format((int) $item->start_timestamp, 'custom', 'Hi');
 
       // Convert timezones for start_time and end_time.
       $time_start = new \DateTime();
@@ -344,8 +345,8 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $time_end->format('g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int)$item->start_timestamp, 'custom', 'Y-m-d H:i:s');
-      $result[$key]->time_end_calendar = $this->dateFormatter->format((int)$item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int) $item->start_timestamp, 'custom', 'Y-m-d H:i:s');
+      $result[$key]->time_end_calendar = $this->dateFormatter->format((int) $item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = date_default_timezone_get();
 
       // Durations.
@@ -353,7 +354,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
     }
 
-    usort($result, function($item1, $item2){
+    usort($result, function ($item1, $item2) {
       if ((int) $item1->time_start_sort == (int) $item2->time_start_sort) {
         return 0;
       }
@@ -369,6 +370,7 @@ class RepeatController extends ControllerBase {
    * Return Location from "Session" node type.
    *
    * @return array
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
@@ -396,7 +398,7 @@ class RepeatController extends ControllerBase {
       foreach ($nids_chunked as $chunk) {
         $branches = $this->entityTypeManager->getStorage('node')->loadMultiple($chunk);
         if (!empty($branches)) {
-          /** @var Node $node */
+          /** @var \Drupal\node\Entity\Node $node */
           foreach ($branches as $node) {
             $days = $node->hasField('field_branch_hours') ?
               $node->get('field_branch_hours')->getValue() : [];
@@ -450,7 +452,7 @@ class RepeatController extends ControllerBase {
       foreach ($nids_chunked as $chunk) {
         $classes = $this->entityTypeManager->getStorage('node')->loadMultiple($chunk);
         if (!empty($classes)) {
-          /** @var Node $node */
+          /** @var \Drupal\node\Entity\Node $node */
           foreach ($classes as $node) {
             $data[$node->nid->value] = [
               'nid' => $node->nid->value,
@@ -468,7 +470,9 @@ class RepeatController extends ControllerBase {
     return $data;
   }
 
-
+  /**
+   *
+   */
   public function getFormattedHours($data) {
     $lazy_hours = $groups = $rows = [];
     foreach ($data as $day => $value) {
@@ -519,7 +523,7 @@ class RepeatController extends ControllerBase {
         ],
         '#theme' => $content['theme'],
         '#cache' => [
-          'max-age' => 0
+          'max-age' => 0,
         ],
       ],
       'title' => $this->t('Download PDF schedule'),
@@ -533,7 +537,7 @@ class RepeatController extends ControllerBase {
   /**
    * Returns content for a PDF.
    *
-   * @param /Symfony/Component/HttpFoundation/Request $request
+   * @param SymfonyComponentHttpFoundationRequest $request
    *   Request service.
    *
    * @return array
@@ -628,10 +632,10 @@ class RepeatController extends ControllerBase {
 
     foreach ($result as $day => $data) {
       foreach ($data as $session) {
-        $words = explode(' ' , $session->instructor);
+        $words = explode(' ', $session->instructor);
         $short_name = $words[0];
         if (isset($words[1])) {
-          $short_name .= ' ' . substr($words[1], 0 ,1);
+          $short_name .= ' ' . substr($words[1], 0, 1);
         }
         $short_name = !empty($words[1]) ? $short_name . '.' : $short_name;
         $formatted_result['content'][$session->location][$session->name . $session->room]['dates'][$day][] = [
@@ -651,7 +655,7 @@ class RepeatController extends ControllerBase {
    * @param $rooms
    *   Rooms array.
    * @param array $classnames
-   *   Classnames array
+   *   Classnames array.
    *
    * @return array|bool
    */
@@ -698,7 +702,7 @@ class RepeatController extends ControllerBase {
         }
 
         $weekday = DrupalDateTime::createFromFormat('Y-m-d', $day)->format('l');
-        $formatted_result['content'][$session->category . '|' .$session->location][$weekday][$session->time_start . '-' . $session->time_end][] = [
+        $formatted_result['content'][$session->category . '|' . $session->location][$weekday][$session->time_start . '-' . $session->time_end][] = [
           'room' => $session->room,
           'name' => html_entity_decode($session->name),
           'category' => $session->category,
@@ -710,13 +714,13 @@ class RepeatController extends ControllerBase {
   }
 
   /**
-   * Helper function to return
+   * Helper function to return.
    *
    * @param $request
    *
    * @return array
    */
-  protected function getPdfWeekResults(Request $request, $location = '0', $date = '', $category = '0'){
+  protected function getPdfWeekResults(Request $request, $location = '0', $date = '', $category = '0') {
     // Get all parameters from query.
     $parameters = $request->query->all();
     $category = !empty($parameters['categories']) ? $parameters['categories'] : $category;

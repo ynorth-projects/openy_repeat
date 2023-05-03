@@ -2,11 +2,8 @@
 
 namespace Drupal\openy_repeat;
 
-use Drupal;
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -34,21 +31,21 @@ class RepeatManager implements SessionInstanceManagerInterface {
   /**
    * The entity type manager.
    *
-   * @var EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
    * The entity storage.
    *
-   * @var EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
   protected $storage;
 
   /**
    * LoggerChannelFactoryInterface definition.
    *
-   * @var LoggerChannelFactoryInterface
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $logger;
 
@@ -295,13 +292,14 @@ class RepeatManager implements SessionInstanceManagerInterface {
         $dates = [[
           'from' => $start,
           'to' => $end,
-        ]];
+        ],
+        ];
         $exclusions = self::reorderExclusions($session_schedule['exclusions']);
         $combined_dates = self::combineDates($dates, $exclusions);
 
         foreach ($combined_dates as $date) {
-          $to_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['to'], new \DateTimeZone($timezone));
-          $from_time = new \DateTime(date('Y-m-d') .' '. $schedule_item['time']['from'], new \DateTimeZone($timezone));
+          $to_time = new \DateTime(date('Y-m-d') . ' ' . $schedule_item['time']['to'], new \DateTimeZone($timezone));
+          $from_time = new \DateTime(date('Y-m-d') . ' ' . $schedule_item['time']['from'], new \DateTimeZone($timezone));
           $to_time = $to_time->getTimestamp();
           $from_time = $from_time->getTimestamp();
           $duration = round(($to_time - $from_time) / 60, 2);
@@ -320,7 +318,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
             'day' => '*',
             'week' => '*',
             'weekday' => $day,
-            'duration'=> $duration,
+            'duration' => $duration,
           ];
         }
       }
@@ -413,7 +411,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     // Now convert dates back to strings.
     $result_dates = [];
     foreach ($resultingPeriods as $period) {
-      // Example format 2018-01-08T05:15:00
+      // Example format 2018-01-08T05:15:00.
       $result_dates[] = [
         'from' => $period['from'],
         'to' => $period['to'],
@@ -426,7 +424,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
   /**
    * Fetches sessions schedule.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The session node.
    *
    * @return array|bool
@@ -572,15 +570,15 @@ class RepeatManager implements SessionInstanceManagerInterface {
    *   The condition value.
    */
   private static function addEntityQueryCondition(QueryInterface &$query, $key, $value) {
-    $simple = array(
+    $simple = [
       'from' => ['start', '>='],
       'to' => ['end', '<'],
-    );
+    ];
 
     if (isset($simple[$key])) {
-      // @todo: Make date conditions work with new logic.
-      list($field, $op) = $simple[$key];
-      //$query->condition($field, $value, $op);
+      // @todo Make date conditions work with new logic.
+      [$field, $op] = $simple[$key];
+      // $query->condition($field, $value, $op);
       return;
     }
 
@@ -794,21 +792,20 @@ class RepeatManager implements SessionInstanceManagerInterface {
    * @param \Drupal\node\NodeInterface $entity
    *   Class node.
    *
-   * @return boolean
-   *
+   * @return bool
    */
   public function isSignificantChange(NodeInterface $entity) {
-    // Fields that contain significant values for entity
+    // Fields that contain significant values for entity.
     $map_compare = [
       'class' => [
-        'field_class_activity'
+        'field_class_activity',
       ],
       'activity' => [
         'title',
         'field_activity_category',
       ],
       'program_subcategory' => [
-        'field_category_program'
+        'field_category_program',
       ],
     ];
 
@@ -831,4 +828,5 @@ class RepeatManager implements SessionInstanceManagerInterface {
     }
     return FALSE;
   }
+
 }

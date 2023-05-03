@@ -48,7 +48,7 @@ function openy_repeat_nodes_entity_delete(EntityInterface $entity) {
     Drupal::service('session_instance.manager')
       ->deleteSessionInstancesBySession($entity);
   }
-  // TODO: delete sessions instances in case other nodes deleted.
+  // @todo delete sessions instances in case other nodes deleted.
 }
 
 /**
