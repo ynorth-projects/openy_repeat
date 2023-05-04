@@ -15,13 +15,19 @@ use Symfony\Component\Validator\Constraint;
  */
 class RangeAsteriks extends Constraint {
 
-  // The message that will be shown if the value is not an * or range integer.
+  /**
+   * The message that will be shown if the value is not an * or range integer.
+   */
   public $notRangeAsteriks = '%value is not a * and in range of %min - %max';
 
-  // min value of the range.
+  /**
+   * Min value of the range.
+   */
   public $min;
 
-  // max value of the range.
+  /**
+   * Max value of the range.
+   */
   public $max;
 
   /**

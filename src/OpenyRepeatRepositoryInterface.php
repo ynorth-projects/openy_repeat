@@ -48,7 +48,7 @@ interface OpenyRepeatRepositoryInterface {
    * Return Classes ids for schedules by activity id.
    *
    * @param $activityId
-   *    Activity ID.
+   *   Activity ID.
    *
    * @return array
    *   Classes ids.

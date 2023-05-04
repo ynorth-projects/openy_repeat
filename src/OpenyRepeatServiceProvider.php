@@ -21,4 +21,5 @@ class OpenyRepeatServiceProvider extends ServiceProviderBase {
       $definition->setClass('Drupal\openy_repeat\RepeatManager');
     }
   }
+
 }

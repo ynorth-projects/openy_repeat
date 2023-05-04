@@ -3,7 +3,6 @@
 namespace Drupal\openy_repeat;
 
 use Drupal\node\NodeInterface;
-use Drupal\openy_repeat_entity\Entity\Repeat;
 
 /**
  * Interface RepeatManagerInterface.
@@ -66,7 +65,7 @@ interface RepeatManagerInterface {
   /**
    * Fetches sessions schedule.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The session node.
    *
    * @return array
@@ -77,7 +76,7 @@ interface RepeatManagerInterface {
   /**
    * Calculates Repeat entities timestamps for the session.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The session node.
    * @param int|null $timestamp
    *   The earliest allowed Repeat entities.
@@ -107,7 +106,7 @@ interface RepeatManagerInterface {
    * @param int $to
    *   The latest possible occurrence.
    *
-   * @return Repeat|null
+   * @return \Drupal\openy_repeat_entity\Entity\Repeat|null
    *   The Repeat entities or null.
    */
   public function getClosestUpcomingSessionInstanceBySession(NodeInterface $node, $from = NULL, $to = NULL);

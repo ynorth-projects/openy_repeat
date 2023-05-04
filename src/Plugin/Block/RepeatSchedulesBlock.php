@@ -51,7 +51,6 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   protected $request;
 
-
   /**
    * Constructs a new RepeatSchedulesBlock object.
    *
@@ -78,7 +77,6 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
     $this->repository = $repository;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -101,7 +99,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function getLocations() {
 
-    $query = $this->database->select('node' , 'n');
+    $query = $this->database->select('node', 'n');
     $query->join('node__field_session_location', 'l', "n.nid = l.entity_id AND l.bundle = 'session'");
     $query->join('node_field_data', 'nfd', 'l.field_session_location_target_id = nfd.nid');
     $query->condition('n.type', 'session');
@@ -205,10 +203,10 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    * Gets value of paragraph filters field.
    *
    * @param \Drupal\paragraphs\Entity\Paragraph $p
-   *  The paragraph to take data from.
+   *   The paragraph to take data from.
    *
    * @return array
-   *  An associative array of values.
+   *   An associative array of values.
    */
   public static function getFiltersSettings(Paragraph $p) {
     if ($p->field_prgf_repeat_schedule_filt->isEmpty()) {

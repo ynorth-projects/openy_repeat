@@ -4,9 +4,7 @@ namespace Drupal\openy_repeat\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\Plugin\Field\FieldType\BooleanItem;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
-use Drupal\Core\Render\Markup;
 use Drupal\link\Plugin\Field\FieldType\LinkItem;
 
 /**
@@ -54,7 +52,7 @@ class JsonFormatter extends FormatterBase {
         ];
       }
       else {
-        $export[] =  $item->getValue();
+        $export[] = $item->getValue();
       }
     }
 
@@ -69,7 +67,8 @@ class JsonFormatter extends FormatterBase {
       '#context' => [
         'variable' => $js,
       ],
-    ]];
+    ],
+    ];
 
     return $elements;
   }
