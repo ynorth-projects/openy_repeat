@@ -99,7 +99,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
   }
 
   /**
-   *
+   * Obtains sessions from the PEF storage.
    */
   public function getSessionsIds() {
     $classesIds = $this->getClassesIds();
