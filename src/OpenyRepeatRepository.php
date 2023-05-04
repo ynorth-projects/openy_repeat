@@ -59,7 +59,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
   }
 
   /**
-   *
+   * Obtains activities from PEF storage.
    */
   public function getActivitiesIds() {
     $gxpActivity = $this->configFactory->get('openy_gxp.settings')->get('activity');
