@@ -67,7 +67,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     if ($gxpActivity) {
       $activitiesIds = $activitiesIds->condition('field_activity_category', $gxpActivity);
     }
-    $activitiesIds = $activitiesIds->execute();
+    $activitiesIds = $activitiesIds->accessCheck(FALSE)->execute();
     return $activitiesIds;
   }
 
@@ -78,6 +78,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
     return $this->nodeStorage->getQuery()
       ->condition('type', 'class')
       ->condition('field_class_activity', $activityId)
+      ->accessCheck(FALSE)
       ->execute();
   }
 
@@ -108,6 +109,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
       $sessionsIdsByClassId = $this->nodeStorage->getQuery()
         ->condition('type', 'session')
         ->condition('field_session_class', $classId)
+        ->accessCheck(FALSE)
         ->execute();
       $sessionsIds = array_merge($sessionsIds, $sessionsIdsByClassId);
     }
