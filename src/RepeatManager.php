@@ -94,7 +94,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
    * {@inheritdoc}
    */
   public function resetCache() {
-    $result = $this->entityTypeManager->getStorage('repeat')->getQuery()->execute();
+    $result = $this->entityTypeManager->getStorage('repeat')->getQuery()->accessCheck(FALSE)->execute();
     if (empty($result)) {
       return;
     }
@@ -541,6 +541,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     $query = $this->entityTypeManager
       ->getStorage('repeat')
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('session', $node->id())
       ->sort('start')
       ->range(0, 1);
@@ -594,6 +595,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     $query = $this->entityTypeManager
       ->getStorage('repeat')
       ->getQuery()
+      ->accessCheck(FALSE)
       ->sort('start');
 
     foreach ($conditions as $key => $value) {
@@ -618,6 +620,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     // Sessions should match the programs.
     if (isset($conditions['program'])) {
       $query = $this->entityTypeManager->getStorage('node')->getQuery()
+        ->accessCheck(FALSE)
         ->condition('type', 'program_subcategory')
         ->condition('field_category_program', $conditions['program'], 'IN');
       $program_subcategory_ids = $query->execute();
@@ -628,7 +631,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     }
     // Sessions should match the program subcategories.
     if (!empty($conditions['program_subcategory']) || !empty($program_subcategory_ids)) {
-      $query = $this->entityTypeManager->getStorage('node')->getQuery()->condition('type', 'activity');
+      $query = $this->entityTypeManager->getStorage('node')->getQuery()->accessCheck(FALSE)->condition('type', 'activity');
       if (!empty($conditions['program_subcategory'])) {
         $query->condition('field_activity_category', $conditions['program_subcategory'], 'IN');
       }
@@ -644,7 +647,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
 
     // Sessions should match the activities.
     if (!empty($conditions['activity']) || !empty($activity_ids)) {
-      $query = $this->entityTypeManager->getStorage('node')->getQuery()->condition('type', 'class');
+      $query = $this->entityTypeManager->getStorage('node')->getQuery()->accessCheck(FALSE)->condition('type', 'class');
       if (!empty($conditions['activity'])) {
         $query->condition('field_class_activity', $conditions['activity'], 'IN');
       }
@@ -660,7 +663,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
 
     // Sessions should match the classes.
     if (!empty($conditions['class']) || !empty($class_ids)) {
-      $query = $this->entityTypeManager->getStorage('node')->getQuery()->condition('type', 'session');
+      $query = $this->entityTypeManager->getStorage('node')->getQuery()->accessCheck(FALSE)->condition('type', 'session');
       if (!empty($conditions['class'])) {
         $query->condition('field_session_class', $conditions['class'], 'IN');
       }
@@ -767,6 +770,7 @@ class RepeatManager implements SessionInstanceManagerInterface {
     if (empty($terms)) {
       $query = $this->entityTypeManager->getStorage('taxonomy_term')
         ->getQuery()
+        ->accessCheck(FALSE)
         ->condition('vid', 'age');
       $entity_ids = $query->execute();
       $terms = $this->entityTypeManager

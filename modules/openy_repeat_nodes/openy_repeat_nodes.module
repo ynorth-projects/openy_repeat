@@ -83,6 +83,7 @@ function openy_repeat_nodes_actualize_sessions(EntityInterface $entity) {
       $entity_ids = \Drupal::entityQuery('node')
         ->condition('type', 'activity')
         ->condition('field_activity_category', $entity_ids, 'IN')
+        ->accessCheck(FALSE)
         ->execute();
       $bundle = 'activity';
     }
@@ -91,6 +92,7 @@ function openy_repeat_nodes_actualize_sessions(EntityInterface $entity) {
       $entity_ids = \Drupal::entityQuery('node')
         ->condition('type', 'class')
         ->condition('field_class_activity', $entity_ids, 'IN')
+        ->accessCheck(FALSE)
         ->execute();
       $bundle = 'class';
     }
@@ -99,6 +101,7 @@ function openy_repeat_nodes_actualize_sessions(EntityInterface $entity) {
       $entity_ids = \Drupal::entityQuery('node')
         ->condition('type', 'session')
         ->condition('field_session_class', $entity_ids, 'IN')
+        ->accessCheck(FALSE)
         ->execute();
       $session_ids = $entity_ids;
     }
