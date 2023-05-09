@@ -393,6 +393,7 @@ class RepeatController extends ControllerBase {
         ->getStorage('node')
         ->getQuery()
         ->condition('type', ['branch', 'location', 'camp', 'facility'], 'IN')
+        ->accessCheck(FALSE)
         ->execute();
       $nids_chunked = array_chunk($nids, 20, TRUE);
       foreach ($nids_chunked as $chunk) {
