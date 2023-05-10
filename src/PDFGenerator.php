@@ -1,8 +1,8 @@
 <?php
 
-use Mpdf\Mpdf;
-
 namespace Drupal\openy_repeat;
+
+use Mpdf\Mpdf;
 
 /**
  * Class PDFGenerator.
