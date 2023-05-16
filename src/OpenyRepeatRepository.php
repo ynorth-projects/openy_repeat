@@ -4,6 +4,7 @@ namespace Drupal\openy_repeat;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Cache\UseCacheBackendTrait;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -47,15 +48,18 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
    *   ConfigFactory.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
    *   The cache backend.
+   * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface $memory_cache
+   *   The memory cache.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $configFactory, CacheBackendInterface $cache_backend) {
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $configFactory, CacheBackendInterface $cache_backend, MemoryCacheInterface $memory_cache) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $configFactory;
     $this->cacheBackend = $cache_backend;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    $this->memoryCache = $memory_cache;
   }
 
   /**
@@ -130,6 +134,7 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
         $locationId = $session->get('field_session_location')->getString();
         $locationsIds[$locationId] = $locationId;
       }
+      $this->memoryCache->deleteAll();
     }
     return $locationsIds;
   }
