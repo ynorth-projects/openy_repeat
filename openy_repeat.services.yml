@@ -5,4 +5,4 @@ services:
         - { name: pdf_generator }
   openy_repeat.repository:
     class: Drupal\openy_repeat\OpenyRepeatRepository
-    arguments: ['@entity_type.manager', '@config.factory', '@cache.default']
+    arguments: ['@entity_type.manager', '@config.factory', '@cache.default', '@entity.memory_cache']
