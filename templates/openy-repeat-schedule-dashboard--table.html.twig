@@ -54,7 +54,7 @@
                 <div class="class-column" v-cloak>
                   <strong><a class="schedule-dashboard__modal--class-link" role="button"
                              v-on:click="$parent.populatePopupClass(item.nid)" data-toggle="modal"
-                             data-target=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+                             data-target=".schedule-dashboard__modal--class" tabindex="0">${ item.name }</a></strong>
                   <p><span>${ item.category }</span></p>
                 </div>
               </div>
@@ -63,7 +63,7 @@
                 <div v-cloak class="location-column">
                   <strong><a class="hidden-xs schedule-dashboard__modal--location-link" role="button"
                              v-on:click="$parent.populatePopupLocation(index)" data-toggle="modal"
-                             data-target=".schedule-dashboard__modal--location">${ item.location }</a>
+                             data-target=".schedule-dashboard__modal--location" tabindex="0">${ item.location }</a>
                     <p class="hidden-md hidden-sm hidden-lg">${ item.location }</p>
                   </strong>
                   <p><span v-if="item.room">${ item.room }</span></p>
@@ -75,8 +75,8 @@
                 {# instructor #}
                 <div v-cloak class="instructor-column">
                   <a class="schedule-dashboard__modal--instructor-link" role="button"
-                     v-on:click="$parent.populatePopupInstructor(item.instructor)" data-toggle="modal"
-                     data-target=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
+                     v-on:click="$parent.populatePopupInstructor(item.instructor)" v-if="item.instructor" data-toggle="modal"
+                     data-target=".schedule-dashboard__modal--instructor" tabindex="0">${ item.instructor }</a>
                 </div>
               </div>
 
