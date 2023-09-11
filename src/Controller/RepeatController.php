@@ -455,11 +455,16 @@ class RepeatController extends ControllerBase {
         if (!empty($classes)) {
           /** @var \Drupal\node\Entity\Node $node */
           foreach ($classes as $node) {
+            $description = '';
+            if (!$node->field_class_description->isEmpty()) {
+              $description = html_entity_decode(strip_tags(text_summary($node->field_class_description->value, $node->field_class_description->format, 600)));
+            }
+
             $data[$node->nid->value] = [
               'nid' => $node->nid->value,
               'path' => $node->toUrl()->setAbsolute()->toString(),
               'title' => $node->title->value,
-              'description' => html_entity_decode(strip_tags(text_summary($node->field_class_description->value, $node->field_class_description->format, 600))),
+              'description' => $description,
             ];
             $tags[] = 'node:' . $node->nid->value;
           }
