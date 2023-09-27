@@ -455,11 +455,16 @@ class RepeatController extends ControllerBase {
         if (!empty($classes)) {
           /** @var \Drupal\node\Entity\Node $node */
           foreach ($classes as $node) {
+            $description = '';
+            if (!$node->field_class_description->isEmpty()) {
+              $description = html_entity_decode(strip_tags(text_summary($node->field_class_description->value, $node->field_class_description->format, 600)));
+            }
+
             $data[$node->nid->value] = [
               'nid' => $node->nid->value,
               'path' => $node->toUrl()->setAbsolute()->toString(),
               'title' => $node->title->value,
-              'description' => html_entity_decode(strip_tags(text_summary($node->field_class_description->value, $node->field_class_description->format, 600))),
+              'description' => $description,
             ];
             $tags[] = 'node:' . $node->nid->value;
           }
@@ -633,12 +638,16 @@ class RepeatController extends ControllerBase {
 
     foreach ($result as $day => $data) {
       foreach ($data as $session) {
-        $words = explode(' ', $session->instructor);
-        $short_name = $words[0];
-        if (isset($words[1])) {
-          $short_name .= ' ' . substr($words[1], 0, 1);
+        $short_name = '';
+        if (!empty($session->instructor)) {
+          $words = explode(' ', $session->instructor);
+          $short_name = $words[0];
+          if (isset($words[1])) {
+            $short_name .= ' ' . substr($words[1], 0, 1);
+          }
+          $short_name = !empty($words[1]) ? $short_name . '.' : $short_name;
         }
-        $short_name = !empty($words[1]) ? $short_name . '.' : $short_name;
+
         $formatted_result['content'][$session->location][$session->name . $session->room]['dates'][$day][] = [
           'time' => $session->time_start . '-' . $session->time_end,
           'category' => $session->category,
