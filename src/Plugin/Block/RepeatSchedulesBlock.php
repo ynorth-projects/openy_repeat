@@ -129,6 +129,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
       $query->condition('nid', $nids, 'NOT IN');
     }
     $query->orderBy('title');
+    $query->distinct(TRUE);
     $query->addTag('repeat_schedules_block_categories');
     $result = $query->execute()->fetchCol();
 
