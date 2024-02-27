@@ -32,13 +32,15 @@ bootstrap-datepicker:
       'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css': { type: external }
 
 openy_repeat.locations:
-  version: 0.1
+  version: 0.2
   js:
     js/locations.js: {}
   css:
     base:
       css/locations.css: {}
   dependencies:
+    - core/drupal
+    - core/once
     - openy_system/openy_system.cards
 
 openy_repeat.schedules:

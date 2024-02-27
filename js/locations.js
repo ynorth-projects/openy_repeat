@@ -1,11 +1,16 @@
-(function ($, Drupal) {
+(function ($, Drupal, once) {
 
   'use strict';
 
   Drupal.behaviors.repeat_locations = {
     attach: function (context, settings) {
 
-      $(window).once('openy-load-selected-locations').on('load', function() {
+      if (!once('openy-load-selected-locations', 'html').length) {
+        // Early return avoid changing the indentation
+        // for the rest of the code.
+        return;
+      }
+      $(window).on('load', function() {
         $('.openy-card__item input', context).each(function () {
           if ($(this).is(':checked')) {
             $(this).parents('.openy-card__item').addClass('selected');
@@ -15,7 +20,7 @@
       });
 
       // Toggle active class on location item.
-      $('.openy-card__item input', context).once('openy-selected-locations').on('change', function() {
+      $(once('openy-selected-locations', '.openy-card__item input')).on('change', function() {
         var locName = this.value;
         if(!$(this).parents('.openy-card__item').hasClass('selected')) {
           $(this).parents('.openy-card__item').addClass('selected');
@@ -40,7 +45,7 @@
       });
 
       // Attach location arguments to url on submit.
-      $('.js-submit-locations', context).once('openy-submit-locations').click(function() {
+      $(once('openy-submit-locations', '.js-submit-locations')).on('click', function() {
         if ($(this).hasClass('disabled')) {
           if ($(this).parent().find('.error').length === 0) {
             $(this).after('<div class="error">' + Drupal.t('Please choose the location') + '</div>');
@@ -89,4 +94,4 @@
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, once);
