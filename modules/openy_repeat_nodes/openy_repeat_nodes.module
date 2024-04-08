@@ -85,6 +85,9 @@ function openy_repeat_nodes_actualize_sessions(EntityInterface $entity) {
         ->condition('field_activity_category', $entity_ids, 'IN')
         ->accessCheck(FALSE)
         ->execute();
+      if (!$entity_ids) {
+        return;
+      }
       $bundle = 'activity';
     }
 
@@ -94,6 +97,9 @@ function openy_repeat_nodes_actualize_sessions(EntityInterface $entity) {
         ->condition('field_class_activity', $entity_ids, 'IN')
         ->accessCheck(FALSE)
         ->execute();
+      if (!$entity_ids) {
+        return;
+      }
       $bundle = 'class';
     }
 
