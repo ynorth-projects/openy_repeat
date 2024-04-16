@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.lb_repeat_schedules
+    - field.field.block_content.lb_repeat_schedules.body
+    - field.field.block_content.lb_repeat_schedules.field_rs_block
+  module:
+    - entity_reference_revisions
+id: block_content.lb_repeat_schedules.default
+targetEntityType: block_content
+bundle: lb_repeat_schedules
+mode: default
+content:
+  field_rs_block:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  langcode: true
+  search_api_excerpt: true
