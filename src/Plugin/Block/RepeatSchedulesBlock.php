@@ -196,7 +196,9 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
             $block = $this->blockContentStorage->loadByProperties(['revision_id' => $configuration['block_revision_id']]);
             if (!empty($block)) {
               $block = reset($block);
-              if ($block instanceof BlockInterface && $block->hasField('field_rs_block') && !$block->get('field_rs_block')->isEmpty()) {
+              if ($block instanceof BlockInterface &&
+                  $block->hasField('field_rs_block') &&
+                  !$block->get('field_rs_block')->isEmpty()) {
                 $paragraphs = $block->get('field_rs_block')->referencedEntities();
                 break 2;
               }
