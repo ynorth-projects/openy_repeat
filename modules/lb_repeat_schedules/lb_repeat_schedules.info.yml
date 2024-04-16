@@ -1,7 +1,7 @@
-name: 'Open Y Repeat Schedules LB'
+name: 'Y Layout Builder - Repeat Schedules'
 type: module
 description: 'Provides a Repeat Schedules block for Layout Builder.'
-package: Open Y
+package: 'YMCA Website Services'
 core_version_requirement: ^9 || ^10
 dependencies:
   - openy_repeat:openy_repeat

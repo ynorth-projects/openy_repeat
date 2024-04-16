@@ -1,8 +1,7 @@
-uuid: faf2c9f2-b03c-4cf6-9904-25bc84fe329e
 langcode: en
 status: true
 dependencies: {  }
 id: lb_repeat_schedules
-label: 'LB Repeat Schedules'
+label: 'Repeat (Group) Schedules'
 revision: 0
 description: 'Repeat Schedules block for Layout builder.'
