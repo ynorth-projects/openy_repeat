@@ -2,10 +2,14 @@
 
 namespace Drupal\openy_repeat\Plugin\Block;
 
+use Drupal\block\BlockInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\layout_builder\LayoutEntityHelperTrait;
+use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +27,8 @@ use Drupal\openy_repeat\OpenyRepeatRepository;
  * )
  */
 class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  use LayoutEntityHelperTrait;
 
   /**
    * The database object.
@@ -52,6 +58,20 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $request;
 
   /**
+   * The custom block storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $blockContentStorage;
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructs a new RepeatSchedulesBlock object.
    *
    * @param array $configuration
@@ -68,13 +88,17 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The request stack.
    * @param \Drupal\openy_repeat\OpenyRepeatRepository $repository
    *   Repository.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, RouteMatchInterface $route_match, RequestStack $request_stack, OpenyRepeatRepository $repository) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, RouteMatchInterface $route_match, RequestStack $request_stack, OpenyRepeatRepository $repository, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->database = $database;
     $this->routeMatch = $route_match;
     $this->request = $request_stack->getCurrentRequest();
     $this->repository = $repository;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->blockContentStorage = $this->entityTypeManager->getStorage('block_content');
   }
 
   /**
@@ -88,7 +112,8 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
       $container->get('database'),
       $container->get('current_route_match'),
       $container->get('request_stack'),
-      $container->get('openy_repeat.repository')
+      $container->get('openy_repeat.repository'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -157,7 +182,32 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
     if (!$node = $this->routeMatch->getParameter('node')) {
       return [];
     }
-    $paragraphs = $node->field_content->referencedEntities();
+    if (!$node instanceof NodeInterface) {
+      return [];
+    }
+    $paragraphs = [];
+    if ($node->hasField('layout_builder__layout') &&
+      !$node->get('field_use_layout_builder')->isEmpty()) {
+      $node_sections = $node->get('layout_builder__layout')->getValue();
+      foreach ($node_sections as $sections) {
+        foreach ($this->getInlineBlockComponents($sections) as $component) {
+          $configuration = $component->getPlugin()->getConfiguration();
+          if ($configuration['id'] == 'inline_block:lb_repeat_schedules' && isset($configuration['block_revision_id'])) {
+            $block = $this->blockContentStorage->loadByProperties(['revision_id' => $configuration['block_revision_id']]);
+            if (!empty($block)) {
+              $block = reset($block);
+              if ($block instanceof BlockInterface && $block->hasField('field_rs_block') && !$block->get('field_rs_block')->isEmpty()) {
+                $paragraphs = $block->get('field_rs_block')->referencedEntities();
+                break 2;
+              }
+            }
+          }
+        }
+      }
+    }
+    if (empty($paragraphs)) {
+      $paragraphs = $node->field_content->referencedEntities();
+    }
     foreach ($paragraphs as $p) {
       if ($p->bundle() == 'repeat_schedules') {
         $filters = self::getFiltersSettings($p);

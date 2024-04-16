@@ -1,0 +1,7 @@
+name: 'Open Y Repeat Schedules LB'
+type: module
+description: 'Provides a Repeat Schedules block for Layout Builder.'
+package: Open Y
+core_version_requirement: ^9 || ^10
+dependencies:
+  - openy_repeat:openy_repeat
