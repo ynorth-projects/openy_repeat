@@ -2,7 +2,7 @@
 
 namespace Drupal\openy_repeat\Plugin\Block;
 
-use Drupal\block\BlockInterface;
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -196,7 +196,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
             $block = $this->blockContentStorage->loadByProperties(['revision_id' => $configuration['block_revision_id']]);
             if (!empty($block)) {
               $block = reset($block);
-              if ($block instanceof BlockInterface &&
+              if ($block instanceof BlockContentInterface &&
                   $block->hasField('field_rs_block') &&
                   !$block->get('field_rs_block')->isEmpty()) {
                 $paragraphs = $block->get('field_rs_block')->referencedEntities();
