@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: lb_repeat_schedules
+label: 'Repeat (Group) Schedules'
+revision: 0
+description: 'Repeat Schedules block for Layout builder.'
