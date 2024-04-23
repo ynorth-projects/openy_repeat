@@ -17,7 +17,7 @@ settings:
       value: classname
       label: 'by class name'
     -
-      value: inscructorname
+      value: instructorname
       label: 'by instructor name'
   allowed_values_function: ''
 module: options
