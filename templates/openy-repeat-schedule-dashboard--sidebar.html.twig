@@ -138,6 +138,26 @@
             </div>
           </div>
         {% endif %}
+
+        {# inscructor name select list #}
+        {% if filters.inscructorname %}
+          <div v-if="getInstructorFilter()" class="form-group-wrapper">
+            <label for="form-group-instructor-name" data-toggle="collapse" data-target="#form-group-instructor-name" role="button" class="expanded collapsed" aria-controls="form-group-instructor-name" aria-expanded="false">
+              {{ 'Instructor name'|t }}
+              <i class="fa fa-minus-circle minus" aria-hidden="true"></i>
+              <i class="fa fa-plus-circle plus" aria-hidden="true"></i>
+            </label>
+            <div id="form-group-instructor-name" class="form-group-instructor-name collapse in" aria-expanded="true">
+              <select v-model="instructorName" class="select-instructor-option form-control form-select" id="instructor-name">
+                <option class="all_instructors" id="all_instructors" value="">{{ 'All instructors' | t }}</option>
+                <option v-for="option in getInstructorFilter()" :id="generateId(option)" :value="option">
+                  ${ option }
+                </option>
+              </select>
+              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </div>
+        {% endif %}
       </form>
     </div>
   </div>

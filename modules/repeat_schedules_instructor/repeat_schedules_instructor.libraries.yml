@@ -1,0 +1,5 @@
+repeat-schedules-instructor:
+  version: 1.0
+  css:
+    component:
+      css/repeat-schedules-instructor.css: { preprocess: true }

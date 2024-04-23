@@ -1,0 +1,7 @@
+name: 'Y Layout Builder - Repeat Schedules Filter by Instructor'
+type: module
+description: 'Provides a filter by Instructor for Repeat Schedules block.'
+package: 'YMCA Website Services'
+core_version_requirement: ^9 || ^10
+dependencies:
+  - openy_repeat:openy_repeat

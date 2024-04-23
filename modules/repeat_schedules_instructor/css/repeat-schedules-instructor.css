@@ -1,0 +1,9 @@
+.form-group-instructor-name {
+  position: relative;
+}
+.form-group-instructor-name i.fa {
+  position: absolute;
+  right: 10px;
+  top: 9px;
+}
+
