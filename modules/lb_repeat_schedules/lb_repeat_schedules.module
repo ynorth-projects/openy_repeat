@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains lb_repeat_schedules module hooks.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function lb_repeat_schedules_preprocess_block__lb_repeat_schedules(&$variables) {
+  if ($variables['in_preview']) {
+    $variables['in_preview_placeholder'] =
+      t('Repeat (Group) Schedules: To see your changes in this block, please save the layout.');
+  }
+}
