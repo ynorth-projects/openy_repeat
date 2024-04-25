@@ -31,7 +31,7 @@ class PDFGenerator {
     $mpdf->SetHTMLFooter(\Drupal::service('renderer')->render($settings['footer']));
     $mpdf->WriteHTML($stylesheet, 1);
     $mpdf->WriteHTML($html, 2);
-    $download_title = array_key_first($settings["body"]["#content"]["result"]) . ' ';
+    $download_title = array_key_first($settings["body"]["#content"]["result"] ?? []) . ' ';
     $download_title .= $settings["body"]["#content"]["header"]["dates"] ?? '';
     $download_title = trim($download_title);
     if (!$download_title) {

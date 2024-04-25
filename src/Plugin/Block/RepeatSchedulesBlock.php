@@ -187,13 +187,18 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
     }
     $paragraphs = [];
     if ($node->hasField('layout_builder__layout') &&
-      !$node->get('field_use_layout_builder')->isEmpty()) {
+        !$node->get('layout_builder__layout')->isEmpty()) {
       $node_sections = $node->get('layout_builder__layout')->getValue();
       foreach ($node_sections as $sections) {
         foreach ($this->getInlineBlockComponents($sections) as $component) {
           $configuration = $component->getPlugin()->getConfiguration();
-          if ($configuration['id'] == 'inline_block:lb_repeat_schedules' && isset($configuration['block_revision_id'])) {
-            $block = $this->blockContentStorage->loadByProperties(['revision_id' => $configuration['block_revision_id']]);
+          if ($configuration['id'] == 'inline_block:lb_repeat_schedules' &&
+            isset($configuration['block_revision_id'])) {
+            $block = $this->blockContentStorage->loadByProperties(
+              [
+                'revision_id' => $configuration['block_revision_id'],
+              ]
+            );
             if (!empty($block)) {
               $block = reset($block);
               if ($block instanceof BlockContentInterface &&
@@ -207,7 +212,9 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
         }
       }
     }
-    if (empty($paragraphs)) {
+    if (empty($paragraphs) &&
+      $node->hasField('field_content') &&
+      !$node->get('field_content')->isEmpty()) {
       $paragraphs = $node->field_content->referencedEntities();
     }
     foreach ($paragraphs as $p) {
@@ -244,7 +251,7 @@ class RepeatSchedulesBlock extends BlockBase implements ContainerFactoryPluginIn
       '#categories' => $this->getCategories($excluded_categories),
       '#checked_locations' => $checked_locations,
       '#checked_categories' => $checked_categories,
-      '#filters' => $filters,
+      '#filters' => $filters ?? [],
       '#cache' => ['contexts' => ['url.path', 'url.query_args']],
     ];
   }

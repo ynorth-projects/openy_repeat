@@ -81,6 +81,7 @@ Vue.use(VueRouter);
       categoriesExcluded: [],
       categoriesLimit: [],
       className: [],
+      instructorName: '',
       isLoading: true,
       weekHasResults: false,
       locationPopup: {
@@ -103,7 +104,8 @@ Vue.use(VueRouter);
         date: 0,
         category: 1,
         location: 0,
-        className: 0
+        className: 0,
+        instructorName: 0,
       }
     },
     created: function () {
@@ -179,6 +181,11 @@ Vue.use(VueRouter);
         this.className = classNamesGet.split(';');
       }
 
+      var instructorNamesGet = this.$route.query.inst;
+      if (instructorNamesGet) {
+        this.instructorName = instructorNamesGet.split(';');
+      }
+
       var categoriesGet = this.$route.query.categories;
       if (categoriesGet) {
         this.categories = categoriesGet.split(';');
@@ -207,6 +214,10 @@ Vue.use(VueRouter);
       });
 
       this.$watch('className', function () {
+        component.runAjaxRequest();
+        component.resetPager();
+      });
+      this.$watch('instructorName', function () {
         component.runAjaxRequest();
         component.resetPager();
       });
@@ -313,6 +324,27 @@ Vue.use(VueRouter);
         }
         return availableClasses;
       },
+      instructorFilters: function () {
+        var availableInstructors = [];
+        this.table.forEach(function (element) {
+          if (element.instructor) {
+            availableInstructors[element.instructor] = element.instructor;
+          }
+        });
+
+        // Already selected options.
+        if (this.instructorName instanceof Array) {
+          this.instructorName.forEach(function (instructorname) {
+            availableInstructors[instructorname] = instructorname;
+          });
+        }
+
+        availableInstructors = Object.keys(availableInstructors);
+        if (typeof availableInstructors.alphanumSort !== 'undefined') {
+          availableInstructors.alphanumSort();
+        }
+        return availableInstructors;
+      },
       filteredTable: function () {
         let filterByRoom = [];
         this.room.forEach(function (roomItem) {
@@ -345,6 +377,10 @@ Vue.use(VueRouter);
           }
           // Check if class fits classname filter.
           if (self.className.length > 0 && self.className.indexOf(item.class_info.title) === -1) {
+            return;
+          }
+          // Check if instructor fits instructor filter.
+          if (self.instructorName.length > 0 && self.instructorName.indexOf(item.instructor) === -1) {
             return;
           }
           resultTable.push(item);
@@ -418,12 +454,18 @@ Vue.use(VueRouter);
           component.isLoading = false;
         });
 
+        var instructor = this.instructorName;
+        if (typeof instructor === 'string') {
+          instructor = [instructor];
+        }
+
         router.push({
           query: {
             date: date,
             locations: this.locations.join(';'),
             categories: this.categories.join(';'),
-            cn: this.className.join(';')
+            cn: this.className.join(';'),
+            inst: instructor.join(';')
           }
         }).catch(err => {
           console.log(err);
@@ -575,6 +617,9 @@ Vue.use(VueRouter);
       getClassFilter: function () {
         return this.classFilters;
       },
+      getInstructorFilter: function () {
+        return this.instructorFilters;
+      },
       generateId: function (string) {
         return string.replace(/[\W_]+/g, "-");
       },
@@ -587,6 +632,7 @@ Vue.use(VueRouter);
       clearFilters: function () {
         this.categories = [];
         this.className = [];
+        this.instructorName = '';
 
         // We should not reset location pre-selected in the paragraph.
         var limitLocations = window.OpenY.field_prgf_repeat_loc || [];
@@ -700,7 +746,8 @@ Vue.use(VueRouter);
       $('.btn-schedule-pdf-generate').off('click').on('click', function () {
         var rooms_checked = [],
           classnames_checked = [],
-          limit = [];
+          limit = [],
+          instructor_selected = [];
         $('.checkbox-room-wrapper input').each(function () {
           if ($(this).is(':checked')) {
             rooms_checked.push(encodeURIComponent($(this).val()));
@@ -710,6 +757,10 @@ Vue.use(VueRouter);
 
         $('.form-group-classname input:checked').each(function () {
           classnames_checked.push(encodeURIComponent($(this).val()));
+        });
+
+        $('.form-group-instructor-name option:selected').each(function () {
+          instructor_selected.push(encodeURIComponent($(this).val()));
         });
 
         var limitCategories = window.OpenY.field_prgf_repeat_schedule_categ || [];
@@ -727,6 +778,9 @@ Vue.use(VueRouter);
         var pdf_query = window.location.search + '&rooms=' + rooms_checked + '&limit=' + limit;
         $(classnames_checked).each(function () {
           pdf_query += '&cn[]=' + this;
+        });
+        $(instructor_selected).each(function () {
+          pdf_query += '&inst[]=' + this;
         });
         $('.btn-schedule-pdf-generate').attr('href', drupalSettings.path.baseUrl + 'schedules/get-pdf' + pdf_query);
       });
