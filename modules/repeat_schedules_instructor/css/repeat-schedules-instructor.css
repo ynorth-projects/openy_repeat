@@ -4,6 +4,11 @@
 .form-group-instructor-name i.fa {
   position: absolute;
   right: 10px;
-  top: 9px;
+  top: calc(50% - 7px);
 }
-
+.form-group-instructor-name select.select-instructor-option {
+  font-size: 16px;
+  font-weight: 500;
+  min-height: 48px;
+  padding: 12px;
+}
