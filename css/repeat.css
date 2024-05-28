@@ -465,13 +465,13 @@ body.modal-open .top-navs .nav-global {
 }
 
 /*Modal view for instructor*/
-.modal-dialog {
+.modal-dialog:not(.hb-loc-modal__modal) {
     height: 80% !important;
     padding-top: 10%;
     top: 20vh;
 }
 
-.modal-content {
+.modal-dialog:not(.hb-loc-modal__modal) .modal-content {
     height: 100% !important;
     overflow: visible;
     bottom: 5vh;
@@ -896,4 +896,10 @@ body.modal-open .top-navs .nav-global {
 
 .pr-none {
     padding-right: 0 !important;
+}
+
+.block-inline-blocklb-repeat-schedules a.btn {
+  padding: 10px 12px 6px;
+  font-size: 16px;
+  line-height: 24px;
 }
