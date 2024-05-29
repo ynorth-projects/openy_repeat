@@ -6,7 +6,7 @@
   .schedule-dashboard__modal .modal-dialog {
     max-width: 100%;
   }
-  .modal-dialog {
+  .modal-dialog:not(.hb-loc-modal__modal){
     top: 15px;
     height: 100% !important;
     padding-top: 35px !important;
@@ -166,7 +166,7 @@
 }
 
 @media (max-width: 540px) {
-  .modal-dialog {
+  .modal-dialog:not(.hb-loc-modal__modal) {
     padding-right: 15px !important;
   }
 }
