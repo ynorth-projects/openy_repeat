@@ -879,7 +879,7 @@ body.modal-open .top-navs .nav-global {
     box-shadow: none;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1060px) {
     .schedules-filters {
         display: block !important;
     }
