@@ -243,9 +243,11 @@ class RepeatController extends ControllerBase {
     $query->leftJoin('node', 'n', 're.session = n.nid');
     $query->innerJoin('node_field_data', 'nd', 're.location = nd.nid');
     $query->innerJoin('node_field_data', 'nds', 'n.nid = nds.nid');
+    $query->leftJoin('node__field_session_description', 'sd', 'n.nid = sd.entity_id');
     $query->addField('n', 'nid');
     $query->addField('nd', 'title', 'location');
     $query->addField('nds', 'title', 'name');
+    $query->addField('sd', 'field_session_description_value', 'session_description');
     $query->fields('re', [
       'class',
       'session',
@@ -345,13 +347,17 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $time_end->format('g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int) $item->start_timestamp, 'custom', 'Y-m-d H:i:s');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int) $item->zstart_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int) $item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = date_default_timezone_get();
 
       // Durations.
       $result[$key]->duration_minutes = $item->duration % 60;
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
+
+      // Session description.
+      $session_description = html_entity_decode(strip_tags($item->session_description));
+      $result[$key]->session_description = $session_description;
     }
 
     usort($result, function ($item1, $item2) {
