@@ -347,7 +347,7 @@ class RepeatController extends ControllerBase {
       $result[$key]->time_end = $time_end->format('g:iA');
 
       // Example of calendar format 2018-08-21 14:15:00.
-      $result[$key]->time_start_calendar = $this->dateFormatter->format((int) $item->zstart_timestamp, 'custom', 'Y-m-d H:i:s');
+      $result[$key]->time_start_calendar = $this->dateFormatter->format((int) $item->start_timestamp, 'custom', 'Y-m-d H:i:s');
       $result[$key]->time_end_calendar = $this->dateFormatter->format((int) $item->start_timestamp + $item->duration * 60, 'custom', 'Y-m-d H:i:s');
       $result[$key]->timezone = date_default_timezone_get();
 
