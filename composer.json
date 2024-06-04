@@ -3,7 +3,8 @@
   "description": "Provides a framework for repeatable events.",
   "type": "drupal-module",
   "require": {
-    "ymcatwincities/openy": "*"
+    "ymcatwincities/openy": "*",
+    "drupal/openy_carnation": ">=3.1.0"
   },
   "license": "GPL-2.0+",
   "minimum-stability": "dev"
