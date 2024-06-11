@@ -304,6 +304,7 @@ body.modal-open .top-navs .nav-global {
   position: absolute;
   left: -9999px;
 }
+
 .schedule-dashboard__sidebar .checkbox-wrapper input:checked + label,
 .schedule-dashboard__sidebar .checkbox-wrapper input:not(:checked) + label {
   color: #231F20;
@@ -465,19 +466,19 @@ body.modal-open .top-navs .nav-global {
 }
 
 /*Modal view for instructor*/
-.modal-dialog:not(.hb-loc-modal__modal) {
+.schedule-dashboard__modal .modal-dialog:not(.hb-loc-modal__modal) {
     height: 80% !important;
-    padding-top: 10%;
-    top: 20vh;
+    padding-top: 0;
+    top: 12%;
 }
 
-.modal-dialog:not(.hb-loc-modal__modal) .modal-content {
+.schedule-dashboard__modal .modal-dialog:not(.hb-loc-modal__modal) .modal-content {
     height: 100% !important;
     overflow: visible;
     bottom: 5vh;
 }
 
-.modal-body {
+.schedule-dashboard__modal .modal-body {
     height: 80%;
     overflow: auto;
 }
