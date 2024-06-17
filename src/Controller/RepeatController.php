@@ -143,7 +143,13 @@ class RepeatController extends ControllerBase {
    */
   public function ajaxSchedulerByInstructor(Request $request, $instructor, $location, $date) {
     $result = [];
-    $date = new \DateTime('now');
+    // Check if date params is empty or not.
+    if (empty($date)) {
+      $date = new \DateTime('now');
+    }
+    else {
+      $date = new \DateTime($date);
+    }
     $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     $date->setTime(0, 0, 0);
     foreach (range(0, self::SCHEDULER_DAYS_LIMIT) as $index) {
@@ -177,7 +183,13 @@ class RepeatController extends ControllerBase {
    */
   public function ajaxSchedulerByClass(Request $request, $class, $location, $date) {
     $result = [];
-    $date = new \DateTime('now');
+    // Check if date params is empty or not.
+    if (empty($date)) {
+      $date = new \DateTime('now');
+    }
+    else {
+      $date = new \DateTime($date);
+    }
     $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     $date->setTime(0, 0, 0);
     foreach (range(0, self::SCHEDULER_DAYS_LIMIT) as $index) {
