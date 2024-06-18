@@ -515,6 +515,7 @@ Vue.use(VueRouter);
       },
       populatePopupClass: function (sessionId) {
         var component = this;
+        var date = moment(this.date).format("YYYY-MM-DD");
         component.classPopup = {};
         // Make sure popups work OK on all devices.
         $('.modal').modal('hide');
@@ -538,6 +539,8 @@ Vue.use(VueRouter);
 
         var bySessionUrl = drupalSettings.path.baseUrl + 'schedules/get-event-data-by-session/';
         bySessionUrl += encodeURIComponent(sessionId);
+        bySessionUrl += this.locations.length > 0 ? '/' + encodeURIComponent(this.locations.join(';')) : '/0';
+        bySessionUrl += this.date ? '/' + encodeURIComponent(this.date) : '';
 
         $.getJSON(bySessionUrl, function (data) {
           var loader = $('.schedules-loading');
