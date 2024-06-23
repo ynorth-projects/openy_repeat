@@ -2,6 +2,15 @@
 * Schedules & Program results page.
 */
 
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
 /* Content > Subheader */
 
 .schedule-dashboard__arrow {
@@ -831,10 +840,14 @@ body.modal-open .top-navs .nav-global {
 }
 
 .schedule-dashboard__top-header {
+    align-content: center;
+    align-items: center;
     background: #f2f2f2;
     display: flex;
-    padding: 20px 0;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin: 0 15px 20px;
+    padding: 20px 0;
 }
 
 .schedule-dashboard__results-count {

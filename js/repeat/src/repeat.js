@@ -276,7 +276,7 @@ Vue.use(VueRouter);
         return moment(this.date).format('ddd, MMM D');
       },
       dateCalendarFormatted: function () {
-        var formatted = moment(this.date).format('ddd, MM/D');
+        var formatted = moment(this.date).format('ddd MMM D');
         if (moment(this.date).format('MMDDYYYY') === moment().format('MMDDYYYY')) {
           return 'Today (' + formatted + ')';
         }

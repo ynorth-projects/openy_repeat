@@ -1,0 +1,136 @@
+@import "_functions";
+@import "_mixins";
+@import "_variables";
+
+.block-inline-blocklb-repeat-schedules {
+  margin: 0 -15px;
+
+  .schedule-dashboard {
+
+    &__top-header {
+      .wizard-bar {
+        &--buttons {
+          .btn-schedule-pdf-generate,
+          .btn-schedule-bookings {
+            color: var(--wsPrimaryColor, lightgrey);
+          }
+        }
+
+        &--count-results {
+          .schedule-dashboard__results-count {
+            span {
+              color: var(--ylb-color-black, black);
+            }
+          }
+        }
+      }
+    }
+
+    &__sidebar {
+      .form-group-date {
+        .datepicker {
+          tr td.active.day {
+            background-color: var(--wsPrimaryColor, lightgrey);;
+          }
+        }
+      }
+
+      .label-mobile-results {
+       .minus,
+       .plus,
+        p {
+          color: var(--wsPrimaryColor, lightgrey);
+        }
+      }
+
+      .navbar {
+        &-controls {
+          .clear-filters {
+            color: var(--wsPrimaryColor, lightgrey);
+          }
+        }
+
+        &-form {
+          .form-group-wrapper {
+            label{
+              span {
+                color: var(--ylb-color-black, black);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__content {
+      .schedules-data {
+        &__row {
+          .register-column {
+            .register-btn {
+              background-color: var(--wsPrimaryColor, lightgrey);
+
+              &:active,
+              &:focus,
+              &:hover {
+                border-color: var(--wsPrimaryColor, lightgrey);
+                color: var(--wsPrimaryColor, lightgrey);
+              }
+            }
+          }
+
+          .location-column {
+            p,
+            .schedule-dashboard__modal--location-link {
+              color: var(--wsPrimaryColor, lightgrey);
+            }
+          }
+
+          .calendar-column {
+            .addtocalendar {
+              .atcb-link {
+                color: var(--wsPrimaryColor, lightgrey);
+              }
+
+              .atcb-list {
+                &.active {
+                  .atcb-item-link {
+                    color: var(--wsPrimaryColor, lightgrey);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__modal {
+      .table {
+        a {
+          color: var(--wsPrimaryColor, lightgrey);
+        }
+      }
+
+      &--footer {
+        .btn {
+          background-color: var(--wsPrimaryColor, lightgrey);
+          color: var(--ylb-color-white);
+
+          &:active,
+          &:focus,
+          &:hover {
+            background-color: var(--ylb-color-white);
+            border-color: var(--wsPrimaryColor, lightgrey);
+            color: var(--wsPrimaryColor, lightgrey);
+          }
+        }
+      }
+    }
+  }
+
+  .schedules-empty_results {
+    i {
+      color: var(--wsPrimaryColor, lightgrey);
+    }
+  }
+}

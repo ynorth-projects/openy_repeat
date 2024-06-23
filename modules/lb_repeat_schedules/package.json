@@ -1,0 +1,24 @@
+{
+  "name": "lb-repeat-schedules",
+  "description": "LB Schedules styles.",
+  "author": "YMCA Website Services",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "css:compile": "node-sass --include-path node_modules/bootstrap/scss --importer node_modules/node-sass-magic-importer/dist/cli.js assets/scss/colorway.scss -o assets/css",
+    "css:prefix": "postcss --use autoprefixer -b '> 10%' assets/css/*.css -r",
+    "css:build": "npm run css:compile && npm run css:prefix",
+    "css:watch": "nodemon -e scss -x \"npm run css:build\" --ignore assets/css",
+    "watch": "nodemon -e scss,js -x \"npm run build\" --ignore assets/css",
+    "build": "npm run css:build"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "breakpoint-sass": "^2.7.1",
+    "autoprefixer": "^10.4.13",
+    "node-sass": "^8.0.0",
+    "node-sass-magic-importer": "^5.3.2",
+    "nodemon": "^2.0.20",
+    "postcss-cli": "^10.0.0"
+  }
+}

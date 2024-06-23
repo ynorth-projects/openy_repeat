@@ -1,0 +1,188 @@
+@import "_functions";
+@import "_mixins";
+@import "_variables";
+
+@media (max-width: 767px) {
+  body.modal-open  .nav-global {
+    display: none !important;
+  }
+
+  .date-column {
+    flex: 0 0 20%;
+  }
+
+  .time-column {
+    flex: 0 0 20%;
+  }
+
+  .schedule-dashboard {
+    &__wrapper {
+      margin-left: -15px;
+      margin-right: -15px;
+
+     & > .container {
+        margin-top: 0
+      }
+    }
+
+    &__modal {
+      .modal-dialog {
+        max-width: 100%;
+        height: 100%;
+
+        &:not(.hb-loc-modal__modal){
+          top: 15px;
+          height: 100% !important;
+          padding-top: 35px !important;
+        }
+      }
+
+      &--header {
+        padding: 20px;
+
+        h5 {
+          padding: 0;
+        }
+      }
+
+      &--class {
+        .schedules-data__row {
+          & > div {
+            padding: 0 20px;
+          }
+
+          .addtocalendar {
+            float: none;
+            padding-left: 0;
+          }
+
+          .date-column,
+          .instructor-column {
+            flex: 0 1 50%;
+          }
+
+          .time-column {
+            flex: auto;
+          }
+
+          .location-column {
+            flex: 1 1 100%;
+          }
+        }
+      }
+
+      &--instructor {
+
+        .schedules-data__row {
+          & > div {
+            padding: 0 20px;
+          }
+
+          .class-column,
+
+          .location-column,
+
+          .calendar-column {
+            flex: 0 1 100%;
+          }
+
+          .date-column {
+            flex: 0 1 50%;
+          }
+
+          .calendar-column {
+            .addtocalendar {
+              padding-left: 0;
+              float: none;
+            }
+          }
+        }
+      }
+    }
+
+    &__sidebar {
+      .form-group-date {
+        .datepicker-inline {
+          width: 273px;
+          margin: 0 auto;
+        }
+      }
+
+      .datepicker {
+        .table-condensed {
+          & > tbody > tr > td {
+            border: 2px solid #636466;
+            padding: 9px;
+          }
+        }
+      }
+    }
+  }
+
+  .schedules-data {
+    &__row {
+      padding: 5px 0;
+
+      & > div {
+        padding: 5px 10px;
+
+        &:nth-child(even) {
+          text-align: left !important;
+        }
+      }
+
+      .location-column,
+      .time-column,
+      .date-column,
+      .class-column,
+      .instructor-column,
+      .calendar-column {
+        padding: 5px 0;
+      }
+
+      .time-column,
+      .class-column,
+      .location-column {
+        p {
+          padding: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1230px) {
+  .schedule-dashboard {
+    &__sidebar {
+      .form-group-date {
+        .datepicker {
+          padding: 0;
+
+          &-inline {
+            width: 197px;
+            margin: 0 auto;
+          }
+
+          .table-condensed {
+            height: 220px;
+
+            & > tbody > tr >td {
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .schedule-dashboard {
+    &__modal {
+      .modal-dialog:not(.hb-loc-modal__modal) {
+        padding-right: 15px !important;
+      }
+    }
+  }
+}

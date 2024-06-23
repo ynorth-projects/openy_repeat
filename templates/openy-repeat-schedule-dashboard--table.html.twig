@@ -11,18 +11,26 @@
 <div class="row schedule-dashboard__content--header">
 
   {% block date_wrapper %}
-  <div class="col-sm-12 col-md-4 col-lg-5 day-label">
+  <div class="col-8 col-md-4 day-label">
     {% endblock %}
-    <h2>
+    <h2 class="d-flex">
       <button v-if="showBackArrow()" v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
-              aria-label="previous date"><i class="fa fa-angle-left"></i></button>
-      <button v-else class="schedule-dashboard__arrow left" role="button"
-              aria-label="previous date" disabled><i class="text-muted fa fa-angle-left"></i></button>
+              aria-label="previous date">
+        <span class="material-symbols-outlined icon">chevron_left</span>
+      </button>
+      <button v-else v-on:click.stop="backOneDay" class="schedule-dashboard__arrow left" role="button"
+              aria-label="previous date" disabled>
+        <span class="material-symbols-outlined icon">chevron_left</span>
+      </button>
       <span class="date" v-cloak>${ dateFormatted }</span>
       <button v-if="showForwardArrow()" v-on:click.stop="forwardOneDay" class="schedule-dashboard__arrow right"
-              role="button" aria-label="next date"><i class="fa fa-angle-right"></i></button>
-      <button v-else class="schedule-dashboard__arrow right"
-              role="button" aria-label="next date" disabled><i class="text-muted fa fa-angle-right"></i></button>
+              role="button" aria-label="next date">
+        <span class="material-symbols-outlined icon">chevron_right</span>
+      </button>
+      <button v-else v-on:click.stop="forwardOneDay" class="schedule-dashboard__arrow right"
+              role="button" aria-label="next date" disabled>
+        <span class="material-symbols-outlined icon">chevron_right</span>
+      </button>
     </h2>
   </div>
 </div>
@@ -31,47 +39,44 @@
 <div>
   <results inline-template :prop-data="pagedTable">
     <div class="vue-template">
-
       <div class="schedules-data clearfix">
-        <div v-for="(item, index) in propData" class="schedules-data__row" :key="index">
-          <div class="col-xs-3 col-md-2 col-sm-2">
+        <div v-for="(item, index) in propData" class="schedules-data__row">
+          <div class="col-3 col-md-2 col-sm-2">
             {# time #}
             <div class="time-column" v-cloak>
-              <strong class="time">${ item.time_start }</strong>
+              <span class="time">${ item.time_start }</span>
               <p v-if="showEndTime() == 1">
-                <strong class="time">${ item.time_end }</strong>
+                <span class="time">${ item.time_end }</span>
               </p>
-              <p v-else>
+              <p class="duration" v-else>
                 <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
                 <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
               </p>
             </div>
           </div>
-          <div class="col-xs-9 col-md-8 col-sm-8">
+          <div class="col-9 col-md-10 col-sm-10">
             <div class="row">
-              <div class="col-xs-12 col-md-3 col-sm-3">
+              <div class="col-12 col-md-4 col-sm-4">
                 {# class #}
                 <div class="class-column" v-cloak>
-                  <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                  <a class="schedule-dashboard__modal--class-link" role="button"
                              v-on:click="$parent.populatePopupClass(item.nid)" data-toggle="modal"
-                             href=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+                             href=".schedule-dashboard__modal--class">${ item.name }</a>
                   <p><span>${ item.category }</span></p>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-3 col-sm-3">
+              <div class="col-12 col-md-3 col-sm-3">
                 {# location #}
                 <div v-cloak class="location-column">
-                  <strong><a class="hidden-xs schedule-dashboard__modal--location-link" role="button"
+                  <a class="d-none d-sm-block schedule-dashboard__modal--location-link" role="button"
                              v-on:click="$parent.populatePopupLocation(index)" data-toggle="modal"
                              href=".schedule-dashboard__modal--location">${ item.location }</a>
-                    <p class="hidden-md hidden-sm hidden-lg">${ item.location }</p>
-                  </strong>
-                  <p><span v-if="item.room">${ item.room }</span></p>
+                    <p class="d-block d-sm-none">${ item.location }</p>
+                  <p><span v-if="item.room" class="room">${ item.room }</span></p>
                 </div>
 
               </div>
-
-              <div class="col-xs-6 col-md-3 col-sm-3">
+              <div class="col-12 col-md-2 col-sm-2">
                 {# instructor #}
                 <div v-cloak class="instructor-column">
                   <a class="schedule-dashboard__modal--instructor-link" role="button"
@@ -79,10 +84,9 @@
                      href=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
                 </div>
               </div>
-
-              <div class="col-xs-6 col-md-3 col-sm-3">
+              <div class="col-12 col-md-3 col-sm-3">
                 {# add to calendar #}
-                <div v-cloak v-on:click="showAddToCalendar(index, '.schedules-data')" class="calendar-column">
+                <div v-cloak v-on:click="showAddToCalendar(index, '.schedules-data')" v-on:keyup.enter="showAddToCalendar(index, '.schedules-data')" class="calendar-column">
                   <div v-if="item.cancelled >= 0" style="text-align: center;">
                     <div class="atcb-link-cancel">CANCELLED</div>
                   </div>
@@ -100,13 +104,10 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
+                  <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
                 </div>
-              </div>
-            </div>
-          </div>
-            <div v-if="item.register_url" class="col-xs-12 col-md-2 col-sm-2">
                 {# register btn #}
-                <div v-cloak class="register-column" v-if="item.register_url">
+                <div v-if="item.register_url" v-cloak class="register-column" v-if="item.register_url">
                   <template v-if="item.spottext && item.spottext.search('class full') >= 0">
                     <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
                       FULL
@@ -129,94 +130,97 @@
                     </div>
                   </template>
                 </div>
+              </div>
             </div>
-        </div>
-
-        <div class="schedules-empty_results hidden">
-          <i class="fa fa-exclamation-circle"></i>
-          <span>{{ 'Sorry, no results were found with your search criteria. Please try another selection.'|t }}</span>
+          </div>
         </div>
 
         <div v-cloak v-if="isLoading === true" class="schedules-loading">
           {% include '@openy_system/openy-system--ajax-spinner.html.twig' %}
         </div>
 
-        <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager row">
-          <div class="col-md-3 col-xs-3 text-left">
-            <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="btn schedule-dashboard__pager--first">
-              |<
-            </a>
-            <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--first" disabled="disabled">
-              |<
-            </a>
-            <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="btn schedule-dashboard__pager--prev">
-              <
-            </a>
-            <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--prev" disabled="disabled">
-              <
-            </a>
-          </div>
+      </div>
+      <div class="schedules-empty_results hidden">
+        <i class="fa fa-exclamation-circle"></i>
+        <span>{{ 'Sorry, no results were found with your search criteria. Please try another selection.'|t }}</span>
+      </div>
 
-          <div class="col-md-6 col-xs-6">
-            <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
-          </div>
-          <div class="col-md-3 col-xs-3 text-right">
-            <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="btn schedule-dashboard__pager--next">
-              >
-            </a>
-            <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--next" disabled="disabled">
-              >
-            </a>
-            <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="btn schedule-dashboard__pager--last">
-              >|
-            </a>
-            <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--last" disabled="disabled">
-              >|
-            </a>
-          </div>
+      <div v-if="getTotalPages() > 1" v-cloak class="schedule-dashboard__pager row">
+        <div class="col-md-3 col-3 text-left">
+          <a v-if="currentPage > 1" v-on:click="loadFirstPage()" class="btn schedule-dashboard__pager--first">
+            <span class="material-symbols-outlined">first_page</span>
+          </a>
+          <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--first" disabled="disabled">
+            <span class="material-symbols-outlined">first_page</span>
+          </a>
+          <a v-if="currentPage > 1" v-on:click="loadPrevPage()" class="btn schedule-dashboard__pager--prev">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </a>
+          <a v-else="currentPage === 1" class="btn schedule-dashboard__pager--prev" disabled="disabled">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </a>
         </div>
 
+        <div class="col-md-6 col-6">
+          <div class="schedule-dashboard__pager--current">Page ${ currentPage } of ${ getTotalPages() }</div>
+        </div>
+        <div class="col-md-3 col-3 text-right">
+          <a v-if="currentPage < getTotalPages()" v-on:click="loadNextPage()" class="btn schedule-dashboard__pager--next">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+          <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--next" disabled="disabled">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+          <a v-if="currentPage < getTotalPages()" v-on:click="loadLastPage()" class="btn schedule-dashboard__pager--last">
+            <span class="material-symbols-outlined">last_page</span>
+          </a>
+          <a v-else="currentPage === getTotalPages()" class="btn schedule-dashboard__pager--last" disabled="disabled">
+            <span class="material-symbols-outlined">last_page</span>
+          </a>
+        </div>
       </div>
+
     </div>
   </results>
 
   {# Modals should be within Vue app block #}
 
   {# modal > location info  #}
-  <div class="modal fade hidden-xs schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
+  <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--location" tabindex="-1" role="dialog"
        aria-labelledby="schedule-dashboard__modal--location-link">
     <div class="modal-cover"></div>
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog px-2" role="document">
       <div class="modal-content">
 
         <div class="schedule-dashboard__modal--header">
-          <h5 class="modal-title">Activity details</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
-                                                                                         aria-hidden="true"></i>
+          <h5 class="modal-title">Location details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
-          <div class="header-border">
-            <h4><strong>${ locationPopup.title }</strong></h4>
+          <div class="schedule-dashboard__modal--body--header">
+            <h4>${ locationPopup.title }</h4>
           </div>
           <table class="table">
             <tr>
-              <td><label>{{ 'Address'|t }}</label></td>
+              <td class="address">
+                <label><span class="material-symbols-outlined" aria-hidden="true">location_on</span>{{ 'Address'|t }}</label></td>
               <td>${ locationPopup.address }</td>
             </tr>
             <tr>
-              <td><label>{{ 'Call'|t }}</label></td>
+              <td class="phone"><label><span class="material-symbols-outlined" aria-hidden="true">call</span>{{ 'Call'|t }}</label></td>
               <td><a v-bind:href="'tel:' + locationPopup.phone">${ locationPopup.phone }</a></td>
             </tr>
-            <tr v-if="locationPopup.email">
-              <td><label>{{ 'Email'|t }}</label></td>
+            <tr v-if="locationPopup.email" class="email">
+              <td><label><span class="material-symbols-outlined" aria-hidden="true">mail</span>{{ 'Email'|t }}</label></td>
               <td><a v-bind:href="'mailto:' + locationPopup.email">${ locationPopup.email }</a></td>
             </tr>
             <tr v-if="locationPopup.days && locationPopup.days.length > 0">
-              <td><label>{{ 'Branch hours'|t }}</label></td>
+              <td class="working-hours"><label><span class="material-symbols-outlined" aria-hidden="true">schedule</span>{{ 'Branch hours'|t }}</label></td>
               <td>
-                <table class="table">
+                <table class="table working-hours">
                   <tr v-for="row in locationPopup.days">
                     <td>${ row[0] }</td>
                     <td>${ row[1] }</td>
@@ -228,7 +232,7 @@
         </div>
 
         <div class="schedule-dashboard__modal--footer">
-          <a class="btn btn-lg btn-primary"
+          <a class="btn btn-lg"
              v-bind:href="'{{ url('<front>') }}node/' + locationPopup.nid">{{ 'View branch'|t }}</a>
         </div>
       </div>
@@ -239,69 +243,70 @@
   <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--class" tabindex="-1" role="dialog"
        aria-labelledby="schedule-dashboard__modal--class-link">
     <div class="modal-cover"></div>
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog px-2" role="document">
       <div class="modal-content">
 
         <div class="schedule-dashboard__modal--header">
           <h5 class="modal-title">Activity details</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
-                                                                                         aria-hidden="true"></i>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
-          <div class="header-border">
-            <h4><strong>${ classPopup.title }</strong></h4>
+          <div class="body--header">
+            <h4>${ classPopup.title }</h4>
             <p class="m-b">${ classPopup.description }</p>
           </div>
 
-          <div v-for="(item, index) in classPopup.schedule" class="schedules-data__row">
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              {# date #}
-              <div class="date-column" v-cloak>
-                <strong>${ item.short_date }</strong>
-                <p><span>${ item.day_name }</span></p>
-              </div>
-            </div>
-
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              {# time #}
-              <div class="time-column" v-cloak>
-                <strong class="time">${ item.time_start }</strong>
-                <p v-if="showEndTime() == 1">
-                  <strong class="time">${ item.time_end }</strong>
-                </p>
-                <p v-else>
-                  <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
-                  <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
-                </p>
-              </div>
-            </div>
-
-            <div class="col-md-2 col-sm-12 col-xs-12">
-              {# location #}
-              <div v-cloak class="location-column">
-                <strong>${ item.location }</strong>
-                <p><span v-if="item.room">${ item.room }</span></p>
-              </div>
-            </div>
-
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              {# instructor #}
-              <div v-cloak class="instructor-column">
-                <a class="schedule-dashboard__modal--instructor-link" role="button"
-                   v-on:click="populatePopupInstructor(item.instructor)" data-toggle="modal"
-                   href=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
-              </div>
-            </div>
-
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              {# add to calendar #}
-              <div v-cloak v-on:click="showAddToCalendar(index, '.schedule-dashboard__modal--body')" class="calendar-column">
-                <div v-if="item.cancelled >= 0" style="text-align: center;">
-                  <div class="atcb-link-cancel">CANCELLED</div>
+          <div class="body--content">
+            <div v-for="(item, index) in classPopup.schedule" class="schedules-data__row">
+              <div class="col-md-2 col-sm-6 col-6">
+                {# date #}
+                <div class="date-column" v-cloak>
+                  <strong>${ item.short_date }</strong>
+                  <p><span>${ item.day_name }</span></p>
                 </div>
-                <span v-else class="addtocalendar">
+              </div>
+
+              <div class="col-md-2 col-sm-6 col-6">
+                {# time #}
+                <div class="time-column" v-cloak>
+                  <strong class="time">${ item.time_start }</strong>
+                  <p class="duration" v-if="showEndTime() == 1">
+                    <span class="time">${ item.time_end }</span>
+                  </p>
+                  <p v-else>
+                    <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
+                    <span v-if="item.duration_minutes > 0">${ item.duration_minutes }{{ 'min'|t }}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3 col-sm-12 col-12">
+                {# location #}
+                <div v-cloak class="location-column">
+                  ${ item.location }
+                  <p><span v-if="item.room" class="room">${ item.room }</span></p>
+                </div>
+              </div>
+
+              <div class="col-md-3 col-sm-6 col-6">
+                {# instructor #}
+                <div v-cloak class="instructor-column">
+                  <a class="schedule-dashboard__modal--instructor-link" role="button"
+                     v-on:click="populatePopupInstructor(item.instructor)" data-toggle="modal"
+                     href=".schedule-dashboard__modal--instructor">${ item.instructor }</a>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-sm-6 col-6">
+                {# add to calendar #}
+                <div v-cloak v-on:click="showAddToCalendar(index, '.schedule-dashboard__modal--body')" class="calendar-column">
+                  <div v-if="item.cancelled >= 0" style="text-align: center;">
+                    <div class="atcb-link-cancel">CANCELLED</div>
+                  </div>
+                  <span v-else class="addtocalendar">
                   <var class="atc_event">
                     <var class="atc_date_start">${ addToCalendarDate(item.time_start_calendar) }</var>
                     <var class="atc_date_end">${ addToCalendarDate(item.time_end_calendar) }</var>
@@ -315,43 +320,41 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
+                  <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
+                </div>
+                {# register btn #}
+                <div v-if="item.register_url" class="">
+                  {# register btn #}
+                  <div v-cloak class="register-column" v-if="item.register_url">
+                    <template v-if="item.spottext && item.spottext.search('class full') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn register-btn">
+                        FULL
+                      </a>
+                    </template>
+                    <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        WAITLIST ONLY
+                      </a>
+                    </template>
+                    <template v-else-if="item.productid && item.productid.length > 0">
+                      <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
+                        REGISTER
+                      </a>
+                    </template>
+                    <template v-else>
+                      <div v-cloak class="register-column" v-if="item.register_url">
+                        <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn disabled register-btn">${ item.register_text }</a>
+                        <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              {# category #}
+              <div v-cloak class="category-column hidden">
+                ${ item.category }
               </div>
             </div>
-
-
-            {# category #}
-            <div v-cloak class="category-column hidden">
-              ${ item.category }
-            </div>
-
-            {# register btn #}
-            <div v-if="item.register_url" class="col-xs-12 col-md-2 col-sm-2">
-                {# register btn #}
-                <div v-cloak class="register-column" v-if="item.register_url">
-                  <template v-if="item.spottext && item.spottext.search('class full') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
-                      FULL
-                    </a>
-                  </template>
-                  <template v-else-if="item.spottext && item.spottext.search('waitlist only') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      WAITLIST ONLY
-                    </a>
-                  </template>
-                  <template v-else-if="item.productid && item.productid.length > 0">
-                    <a v-bind:href="item.register_url" target="_blank" class="btn btn-primary register-btn">
-                      REGISTER
-                    </a>
-                  </template>
-                  <template v-else>
-                    <div v-cloak class="register-column" v-if="item.register_url">
-                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn btn-primary disabled register-btn">${ item.register_text }</a>
-                      <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
-                    </div>
-                  </template>
-                </div>
-            </div>
-
           </div>
 
           <div class="schedules-loading">
@@ -370,32 +373,31 @@
   <div class="modal fade schedule-dashboard__modal schedule-dashboard__modal--instructor" tabindex="-1" role="dialog"
        aria-labelledby="schedule-dashboard__modal--instructor-link">
     <div class="modal-cover"></div>
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog px-2" role="document">
       <div class="modal-content">
         <div class="schedule-dashboard__modal--header">
-          <h5 class="modal-title">Activity details</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"
-                                                                                         aria-hidden="true"></i>
+          <h5 class="modal-title">Instructor details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
 
         <div class="schedule-dashboard__modal--body">
-          <div class="header-border">
-            <h4><strong>${ instructorPopup.name}</strong></h4>
+          <div class="body--header">
+            <h4>${ instructorPopup.name}</h4>
           </div>
-          <div v-for="(item, index) in instructorPopup_schedule" class="schedules-data__row">
-
-            <div class="hidden-md hidden-lg col-sm-12 col-xs-12">
+          <div v-for="(item, index) in instructorPopup.schedule" class="schedules-data__row">
+            <div class="hidden-md hidden-lg col-sm-12 col-12">
               {# class #}
               <div class="class-column" v-cloak>
-                <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                <a class="schedule-dashboard__modal--class-link" role="button"
                            v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
-                           href=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+                           href=".schedule-dashboard__modal--class">${ item.name }</a>
                 <p><span>${ item.category }</span></p>
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-6">
               {# date #}
               <div class="date-column" v-cloak>
                 <strong>${ item.short_date }</strong>
@@ -403,12 +405,12 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-6">
               {# time #}
               <div class="time-column" v-cloak>
                 <strong class="time">${ item.time_start }</strong>
-                <p v-if="showEndTime() == 1">
-                  <strong class="time">${ item.time_end }</strong>
+                <p class="duration" v-if="showEndTime() == 1">
+                  <span class="time">${ item.time_end }</span>
                 </p>
                 <p v-else>
                   <span v-if="item.duration_hours > 0">${ item.duration_hours }{{ 'h'|t }}</span>
@@ -417,25 +419,25 @@
               </div>
             </div>
 
-            <div class="col-lg-2 col-md-3 hidden-sm hidden-xs">
+            <div class="col-lg-3 col-md-3">
               {# class #}
               <div class="class-column" v-cloak>
-                <strong><a class="schedule-dashboard__modal--class-link" role="button"
+                <a class="schedule-dashboard__modal--class-link" role="button"
                            v-on:click="populatePopupClass(item.nid)" data-toggle="modal"
-                           href=".schedule-dashboard__modal--class">${ item.name }</a></strong>
+                           href=".schedule-dashboard__modal--class">${ item.name }</a>
                 <p><span>${ item.category }</span></p>
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-12 col-12">
               {# location #}
               <div v-cloak class="location-column">
-                <strong>${ item.location }</strong>
-                <p><span v-if="item.room">${ item.room }</span></p>
+                ${ item.location }
+                <p><span v-if="item.room" class="room">${ item.room }</span></p>
               </div>
             </div>
 
-            <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="col-md-2 col-sm-12 col-12">
               {# add to calendar #}
               <div v-cloak v-on:click="showAddToCalendar(index, '.schedule-dashboard__modal--body')" class="calendar-column">
                 <div v-if="item.cancelled >= 0" style="text-align: center;">
@@ -455,6 +457,7 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
+                <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
               </div>
             </div>
 
@@ -464,11 +467,11 @@
             </div>
 
             {# register btn #}
-            <div v-if="item.register_url" class="col-xs-12 col-md-2 col-sm-2">
+            <div v-if="item.register_url" class="col-12 col-md-2 col-sm-2">
                 {# register btn #}
                 <div v-cloak class="register-column" v-if="item.register_url">
                   <template v-if="item.spottext && item.spottext.search('class full') >= 0">
-                    <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn btn-primary register-btn">
+                    <a v-bind:href="item.register_url" target="_blank" disabled="" class="btn register-btn">
                       FULL
                     </a>
                   </template>
@@ -484,7 +487,7 @@
                   </template>
                   <template v-else>
                     <div v-cloak class="register-column" v-if="item.register_url">
-                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn btn-primary disabled register-btn">${ item.register_text }</a>
+                      <a v-if="item.register_url == 'route:<nolink>' || item.register_url == 'route:<none>'" class="btn disabled register-btn">${ item.register_text }</a>
                       <a v-else v-bind:href="item.register_url" class="btn btn-primary register-btn">${ item.register_text }</a>
                     </div>
                   </template>
