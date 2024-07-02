@@ -10,43 +10,42 @@
 
 {{ attach_library('openy_repeat/openy_repeat') }}
 
-<div class="schedule-dashboard__wrapper" id="app">
+<div class="schedule-dashboard__wrapper mr-0 ml-0" id="app">
   <div class="container">
     <div class="row">
-      <div class="schedule-dashboard__top-header">
-        <div class="col-md-5 col-xs-5">
+      <div class="col-12 ml-0 schedule-dashboard__top-header">
+        <div class="wizard-bar--count-results">
           <div class="schedule-dashboard__results-count">
-            <strong><span v-cloak>${ getResultsCount() }</span> results</strong>
+            <span v-cloak>${ getResultsCount() } results</span>
           </div>
         </div>
-        {% block buttons_wrapper %}
-        <div class="col-md-7 col-xs-7">
-          {% endblock %}
-          <div class="btn-schedule-group">
-            <a href="https://groupexpro.com/gxp/reservations/schedule/profile/3?location=&type=new" class="btn-schedule-bookings" target="_blank">{{ 'My Bookings'|t }}
-            </a>
-            <a v-if="this.weekHasResults" class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
-              <i class="fa fa-file"></i>
-            </a>
+          {% block buttons_wrapper %}
+          <div class="wizard-bar--buttons">
+            {% endblock %}
+            <div class="btn-schedule-group">
+              <a href="https://groupexpro.com/gxp/reservations/schedule/profile/3?location=&type=new" class="btn-schedule-bookings" target="_blank">{{ 'My Bookings'|t }}
+              </a>
+              <a v-if="this.weekHasResults" class="btn-schedule-pdf-generate hidden" target="_blank">{{ 'Download Weekly PDF'|t }}
+              </a>
+            </div>
           </div>
-        </div>
+          </div>
       </div>
-
+      <div class="row">
       {# sidebar #}
       {% block sidebar_wrapper %}
-      <div class="col-xs-12 col-sm-12 col-md-3 schedule-dashboard__sidebar">
-      {% endblock %}
+      <div class="col-12 col-sm-12 col-md-12 col-lg-3 schedule-dashboard__sidebar">
+        {% endblock %}
         {% include '@openy_repeat/openy-repeat-schedule-dashboard--sidebar.html.twig' %}
       </div>
 
       {# main table #}
       {% block maintable_wrapper %}
-      <div class="col-xs-12 col-sm-12 col-md-9 schedule-dashboard__content main-table">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-9 schedule-dashboard__content main-table">
         {% endblock %}
         {% include '@openy_repeat/openy-repeat-schedule-dashboard--table.html.twig' %}
       </div>
-
     </div>
 
-    </div>
   </div>
+</div>

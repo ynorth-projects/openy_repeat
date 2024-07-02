@@ -1,12 +1,12 @@
 openy_repeat:
-  version: 0.3.6
+  version: 0.3.7
   js:
     js/repeat.js: {}
   css:
     base:
-      css/repeat.css: {}
-      css/print.css: { media: print }
-      css/repeat_mobile.css: {}
+      assets/css/repeat.css: {}
+      assets/css/print.css: { media: print }
+      assets/css/repeat_mobile.css: {}
   dependencies:
     - openy_system/openy_system.helpers
     - openy_system/openy_system.modal
@@ -21,7 +21,7 @@ openy_repeat:
     - openy_repeat/bootstrap-datepicker
     - openy_repeat/openy_repeat.schedules
     - openy_repeat/openy_repeat.natsort
-
+    - openy_repeat/google.fonts_icon
 
 bootstrap-datepicker:
   version: 0.1
@@ -52,3 +52,9 @@ openy_repeat.natsort:
   version: 1.0
   js:
     /libraries/alphanum/alphanum.js: {}
+
+google.fonts_icon:
+  version: 0.1
+  css:
+    base:
+      'https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined': { type: external }
