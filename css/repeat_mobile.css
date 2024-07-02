@@ -38,6 +38,16 @@
     font-size: 12px;
   }
 
+  .schedule-dashboard__pager {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .schedule-dashboard__pager > div {
+    width: auto;
+    padding: 0;
+  }
+
   .schedule-dashboard__modal--class .addtocalendar {
     float: none;
     padding-left: 0;
