@@ -21,7 +21,6 @@ openy_repeat:
     - openy_repeat/bootstrap-datepicker
     - openy_repeat/openy_repeat.schedules
     - openy_repeat/openy_repeat.natsort
-    - openy_repeat/google.fonts_icon
 
 bootstrap-datepicker:
   version: 0.1
@@ -52,9 +51,3 @@ openy_repeat.natsort:
   version: 1.0
   js:
     /libraries/alphanum/alphanum.js: {}
-
-google.fonts_icon:
-  version: 0.1
-  css:
-    base:
-      'https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined': { type: external }

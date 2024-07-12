@@ -4,6 +4,13 @@
 @import "_functions";
 @import "_mixins";
 @import "_variables";
+// Material Symbols Outlined icons via Google Fonts https://developers.google.com/fonts/docs/material_symbols#using_material_symbols
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+/*Variables*/
+:root {
+  --schedules-border-radius: 10px;
+}
 
 .schedule-dashboard {
   &__arrow {
@@ -28,6 +35,7 @@
     .icon {
       border: 1px solid var(--ylb-color-light-grey-3, #ccc);
       border-radius: 4px;
+      color: var(--wsPrimaryColor, #5c2e91);
     }
   }
 
@@ -82,14 +90,14 @@
         }
 
         &:first-child {
-          border-top-left-radius: var(--wsBorderRadius, unset);
-          border-top-right-radius: var(--wsBorderRadius, unset);
+          border-top-left-radius: var(--schedules-border-radius, unset);
+          border-top-right-radius: var(--schedules-border-radius, unset);
         }
 
         &:last-child {
           border-bottom: 1px solid var(--ylb-color-light-grey-3, #ccc);
-          border-bottom-left-radius: var(--wsBorderRadius, unset);
-          border-bottom-right-radius: var(--wsBorderRadius, unset);
+          border-bottom-left-radius: var(--schedules-border-radius, unset);
+          border-bottom-right-radius: var(--schedules-border-radius, unset);
         }
 
         a {
@@ -120,14 +128,30 @@
           }
         }
 
+        .instructor-column {
+          margin-left: 0;
+
+          @include media-breakpoint-between('sm', 'lg') {
+            margin-left: -40px;
+          }
+          @include media-breakpoint-up('lg') {
+            margin-left: -20px;
+          }
+
+          a {
+            display: inline-block;
+          }
+        }
+
         .calendar-column {
           display: inline-block;
-          width: 100%;
           position: relative;
           margin-bottom: 24px;
-          max-width: 130px;
-          @include media-breakpoint-down('md') {
+          width: 150px;
+
+          @include media-breakpoint-between('sm', 'md') {
             margin-bottom: 12px;
+            left: -10px;
           }
 
           .icon {
@@ -174,10 +198,27 @@
 
         .addtocalendar {
           top: 0;
-          right: 0;
+          left: -10px;
           float: none;
 
+          @include media-breakpoint-down('md') {
+            left: 0;
+          }
+
+          &:after {
+            font-family: 'Material Symbols Outlined', serif;
+            content: "add_circle";
+            -webkit-font-feature-settings: 'liga' 1;
+            -moz-font-feature-settings: 'liga' 1;
+            font-feature-settings: 'liga' 1;
+            position: relative;
+            top: -20px;
+            left: 124px;
+            font-size: 18px;
+          }
+
           .atcb-list {
+            box-shadow: var(--wsBoxShadow, none);
             li {
               &:first-child {
                 a {
@@ -213,7 +254,7 @@
               left: -30px;
               top: 30px;
               min-width: 200px;
-              border-radius: var(--wsBorderRadius, unset);
+              border-radius: var(--schedules-border-radius, unset);
             }
           }
         }
@@ -271,7 +312,6 @@
       padding: 0 15px;
       margin-bottom: 36px;
     }
-
 
     .form-group-date {
       margin-bottom: 24px;
@@ -379,6 +419,11 @@
             border: none;
             padding: 16px 24px;
 
+            @include media-breakpoint-down('md') {
+              border-bottom: 1px solid var(--ylb-color-light-grey-3, #ccc);
+              border-top: none;
+            }
+
             .label-mobile-results {
               margin: 0;
             }
@@ -445,13 +490,12 @@
 
         .form-group-wrapper {
           border: solid 1px var(--ylb-color-light-grey-3, #ccc);
-          border-bottom: none;
-          border-top: none;
 
           &.date {
             border: solid 1px var(--ylb-color-light-grey-3, #ccc);
-            border-top-left-radius: var(--wsBorderRadius, unset);
-            border-top-right-radius: var(--wsBorderRadius, unset);
+            border-top-left-radius: var(--schedules-border-radius, unset);
+            border-top-right-radius: var(--schedules-border-radius, unset);
+            border-bottom: none;
             padding: 2px;
             width: auto;
 
@@ -506,8 +550,8 @@
 
         .form-group-wrapper:last-child {
             border: solid 1px var(--ylb-color-light-grey-3, #ccc);
-            border-bottom-left-radius: var(--wsBorderRadius, unset);
-            border-bottom-right-radius: var(--wsBorderRadius, unset);
+            border-bottom-left-radius: var(--schedules-border-radius, unset);
+            border-bottom-right-radius: var(--schedules-border-radius, unset);
             padding-bottom: 3px;
 
             label {
@@ -612,17 +656,28 @@
     .modal-dialog {
       max-width: 60%;
 
+      @include media-breakpoint-down('lg') {
+        max-width: 80%;
+
+        .modal-content {
+          max-width: unset;
+        }
+      }
+      @include media-breakpoint-down('md') {
+        max-width: 95%;
+      }
+
       &:not(.hb-loc-modal__modal) {
         height: 80% !important;
         padding-top: 0;
         top: 12%;
 
         .modal-content {
-          height: 100% !important;
+          height: 100%;
           overflow: visible;
           bottom: 5vh;
           background-color: var(--ylb-color-light-grey-1, #f2f2f2);
-          border-radius: var(--wsBorderRadius, unset);
+          border-radius: var(--schedules-border-radius, unset);
 
           .calendar-column {
             .icon {
@@ -650,12 +705,11 @@
       height: auto;
       padding: 24px;
       width: 100%;
-      border-top-left-radius: var(--wsBorderRadius, unset);
-      border-top-right-radius: var(--wsBorderRadius, unset);
+      border-top-left-radius: var(--schedules-border-radius, unset);
+      border-top-right-radius: var(--schedules-border-radius, unset);
 
       .close {
         background: none !important;
-        //background: none;
         padding: 10px;
         color: var(--ylb-color-dark-grey-2, #231f20);
         opacity: 1;
@@ -687,7 +741,7 @@
         font-weight: 700;
         line-height: 28px;
         border-bottom: 1px solid var(--ylb-color-dark-grey-2, #231f20);
-        padding: 24px 0;
+        padding: 0 0 24px 0;
         margin-bottom: 24px;
       }
 
@@ -725,6 +779,25 @@
             font-size: 20px;
             line-height: 20px;
             margin-right: 4px;
+          }
+        }
+      }
+
+      .schedules-data__row {
+        .addtocalendar {
+          top: 14px;
+          left: -20px;
+
+          @include media-breakpoint-down('lg') {
+            left: -40px;
+          }
+
+          .atcb-list {
+            &.active {
+              @include media-breakpoint-down('md') {
+                left: -50px;
+              }
+            }
           }
         }
       }
@@ -767,15 +840,20 @@
     }
 
     &--location {
+      .modal-dialog:not(.hb-loc-modal__modal) {
+        height: auto;
+        max-width: 750px;
+
+        .schedule-dashboard__modal--body,
+        .modal-content {
+          height: auto;
+        }
+      }
       &-link {
         font-size: 14px;
         font-family: var(--ylb-font-family-verdana), serif;
         font-weight: 400;
         line-height: 20px;
-      }
-
-      .modal-dialog {
-        max-width: 750px;
       }
     }
 
@@ -804,14 +882,14 @@
     .schedule-dashboard__modal--body {
       .body--content {
         &:first-child {
-          border-top-left-radius: var(--wsBorderRadius, unset);
-          border-top-right-radius: var(--wsBorderRadius, unset);
+          border-top-left-radius: var(--schedules-border-radius, unset);
+          border-top-right-radius: var(--schedules-border-radius, unset);
         }
 
         &:last-child {
           border-bottom: 1px solid var(--ylb-color-light-grey-3, #ccc);
-          border-bottom-left-radius: var(--wsBorderRadius, unset);
-          border-bottom-right-radius: var(--wsBorderRadius, unset);
+          border-bottom-left-radius: var(--schedules-border-radius, unset);
+          border-bottom-right-radius: var(--schedules-border-radius, unset);
         }
       }
     }
@@ -829,7 +907,7 @@
 
     @include media-breakpoint-up('md') {
       margin-bottom: 30px;
-      border-radius: var(--wsBorderRadius, unset);
+      border-radius: var(--schedules-border-radius, unset);
     }
 
     .wizard-bar--buttons {
@@ -947,8 +1025,6 @@
     }
   }
 }
-
-
 
 @media (min-width: 768px) {
 
@@ -1097,5 +1173,10 @@ button.show-date-filter {
 }
 
 .modal-content {
-  border-radius: var(--wsBorderRadius, unset);
+  border-radius: var(--schedules-border-radius, unset);
+}
+
+// We must undo a Font Family used in Canadian Colorway Typography for icons only.
+span.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', serif !important;
 }
