@@ -68,10 +68,9 @@
               <div class="col-12 col-md-3 col-sm-3">
                 {# location #}
                 <div v-cloak class="location-column">
-                  <a class="d-none d-sm-block schedule-dashboard__modal--location-link" role="button"
+                  <a class="schedule-dashboard__modal--location-link" role="button"
                              v-on:click="$parent.populatePopupLocation(index)" data-toggle="modal"
                              href=".schedule-dashboard__modal--location">${ item.location }</a>
-                    <p class="d-block d-sm-none">${ item.location }</p>
                   <p><span v-if="item.room" class="room">${ item.room }</span></p>
                 </div>
 
@@ -104,7 +103,6 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
-                  <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
                 </div>
                 {# register btn #}
                 <div v-if="item.register_url" v-cloak class="register-column" v-if="item.register_url">
@@ -320,7 +318,6 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
-                  <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
                 </div>
                 {# register btn #}
                 <div v-if="item.register_url" class="">
@@ -457,7 +454,6 @@
                   <div v-if="item.spottext && item.spottext.search('spot') >= 0" :key="item.productid">
                     <p>${item.spottext}</p>
                   </div>
-                <span class="material-symbols-outlined icon" aria-hidden="true">add_circle</span>
               </div>
             </div>
 
