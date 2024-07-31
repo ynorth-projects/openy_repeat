@@ -176,6 +176,11 @@ Vue.use(VueRouter);
         this.locations = locationsGet.split(';');
       }
 
+      var roomGet = this.$route.query.room;
+      if (roomGet) {
+        this.room = roomGet.split(';');
+      }
+
       var classNamesGet = this.$route.query.cn;
       if (classNamesGet) {
         this.className = classNamesGet.split(';');
@@ -204,6 +209,11 @@ Vue.use(VueRouter);
       });
 
       this.$watch('locations', function () {
+        component.runAjaxRequest();
+        component.resetPager();
+        component.resetRooms();
+      });
+      this.$watch('room', function () {
         component.runAjaxRequest();
         component.resetPager();
         component.resetRooms();
@@ -465,7 +475,8 @@ Vue.use(VueRouter);
             locations: this.locations.join(';'),
             categories: this.categories.join(';'),
             cn: this.className.join(';'),
-            inst: instructor.join(';')
+            inst: instructor.join(';'),
+            room: this.room.join(';')
           }
         }).catch(err => {
           console.log(err);
