@@ -94,9 +94,9 @@ class RepeatController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function ajaxScheduler(Request $request, $location, $date, $category) {
+  public function ajaxScheduler(Request $request, $location, $date, $category, $room) {
     $category = str_replace('U+002F', '/', $category);
-    $result = $this->getData($request, $location, $date, $category);
+    $result = $this->getData($request, $location, $date, $category, '', '', $room);
     return new JsonResponse($result);
   }
 
@@ -226,10 +226,11 @@ class RepeatController extends ControllerBase {
    * @param string $category
    * @param string $instructor
    * @param string $class
+   * @param string $room
    *
    * @return array
    */
-  public function getData($request, $location, $date, $category, $instructor = '', $class = '') {
+  public function getData($request, $location, $date, $category, $instructor = '', $class = '', $room = '') {
     $initDate = new \DateTime('now');
     $initDate->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     $initDate->setTime(0, 0, 0);
@@ -303,6 +304,9 @@ class RepeatController extends ControllerBase {
     }
     if (!empty($location)) {
       $query->condition('nd.title', explode(';', rawurldecode($location)), 'IN');
+    }
+    if (!empty($room)) {
+      $query->condition('re.room', explode(';', rawurldecode($room)), 'IN');
     }
     $exclusions = $request->get('excl');
     if (!empty($exclusions)) {

@@ -1,10 +1,11 @@
 openy_repeat.schedules_ajax:
-  path: '/schedules/get-event-data/{location}/{category}/{date}'
+  path: '/schedules/get-event-data/{location}/{category}/{date}/{room}'
   defaults:
     _controller: '\Drupal\openy_repeat\Controller\RepeatController::ajaxScheduler'
     location: ''
     category: ''
     date: '0'
+    room: ''
   requirements:
     _permission: 'access content'
 openy_repeat.schedules_by_class:
