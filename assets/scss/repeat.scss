@@ -9,7 +9,7 @@
 
 /*Variables*/
 :root {
-  --schedules-border-radius: 10px;
+  --schedules-border-radius: 8px;
 }
 
 .schedule-dashboard {
@@ -1179,4 +1179,10 @@ button.show-date-filter {
 // We must undo a Font Family used in Canadian Colorway Typography for icons only.
 span.material-symbols-outlined {
   font-family: 'Material Symbols Outlined', serif !important;
+}
+// Needs to override the common rule for h4 heading.
+.page-with-lb {
+  .schedule-dashboard__modal--body--header > h4 {
+    color: var(--ylb-color-dark-grey-2, #231f20);
+  }
 }
