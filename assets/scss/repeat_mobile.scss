@@ -92,6 +92,7 @@
 
           .calendar-column {
             .addtocalendar {
+              position: static;
               padding-left: 0;
               float: none;
             }
@@ -182,6 +183,17 @@
     &__modal {
       .modal-dialog:not(.hb-loc-modal__modal) {
         padding-right: 15px !important;
+
+        .schedules-data__row {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          padding: 24px 12px;
+
+          .addtocalendar {
+            position: static;
+          }
+        }
       }
     }
   }
