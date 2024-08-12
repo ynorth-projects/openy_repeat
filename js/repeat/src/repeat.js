@@ -216,7 +216,6 @@ Vue.use(VueRouter);
       this.$watch('room', function () {
         component.runAjaxRequest();
         component.resetPager();
-        component.resetRooms();
       });
       this.$watch('categories', function () {
         component.runAjaxRequest();

@@ -92,6 +92,7 @@
 
           .calendar-column {
             .addtocalendar {
+              position: static;
               padding-left: 0;
               float: none;
             }
@@ -115,6 +116,19 @@
             padding: 9px;
           }
         }
+      }
+    }
+  }
+
+  .schedule-dashboard__wrapper {
+    .schedule-dashboard__content, .schedule-dashboard__top-header {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .schedule-dashboard__pager {
+      .text-right, .text-left {
+        padding: 0;
       }
     }
   }
@@ -182,6 +196,17 @@
     &__modal {
       .modal-dialog:not(.hb-loc-modal__modal) {
         padding-right: 15px !important;
+
+        .schedules-data__row {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          padding: 24px 12px;
+
+          .addtocalendar {
+            position: static;
+          }
+        }
       }
     }
   }

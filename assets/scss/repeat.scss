@@ -75,10 +75,11 @@
         color: var(--ylb-color-dark-grey-2, #231f20);
         border: 1px solid var(--ylb-color-light-grey-3, #ccc);
         border-bottom: none;
-        padding: 19px 14px;
+        padding: 0 12px;
 
         & > div {
           flex: 0 1 auto;
+          padding: 24px 12px;
         }
 
         &:nth-child(even) {
@@ -147,7 +148,6 @@
           display: inline-block;
           position: relative;
           margin-bottom: 24px;
-          width: 150px;
 
           @include media-breakpoint-between('sm', 'md') {
             margin-bottom: 12px;
@@ -172,6 +172,9 @@
           font-family: var(--ylb-font-family-verdana), serif;
           font-weight: 700;
           line-height: 20px;
+        }
+        .duration {
+          font-weight: 400;
         }
 
         .class-name {
@@ -200,25 +203,29 @@
           top: 0;
           left: -10px;
           float: none;
+          display: flex;
+          gap: 10px;
+
+          .atcb-link {
+            font-weight: 400;
+          }
 
           @include media-breakpoint-down('md') {
             left: 0;
           }
 
           &:after {
+            color: var(--wsPrimaryColor, lightgrey);
             font-family: 'Material Symbols Outlined', serif;
             content: "add_circle";
             -webkit-font-feature-settings: 'liga' 1;
             -moz-font-feature-settings: 'liga' 1;
             font-feature-settings: 'liga' 1;
-            position: relative;
-            top: -20px;
-            left: 124px;
             font-size: 18px;
           }
 
           .atcb-list {
-            box-shadow: var(--wsBoxShadow, none);
+            box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
             li {
               &:first-child {
                 a {
@@ -1000,11 +1007,11 @@
     }
 
     &--next {
-      margin-right: 15px;
+      margin-right: 9px;
     }
 
     &--prev {
-      margin-left: 15px;
+      margin-left: 9px;
     }
 
     a {
