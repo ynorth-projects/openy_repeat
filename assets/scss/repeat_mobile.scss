@@ -120,6 +120,19 @@
     }
   }
 
+  .schedule-dashboard__wrapper {
+    .schedule-dashboard__content, .schedule-dashboard__top-header {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .schedule-dashboard__pager {
+      .text-right, .text-left {
+        padding: 0;
+      }
+    }
+  }
+
   .schedules-data {
     &__row {
       padding: 5px 0;
