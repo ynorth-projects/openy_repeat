@@ -225,7 +225,9 @@
           }
 
           .atcb-list {
-            box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+            border: none;
+
             li {
               &:first-child {
                 a {
@@ -803,6 +805,9 @@
             &.active {
               @include media-breakpoint-down('md') {
                 left: -50px;
+              }
+              @include media-breakpoint-down('sm') {
+                left: -90px;
               }
             }
           }
