@@ -521,7 +521,7 @@ Vue.use(VueRouter);
       },
       populatePopupLocation: function (index) {
         $('.modal').modal('hide');
-        this.locationPopup = this.filteredTable[index].location_info;
+        this.locationPopup = this.pagedTable[index].location_info;
       },
       populatePopupClass: function (sessionId) {
         var component = this;
