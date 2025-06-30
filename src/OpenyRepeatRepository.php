@@ -40,6 +40,11 @@ class OpenyRepeatRepository implements OpenyRepeatRepositoryInterface {
   protected $nodeStorage;
 
   /**
+   * @var \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface
+   */
+  private MemoryCacheInterface $memoryCache;
+
+  /**
    * Constructs a OpenyRepeatRepository object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager

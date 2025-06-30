@@ -546,8 +546,8 @@ class RepeatController extends ControllerBase {
       'body' => [
         '#content' => [
           'logo_url' => \Drupal::service('extension.list.module')->getPath('openy_repeat') . '/img/ymca_logo_black.png',
-          'result' => $content['content']['content'],
-          'header' => $content['content']['header'],
+          'result' => $content['content']['content'] ?? [],
+          'header' => $content['content']['header'] ?? [],
         ],
         '#theme' => $content['theme'],
         '#cache' => [
