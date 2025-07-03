@@ -1,4 +1,4 @@
-_This project is moved officially to:  http://drupal/openy_repeat_
+_This project is moved officially to:  https://drupal.org/openy_repeat_
 
 # Open Y Repeat
 
