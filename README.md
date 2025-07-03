@@ -1,3 +1,5 @@
+_This project is moved officially to:  http://drupal/openy_repeat_
+
 # Open Y Repeat
 
 ## Available variables
