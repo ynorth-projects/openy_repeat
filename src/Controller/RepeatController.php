@@ -372,7 +372,10 @@ class RepeatController extends ControllerBase {
       $result[$key]->duration_hours = ($item->duration - $result[$key]->duration_minutes) / 60;
 
       // Session description.
-      $session_description = html_entity_decode(strip_tags($item->session_description));
+      $session_description = '';
+      if (!empty($item->session_description)) {
+        $session_description = html_entity_decode(strip_tags($item->session_description));
+      }
       $result[$key]->session_description = $session_description;
     }
 
